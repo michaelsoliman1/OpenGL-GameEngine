@@ -20,8 +20,8 @@ void main() {
     // Here we just output a constant color which is red (R=1, G=0, B=0, A=1)
     frag_color = vec4(color, 1.0);
 
-    if (flicker)
-    frag_color.rgb *= 0.5 * (1 + cos(2 * PI * time));
+//    if (flicker)
+//    frag_color.rgb *= 0.5 * (1 + cos(2 * PI * time));
 
     if(shapeNumber==1){
         drawSmileyFace();
