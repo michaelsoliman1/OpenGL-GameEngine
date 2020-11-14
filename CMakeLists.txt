@@ -55,3 +55,4 @@ target_link_libraries(EX02_SHADER_INTRODUCTION glfw)
 add_executable(BASE_SHADER source/lib/base_shader.cpp ${COMMON_SOURCES} ${VENDOR_SOURCES})
 target_link_libraries(BASE_SHADER glfw)
 
+
