@@ -9,8 +9,16 @@ class BaseShaderApplication : public our::Application {
 
     glm::vec2 scale = glm::vec2(1,1);
     glm::vec2 translation = glm::vec2(0,0);
-    glm::vec3 color = glm::vec3(1, 0, 0);
+    glm::vec3 color = glm::vec3(0, 0, 0);
+    glm::vec3 fillColor = glm::vec3(0, 1, 1);
+
+    glm::mat3 matrix;
+
+    glm::vec2 mousePosition;
+    glm::vec2 screenSize;
+
     int shapeNumber =1;
+
     bool vibrate = false, flicker = false;
 
     our::WindowConfiguration getWindowConfiguration() override {
@@ -32,6 +40,15 @@ class BaseShaderApplication : public our::Application {
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(program);
 
+        screenSize = this->getWindowSize();
+        mousePosition = this->mouse.getMousePosition();
+
+        GLuint screenSize_uniform_location = glGetUniformLocation(program, "screenSize");
+        glUniform2f(screenSize_uniform_location, screenSize.x,screenSize.y);
+
+        GLuint mousePos_uniform_location = glGetUniformLocation(program, "mousePosition");
+        glUniform2f(mousePos_uniform_location, mousePosition.x,mousePosition.y);
+
         GLuint shape_uniform_location = glGetUniformLocation(program, "shapeNumber");
         glUniform1i(shape_uniform_location, shapeNumber);
 
@@ -41,6 +58,8 @@ class BaseShaderApplication : public our::Application {
         glUniform2f(translation_uniform_location, translation.x, translation.y);
         GLuint color_uniform_location = glGetUniformLocation(program, "color");
         glUniform3f(color_uniform_location, color.r, color.g, color.b);
+        GLuint fillColor_uniform_location = glGetUniformLocation(program, "fillColor");
+        glUniform3f(fillColor_uniform_location, fillColor.r, fillColor.g, fillColor.b);
 
         GLuint time_uniform_location = glGetUniformLocation(program, "time");
         glUniform1f(time_uniform_location, glfwGetTime());
@@ -67,6 +86,7 @@ class BaseShaderApplication : public our::Application {
 
         ImGui::SliderFloat2("Translation", glm::value_ptr(translation), -2, 2);
         ImGui::ColorEdit3("Color", glm::value_ptr(color));
+        ImGui::ColorEdit3("FillColor", glm::value_ptr(fillColor));
         ImGui::Checkbox("Vibrate", &vibrate);
         ImGui::Checkbox("Flicker", &flicker);
         ImGui::Value("Time: ", (float)glfwGetTime());
