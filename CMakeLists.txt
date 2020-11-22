@@ -49,9 +49,6 @@ include_directories(
 # Each target compiles one example source file and the common & vendor source files
 # Then we link GLFW with each target
 
-add_executable(EX02_SHADER_INTRODUCTION source/lib/ex02_shader_introduction.cpp ${COMMON_SOURCES} ${VENDOR_SOURCES})
-target_link_libraries(EX02_SHADER_INTRODUCTION glfw)
-
 add_executable(BASE_SHADER source/lib/base_shader.cpp ${COMMON_SOURCES} ${VENDOR_SOURCES})
 target_link_libraries(BASE_SHADER glfw)
 
