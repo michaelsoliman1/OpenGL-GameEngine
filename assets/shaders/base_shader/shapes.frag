@@ -13,7 +13,7 @@ out vec4 frag_color;
 
 #define PI 3.1415926535897932384626433832795
 
-void drawCircle(vec2 centerPoint, int radius, vec4 fillColor);
+void drawCircle(vec2 shiftValue, int radius, vec4 fillColor);
 void drawRect(float res_x, float res_y, int color);
 bool ptInTriangle(vec2 p, vec2 p0, vec2 p1, vec2 p2);
 void drawTriangle(vec2 p0, vec2 p1, vec2 p2,vec4 fillColor);
@@ -68,40 +68,41 @@ bool ptInTriangle(vec2 p, vec2 p0, vec2 p1, vec2 p2) {
     return s>=0 && t>=0 && s+t<=D;
 }
 
-void drawCircle(vec2 centerPoint, int radius, vec4 fillColor){
-    float dist = length(gl_FragCoord.xy - centerPoint);
+void drawCircle(vec2 shiftValue, int radius, vec4 fillColor){
+    vec2 coord = mousePosition + shiftValue;
+    float dist = length(gl_FragCoord.xy - coord.xy);
     if(dist< radius)
         frag_color = fillColor;
 }
 
 void drawSmileyFace( vec4 fillColor){
-    drawCircle(screenSize.xy/2, 270, fillColor);//face
-    drawCircle(vec2(screenSize.x*0.4, screenSize.y*0.6), 30, vec4(color, 1.0));//leftEye
-    drawCircle(vec2(screenSize.x*0.6, screenSize.y*0.6), 30, vec4(color, 1.0));//rightEye
-    drawCircle(vec2(screenSize.x/2, screenSize.y*0.35), 120, vec4(color, 1.0));//smallSmile
-    drawCircle(vec2(screenSize.x/2, screenSize.y*0.4), 120, fillColor);//bigSmile
+    drawCircle(vec2(0,0), 270, fillColor);//face
+    drawCircle(vec2(-100,100), 30, vec4(color, 1.0));//leftEye
+    drawCircle(vec2(100,100), 30, vec4(color, 1.0));//rightEye
+    drawCircle(vec2(0,-100), 120, vec4(color, 1.0));//smallSmile
+    drawCircle(vec2(0,-80), 120, fillColor);//bigSmile
 }
 
 void drawG(vec4 fillColor){
-    vec2 pointFromCenter = gl_FragCoord.xy - screenSize.xy/2;
+    vec2 pointFromCenter = gl_FragCoord.xy - mousePosition;
     float dist = length(pointFromCenter);
-    if(all(greaterThan(gl_FragCoord.xy , screenSize.xy/2)))
+    if(all(greaterThan(gl_FragCoord.xy , mousePosition)))
         dist = 0.0;
     if(dist< 270 && dist>200)
         frag_color = fillColor;
-    drawRectangle(screenSize.xy/2, 270, 70, fillColor);
+    drawRectangle(mousePosition, 270, 70, fillColor);
 }
 
 void drawPacMan(vec4 fillColor) {
-    drawCircle(vec2(640,360), 300,fillColor);
-    drawCircle(vec2(700,550),50,vec4(color,1.0));
-    drawTriangle(vec2(640,360),vec2(1000,100),vec2(1000,600), vec4(color,1.0));
+    drawCircle(vec2(0,0), 300,fillColor);//face
+    drawCircle(vec2(100,150),50,vec4(color,1.0));
+    drawTriangle(mousePosition,mousePosition + vec2(300,150),vec2(1280,0), vec4(color,1.0));
 }
 
 void drawHeart(vec4 fillColor) {
-    drawCircle(screenSize.xy/2 - vec2(-100,-100),120,fillColor);
-    drawCircle(screenSize.xy/2 - vec2(100,-100),120,fillColor);
-    drawTriangle(screenSize.xy/2 + vec2(213,60) ,screenSize.xy/2 + vec2(-213,60),screenSize.xy/2 + vec2(-0,-200), fillColor );
+    drawCircle(vec2(100,100),120,fillColor);
+    drawCircle(vec2(-100,100),120,fillColor);
+    drawTriangle(mousePosition+ vec2(213,60) ,mousePosition + vec2(-213,60),mousePosition + vec2(-0,-200), fillColor );
 
 }
 

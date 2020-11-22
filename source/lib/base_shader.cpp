@@ -47,7 +47,7 @@ class BaseShaderApplication : public our::Application {
         glUniform2f(screenSize_uniform_location, screenSize.x,screenSize.y);
 
         GLuint mousePos_uniform_location = glGetUniformLocation(program, "mousePosition");
-        glUniform2f(mousePos_uniform_location, mousePosition.x,mousePosition.y);
+        glUniform2f(mousePos_uniform_location, mousePosition.x,screenSize.y - mousePosition.y);
 
         GLuint shape_uniform_location = glGetUniformLocation(program, "shapeNumber");
         glUniform1i(shape_uniform_location, shapeNumber);
