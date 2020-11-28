@@ -25,12 +25,12 @@ void main() {
     // get the position based on the vertex id
     vec3 position = positions[gl_VertexID];
     // Scale it
-    position.xy *= scale;
+//    position.xy *= scale;
     // If vibrate is on, scale it with a sinusoidal wave that oscillates over time
     if(vibrate)
         position.xy *= 1 + 0.1 * sin(2 * PI * time);
     // Translate it
-    position.xy += translation;
+//    position.xy += translation;
 
     // Finally send the value to "gl_Position".
     gl_Position = vec4(position, 1.0);

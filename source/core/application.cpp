@@ -184,7 +184,7 @@ int our::Application::run() {
     ImGui_ImplOpenGL3_Init("#version 330 core");
 
     // Call onInitialize if the application needs to do some custom initialization (such as file loading, object creation, etc).
-    onInitialize();
+    testState->onEnter();
 
     // The time at which the last frame started. But there was no frames yet, so we'll just pick the current time.
     double last_frame_time = glfwGetTime();
@@ -216,7 +216,7 @@ int our::Application::run() {
         double current_frame_time = glfwGetTime();
 
         // Call onDraw, in which we will draw the current frame, and send to it the time difference between the last and current frame
-        onDraw(current_frame_time - last_frame_time);
+        testState->onDraw(current_frame_time - last_frame_time);
         last_frame_time = current_frame_time; // Then update the last frame start time (this frame is now the last frame)
 
 #if defined(ENABLE_OPENGL_DEBUG_MESSAGES)
@@ -240,7 +240,8 @@ int our::Application::run() {
     }
 
     // Call for cleaning up
-    onDestroy();
+    testState->onExit();
+
 
     // Shutdown ImGui & destroy the context
     ImGui_ImplOpenGL3_Shutdown();
