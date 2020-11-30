@@ -50,9 +50,6 @@ include_directories(
 # Each target compiles one example source file and the common & vendor source files
 # Then we link GLFW with each target
 
-add_executable(BASE_SHADER source/shaders/base_shader.cpp ${COMMON_SOURCES} ${VENDOR_SOURCES})
-target_link_libraries(BASE_SHADER glfw)
-
 add_executable(Game source/core/game.cpp ${COMMON_SOURCES} ${VENDOR_SOURCES})
 target_link_libraries(Game glfw)
 
