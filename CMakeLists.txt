@@ -32,8 +32,8 @@ set(VENDOR_SOURCES ${GLAD_SOURCE} ${IMGUI_SOURCES})
 # A variable with all our source files that are common between executable targets (examples)
 set(COMMON_SOURCES
         source/core/application.cpp
-        source/core/shader.cpp
         source/core/game_states/test_state.cpp
+        source/graphics/shader.cpp
         )
 
 # Define the directories in which to search for the included headers
