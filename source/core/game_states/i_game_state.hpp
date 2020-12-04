@@ -4,7 +4,7 @@
 
 class IGameState{
 protected:
-    our::ShaderProgram program;
+    xGame::ShaderProgram program;
     GLuint vertex_array = 0;
 
 public:

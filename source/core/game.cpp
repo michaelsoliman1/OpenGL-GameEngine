@@ -1,12 +1,16 @@
 #include "application.hpp"
-#include <game_states/test_state.hpp>
+#include "game_states/test_state.hpp"
+#include "game_states/state_manager/state_manager.hpp"
 
 int main() {
-    our::Application config;
+    xGame::Application config;
     GLFWwindow* window = config.init();
     TestState* testState = new TestState();
 
-    testState->onEnter();
+    StateManager* stateManager = new StateManager();
+    stateManager->goToState(testState);
+
+//    testState->onEnter();
 
     double last_frame_time = glfwGetTime();
     while(!glfwWindowShouldClose(window)){
@@ -15,7 +19,7 @@ int main() {
         // Get the current time (the time at which we are starting the current frame).
         double current_frame_time = glfwGetTime();
 
-        testState->onDraw(current_frame_time - last_frame_time);
+        stateManager->runState(current_frame_time - last_frame_time);
 
         // Then update the last frame start time (this frame is now the last frame)
         last_frame_time = current_frame_time;
@@ -24,8 +28,7 @@ int main() {
         glfwSwapBuffers(window);
     }
 
-    testState->onExit();
-
+    stateManager->setIsExiting(true);
     // Destroy the window
     glfwDestroyWindow(window);
 

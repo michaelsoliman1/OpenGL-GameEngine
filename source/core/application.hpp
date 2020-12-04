@@ -6,11 +6,10 @@
 #include <GLFW/glfw3.h>
 #include <imgui.h>
 
-#include "../input/keyboard.hpp"
-#include "../input/mouse.hpp"
 
 
-namespace our {
+
+namespace xGame {
 
     // This struct handles window attributes: (title, size, isFullscreen).
     struct WindowConfiguration {
@@ -19,8 +18,6 @@ namespace our {
         bool isFullscreen;
     };
 
-    // This class act as base class for all the Applications covered in the examples.
-    // It offers the functionalities needed by all the examples.
     class Application {
     protected:
         GLFWwindow * window = nullptr;      // Pointer to the window created by GLFW using "glfwCreateWindow()".

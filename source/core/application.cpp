@@ -82,7 +82,7 @@ void GLAPIENTRY opengl_callback(GLenum source, GLenum type, GLuint id, GLenum se
     << " raised from " << _source << ": " << message << std::endl;
 }
 
-void our::Application::configureOpenGL() {
+void xGame::Application::configureOpenGL() {
     // Request that OpenGL is 3.3
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -117,11 +117,11 @@ void our::Application::configureOpenGL() {
     glfwWindowHint(GLFW_REFRESH_RATE, GLFW_DONT_CARE);
 }
 
-our::WindowConfiguration our::Application::getWindowConfiguration() {
+xGame::WindowConfiguration xGame::Application::getWindowConfiguration() {
     return {"OpenGL Application", {1280, 720}, false };
 }
 
-GLFWwindow* our::Application::init() {
+GLFWwindow* xGame::Application::init() {
 
     // Set the function to call when an error occurs.
     glfwSetErrorCallback(glfw_error_callback);

@@ -33,6 +33,7 @@ set(VENDOR_SOURCES ${GLAD_SOURCE} ${IMGUI_SOURCES})
 set(COMMON_SOURCES
         source/core/application.cpp
         source/core/game_states/test_state.cpp
+        source/core/game_states/state_manager/state_manager.cpp
         source/graphics/shader.cpp
         )
 
