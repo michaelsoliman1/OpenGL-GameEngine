@@ -14,9 +14,8 @@ out vec4 frag_color;
 #define PI 3.1415926535897932384626433832795
 
 void main() {
+    vec2 uv = gl_FragCoord.xy / vec2(1280,720);
     // Convert RGB to RGBA (in other words, add an alpha value).
-    frag_color = vec4(0.5,0.5,1.0, 1.0);
-    // If flickering, multiply it with a sinusoidal wave that oscillates over time
-//    if(flicker)
-//        frag_color.rgb *= 0.5 * (1 + cos(2 * PI * time));
+    frag_color = vec4(uv,1.0, 1.0);
+
 }

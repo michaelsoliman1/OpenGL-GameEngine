@@ -31,13 +31,15 @@ set(VENDOR_SOURCES ${GLAD_SOURCE} ${IMGUI_SOURCES})
 
 # A variable with all our source files that are common between executable targets (examples)
 set(COMMON_SOURCES
-        source/common/application.cpp
-        source/common/shader.cpp
+        source/core/application.cpp
+        source/core/game_states/test_state.cpp
+        source/core/game_states/state_manager/state_manager.cpp
+        source/graphics/shader.cpp
         )
 
 # Define the directories in which to search for the included headers
 include_directories(
-        source/common
+        source/core
         vendor/glfw/include
         vendor/glad/include
         vendor/glm
@@ -49,7 +51,6 @@ include_directories(
 # Each target compiles one example source file and the common & vendor source files
 # Then we link GLFW with each target
 
-add_executable(BASE_SHADER source/lib/base_shader.cpp ${COMMON_SOURCES} ${VENDOR_SOURCES})
-target_link_libraries(BASE_SHADER glfw)
-
+add_executable(Game source/core/game.cpp ${COMMON_SOURCES} ${VENDOR_SOURCES})
+target_link_libraries(Game glfw)
 

@@ -82,7 +82,7 @@ void GLAPIENTRY opengl_callback(GLenum source, GLenum type, GLuint id, GLenum se
     << " raised from " << _source << ": " << message << std::endl;
 }
 
-void our::Application::configureOpenGL() {
+void xGame::Application::configureOpenGL() {
     // Request that OpenGL is 3.3
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -117,20 +117,19 @@ void our::Application::configureOpenGL() {
     glfwWindowHint(GLFW_REFRESH_RATE, GLFW_DONT_CARE);
 }
 
-our::WindowConfiguration our::Application::getWindowConfiguration() {
+xGame::WindowConfiguration xGame::Application::getWindowConfiguration() {
     return {"OpenGL Application", {1280, 720}, false };
 }
 
-// This is the main class function that run the whole application (Initialize, Game loop, House cleaning).
-int our::Application::run() {
+GLFWwindow* xGame::Application::initWindow() {
 
     // Set the function to call when an error occurs.
     glfwSetErrorCallback(glfw_error_callback);
 
     // Initialize GLFW and exit if it failed
-    if(!glfwInit()){
+    if (!glfwInit()) {
         std::cerr << "Failed to Initialize GLFW" << std::endl;
-        return -1;
+        return nullptr;
     }
 
     configureOpenGL();                                      // This function sets OpenGL window hints.
@@ -140,13 +139,13 @@ int our::Application::run() {
 
     // Create a window with the given "WindowConfiguration" attributes.
     // If it should be fullscreen, monitor should point to one of the monitors (e.g. primary monitor), otherwise it should be null
-    GLFWmonitor* monitor = win_config.isFullscreen ? glfwGetPrimaryMonitor() : nullptr;
+    GLFWmonitor *monitor = win_config.isFullscreen ? glfwGetPrimaryMonitor() : nullptr;
     // The last parameter "share" can be used to share the resources (OpenGL objects) between multiple windows.
     window = glfwCreateWindow(win_config.size.x, win_config.size.y, win_config.title, monitor, nullptr);
-    if(!window) {
+    if (!window) {
         std::cerr << "Failed to Create Window" << std::endl;
         glfwTerminate();
-        return -1;
+        return nullptr;
     }
     glfwMakeContextCurrent(window);         // Tell GLFW to make the context of our window the main context on the current thread.
 
@@ -169,145 +168,7 @@ int our::Application::run() {
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 #endif
 
-    setupCallbacks();
-    keyboard.enable(window);
-    mouse.enable(window);
-
-    // Start the ImGui context and set dark style (just my preference :D)
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    ImGui::StyleColorsDark();
-
-    // Initialize ImGui for GLFW and OpenGL
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 330 core");
-
-    // Call onInitialize if the application needs to do some custom initialization (such as file loading, object creation, etc).
-    onInitialize();
-
-    // The time at which the last frame started. But there was no frames yet, so we'll just pick the current time.
-    double last_frame_time = glfwGetTime();
-
-    while(!glfwWindowShouldClose(window)){
-        glfwPollEvents(); // Read all the user events and call relevant callbacks.
-
-        // Start a new ImGui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
-        onImmediateGui(io); // Call to run any required Immediate GUI.
-
-        // If ImGui is using the mouse or keyboard, then we don't want the captured events to affect our keyboard and mouse objects.
-        // For example, if you're focusing on an input and writing "W", the keyboard object shouldn't record this event.
-        keyboard.setEnabled(!io.WantCaptureKeyboard, window);
-        mouse.setEnabled(!io.WantCaptureMouse, window);
-
-        // Render the ImGui commands we called (this doesn't actually draw to the screen yet.
-        ImGui::Render();
-
-        // Just in case ImGui changed the OpenGL viewport (the portion of the window to which we render the geometry),
-        // we set it back to cover the whole window
-        auto frame_buffer_size = getFrameBufferSize();
-        glViewport(0, 0, frame_buffer_size.x, frame_buffer_size.y);
-
-        // Get the current time (the time at which we are starting the current frame).
-        double current_frame_time = glfwGetTime();
-
-        // Call onDraw, in which we will draw the current frame, and send to it the time difference between the last and current frame
-        onDraw(current_frame_time - last_frame_time);
-        last_frame_time = current_frame_time; // Then update the last frame start time (this frame is now the last frame)
-
-#if defined(ENABLE_OPENGL_DEBUG_MESSAGES)
-        // Since ImGui causes many messages to be thrown, we are temporarily disabling the debug messages till we render the ImGui
-        glDisable(GL_DEBUG_OUTPUT);
-        glDisable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-#endif
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData()); // Render the ImGui to the framebuffer
-#if defined(ENABLE_OPENGL_DEBUG_MESSAGES)
-        // Re-enable the debug messages
-        glEnable(GL_DEBUG_OUTPUT);
-        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-#endif
-
-        // Swap the frame buffers
-        glfwSwapBuffers(window);
-
-        // Update the keyboard and mouse data
-        keyboard.update();
-        mouse.update();
-    }
-
-    // Call for cleaning up
-    onDestroy();
-
-    // Shutdown ImGui & destroy the context
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
-    // Destroy the window
-    glfwDestroyWindow(window);
-
-    // And finally terminate GLFW
-    glfwTerminate();
-    return 0; // Good bye
+    return window;
 }
 
-// Sets-up the window callback functions from GLFW to our (Mouse/Keyboard) classes.
-void our::Application::setupCallbacks() {
 
-    // We use GLFW to store a pointer to "this" window instance.
-    glfwSetWindowUserPointer(window, this);
-    // The pointer is then retrieved in the callback function.
-
-    // The second parameter to "glfwSet---Callback" is a function pointer.
-    // It is replaced by an inline function -lambda expression- as it is not needed to create
-    // a seperate function for it.
-    // In the inline function we retrieve the window instance and use it to set our (Mouse/Keyboard) classes values.
-
-    // Keyboard callbacks
-    glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods){
-        auto* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
-        if(app){
-            app->getKeyboard().keyEvent(key, scancode, action, mods);
-            app->onKeyEvent(key, scancode, action, mods);
-        }
-    });
-
-    // mouse position callbacks
-    glfwSetCursorPosCallback(window, [](GLFWwindow* window, double x_position, double y_position){
-        auto* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
-        if(app){
-            app->getMouse().CursorMoveEvent(x_position, y_position);
-            app->onCursorMoveEvent(x_position, y_position);
-        }
-    });
-
-    // mouse position callbacks
-    glfwSetCursorEnterCallback(window, [](GLFWwindow* window, int entered){
-        auto* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
-        if(app){
-            app->onCursorEnterEvent(entered);
-        }
-    });
-
-    // mouse button position callbacks
-    glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods){
-        auto* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
-        if(app){
-            app->getMouse().MouseButtonEvent(button, action, mods);
-            app->onMouseButtonEvent(button, action, mods);
-        }
-    });
-
-    // mouse scroll callbacks
-    glfwSetScrollCallback(window, [](GLFWwindow* window, double x_offset, double y_offset){
-        auto* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
-        if(app){
-            app->getMouse().ScrollEvent(x_offset, y_offset);
-            app->onScrollEvent(x_offset, y_offset);
-        }
-    });
-}
