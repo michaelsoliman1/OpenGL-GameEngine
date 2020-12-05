@@ -25,7 +25,7 @@ namespace xGame {
         WindowConfiguration getWindowConfiguration();       // Returns the WindowConfiguration current struct instance.
 
     public:
-        GLFWwindow* init();
+        GLFWwindow* initWindow();
 
         // Class Getters.
         GLFWwindow* getWindow(){ return window; }

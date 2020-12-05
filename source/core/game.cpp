@@ -3,8 +3,8 @@
 #include "game_states/state_manager/state_manager.hpp"
 
 int main() {
-    xGame::Application config;
-    GLFWwindow* window = config.init();
+    xGame::Application app;
+    GLFWwindow* window = app.initWindow();
     TestState* testState = new TestState();
 
     StateManager* stateManager = new StateManager();

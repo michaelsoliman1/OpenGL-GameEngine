@@ -121,7 +121,7 @@ xGame::WindowConfiguration xGame::Application::getWindowConfiguration() {
     return {"OpenGL Application", {1280, 720}, false };
 }
 
-GLFWwindow* xGame::Application::init() {
+GLFWwindow* xGame::Application::initWindow() {
 
     // Set the function to call when an error occurs.
     glfwSetErrorCallback(glfw_error_callback);
