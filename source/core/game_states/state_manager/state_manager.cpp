@@ -1,5 +1,4 @@
 #include "state_manager.hpp"
-#include "../i_game_state.hpp"
 
 void StateManager::runState(double deltaTime) {
     if(!_isExiting){
