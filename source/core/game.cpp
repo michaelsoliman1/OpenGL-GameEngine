@@ -1,6 +1,5 @@
 #include "application.hpp"
 #include "game_states/test_state.hpp"
-#include "game_states/test2.hpp"
 #include "game_states/state_manager/state_manager.hpp"
 
 
@@ -12,9 +11,7 @@ int main() {
 
     TestState* testState = new TestState();
 
-
     StateManager* stateManager = new StateManager();
-
     stateManager->goToState(testState);
 
 //    testState->onEnter();
@@ -36,7 +33,6 @@ int main() {
 
         keyboard.update();
         mouse.update();
-
     }
 
     stateManager->setIsExiting(true);
