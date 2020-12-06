@@ -168,7 +168,67 @@ GLFWwindow* xGame::Application::initWindow() {
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 #endif
 
+    setupCallbacks();
+    keyboard.enable(window);
+    mouse.enable(window);
+
+
     return window;
 }
 
 
+void xGame::Application::setupCallbacks() {
+
+    // We use GLFW to store a pointer to "this" window instance.
+    glfwSetWindowUserPointer(window, this);
+    // The pointer is then retrieved in the callback function.
+
+    // The second parameter to "glfwSet---Callback" is a function pointer.
+    // It is replaced by an inline function -lambda expression- as it is not needed to create
+    // a seperate function for it.
+    // In the inline function we retrieve the window instance and use it to set our (Mouse/Keyboard) classes values.
+
+    // Keyboard callbacks
+    glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods){
+        auto* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
+        if(app){
+            app->getKeyboard().keyEvent(key, scancode, action, mods);
+            app->onKeyEvent(key, scancode, action, mods);
+        }
+    });
+
+    // mouse position callbacks
+    glfwSetCursorPosCallback(window, [](GLFWwindow* window, double x_position, double y_position){
+        auto* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
+        if(app){
+            app->getMouse().CursorMoveEvent(x_position, y_position);
+            app->onCursorMoveEvent(x_position, y_position);
+        }
+    });
+
+    // mouse position callbacks
+    glfwSetCursorEnterCallback(window, [](GLFWwindow* window, int entered){
+        auto* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
+        if(app){
+            app->onCursorEnterEvent(entered);
+        }
+    });
+
+    // mouse button position callbacks
+    glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods){
+        auto* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
+        if(app){
+            app->getMouse().MouseButtonEvent(button, action, mods);
+            app->onMouseButtonEvent(button, action, mods);
+        }
+    });
+
+    // mouse scroll callbacks
+    glfwSetScrollCallback(window, [](GLFWwindow* window, double x_offset, double y_offset){
+        auto* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
+        if(app){
+            app->getMouse().ScrollEvent(x_offset, y_offset);
+            app->onScrollEvent(x_offset, y_offset);
+        }
+    });
+}

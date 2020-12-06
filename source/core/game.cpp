@@ -2,9 +2,13 @@
 #include "game_states/test_state.hpp"
 #include "game_states/state_manager/state_manager.hpp"
 
+
 int main() {
     xGame::Application app;
     GLFWwindow* window = app.initWindow();
+    xGame::Keyboard keyboard = app.getKeyboard();
+    xGame::Mouse mouse = app.getMouse();
+
     TestState* testState = new TestState();
 
     StateManager* stateManager = new StateManager();
@@ -26,6 +30,9 @@ int main() {
 
         // Swap the frame buffers
         glfwSwapBuffers(window);
+
+        keyboard.update();
+        mouse.update();
     }
 
     stateManager->setIsExiting(true);
