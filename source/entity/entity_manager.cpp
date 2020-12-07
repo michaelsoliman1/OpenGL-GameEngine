@@ -7,10 +7,11 @@
 Entity* EntityManager::createEntity() {
     Entity* entity = new Entity();
     this->entities.push_back(entity);
+    size++;
     return entity;
 }
 
-std::vector<Entity*> EntityManager::renderEntities() {
+std::vector<Entity*> EntityManager::getEntities() {
     return entities;
 }
 

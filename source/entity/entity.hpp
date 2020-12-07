@@ -4,11 +4,11 @@
 
 class Entity{
     std::vector<IComponent*> components;
+
 public:
     Entity() = default;
     ~Entity();
-    int size();
     void addComponent(IComponent* c);
     void removeComponent(IComponent* c);
-    std::vector<IComponent*> renderComponents();
+    std::vector<IComponent*> getComponents();
 };

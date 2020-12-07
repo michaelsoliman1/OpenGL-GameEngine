@@ -1,12 +1,14 @@
 #include "test_state.hpp"
 #include "../../components/transform.hpp"
+#include "../../components/meshRenderer.hpp"
 
 void TestState::onEnter() {
 
     Entity* box = entityManager.createEntity();
     Transform* transform = new Transform({ {0,-100,0}, {0,0,0}, {500,20,1} });
-
+//    MeshRenderer* mesh = new MeshRenderer();
     box->addComponent(transform);
+//    box->addComponent(mesh);
 
     program.create();
     program.attach("assets/shaders/base_shader/quad.vert", GL_VERTEX_SHADER);

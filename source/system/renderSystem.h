@@ -9,6 +9,6 @@
 class RenderSystem {
 public:
     RenderSystem();
-    Renderer render(EntityManager entityList, IComponent* component);
+    void render(EntityManager entityManager, IComponent* component);
 };
 #endif //GRAPHICS_RENDERSYSTEM_H

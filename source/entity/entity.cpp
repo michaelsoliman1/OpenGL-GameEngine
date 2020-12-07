@@ -8,6 +8,6 @@ void Entity::addComponent(IComponent *c) {
     components.push_back(c);
 }
 
-std::vector<IComponent*> Entity::renderComponents() {
+std::vector<IComponent*> Entity::getComponents() {
     return components;
 }

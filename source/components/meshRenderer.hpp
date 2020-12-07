@@ -9,10 +9,10 @@
 #define GRAPHICS_MESHRENDERER_H
 
 class MeshRenderer : public Renderer {
-public:
     xGame::Mesh *mesh;
     xGame::ShaderProgram *renderShader;
+public:
+    MeshRenderer();
 
-    //i can't understand point 3
 };
 #endif //GRAPHICS_MESHRENDERER_H
