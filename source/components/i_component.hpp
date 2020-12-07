@@ -1,7 +1,7 @@
-class IComponent{
-    static int id;
+
+
+class IComponent {
 public:
     IComponent();
-    ~IComponent();
+    virtual ~IComponent();
 };
-

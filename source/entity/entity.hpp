@@ -7,6 +7,7 @@ class Entity{
 public:
     Entity() = default;
     ~Entity();
+    int size();
     void addComponent(IComponent* c);
     void removeComponent(IComponent* c);
     void getComponent(IComponent* c);

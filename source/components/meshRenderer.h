@@ -1,7 +1,7 @@
 //
 // Created by ecs on 12/6/2020.
 //
-#include "renderer.h"
+#include "renderer.hpp"
 #include "../graphics/shader.hpp"
 #include "../mesh/mesh.hpp"
 
