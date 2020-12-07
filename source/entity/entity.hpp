@@ -10,6 +10,5 @@ public:
     int size();
     void addComponent(IComponent* c);
     void removeComponent(IComponent* c);
-    void getComponent(IComponent* c);
     std::vector<IComponent*> renderComponents();
 };

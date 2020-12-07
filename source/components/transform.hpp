@@ -3,20 +3,15 @@
 #include <glm/glm.hpp>
 #include "i_component.hpp"
 
-    class Transform : public IComponent {
-    private:
-        glm::vec3 Position;
-        glm::vec3 Scale;
-        float Rotation;
-        IComponent *component;
-    public:
-        Transform() = default;
-        Transform(glm::vec3 position, glm::vec3 scale, float rotation);
-        void setPosition(glm::vec3 position);
-        void setScale(glm::vec3 scale);
-        void setRotation(float Rotation);
+class Transform : public IComponent {
+private:
+    glm::vec3 translation,  rotation, scale;
 
-        glm::vec3 getPosition();
-        glm::vec3 getScale();
-        float getRotation();
-    };
+    IComponent *component;
+public:
+    Transform(
+            const glm::vec3& translation = {0,0,0},
+            const glm::vec3& rotation = {0,0,0},
+            const glm::vec3& scale = {1,1,1}
+    ): translation(translation), rotation(rotation), scale(scale) {}
+};
