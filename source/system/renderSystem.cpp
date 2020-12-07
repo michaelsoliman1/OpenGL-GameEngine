@@ -12,7 +12,7 @@ void RenderSystem::render(EntityManager entityManager, IComponent* component) {
     std::vector<Entity*> entities = entityList.getEntities();
     for (auto&  entity : entities) {
         std::vector<IComponent*> components = entity->getComponents();
-        for (auto& it1 : components ) {
+        for (auto& item: components ) {
 //            if (dynamic_cast<Transform*>(component)) {
 //                Transform *t = dynamic_cast<Transform *>(component);
 //            } else if (dynamic_cast<Renderer *>(component)) {
