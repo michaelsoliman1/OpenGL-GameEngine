@@ -10,3 +10,7 @@ Entity* EntityManager::createEntity() {
     return entity;
 }
 
+std::vector<Entity*> EntityManager::renderEntities() {
+    return entities;
+}
+

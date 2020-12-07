@@ -13,6 +13,8 @@ class EntityManager{
     std::vector<Entity*> entities = {};
 public:
     Entity* createEntity();
+    int size();
+    std::vector<Entity*> renderEntities();
 
 };
 
