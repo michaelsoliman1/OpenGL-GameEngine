@@ -9,5 +9,4 @@ public:
     ~Entity();
     void addComponent(IComponent* c);
     void removeComponent(IComponent* c);
-    void getComponent(IComponent* c);
 };

@@ -1,6 +1,13 @@
 #include "test_state.hpp"
+#include "../../components/transform.hpp"
 
 void TestState::onEnter() {
+
+    Entity* box = entityManager.createEntity();
+    Transform* transform = new Transform({ {0,-100,0}, {0,0,0}, {500,20,1} });
+
+    box->addComponent(transform);
+
     program.create();
     program.attach("assets/shaders/base_shader/quad.vert", GL_VERTEX_SHADER);
     program.attach("assets/shaders/base_shader/color.frag", GL_FRAGMENT_SHADER);
