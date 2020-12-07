@@ -1,6 +1,7 @@
 #include "application.hpp"
 #include "game_states/test_state.hpp"
 #include "game_states/state_manager/state_manager.hpp"
+#include "../components/transform.hpp"
 
 
 int main() {
@@ -9,12 +10,12 @@ int main() {
     xGame::Keyboard keyboard = app.getKeyboard();
     xGame::Mouse mouse = app.getMouse();
 
+
     TestState* testState = new TestState();
 
     StateManager* stateManager = new StateManager();
     stateManager->goToState(testState);
 
-//    testState->onEnter();
 
     double last_frame_time = glfwGetTime();
     while(!glfwWindowShouldClose(window)){

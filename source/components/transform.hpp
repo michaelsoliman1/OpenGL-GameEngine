@@ -1,15 +1,22 @@
 #pragma once
-#include "./i_component.hpp"
+
 #include <glm/glm.hpp>
+#include "i_component.hpp"
 
-namespace components {
-   class Transform : public IComponent {
-        Transform(glm::vec2 position = glm::vec2(0.0f), int zIndex = 0, glm::vec2 scale = glm::vec2(1.0f), float rotation = 0.0f)
-                : position(position), zIndex(zIndex), scale(scale), rotation(rotation) {}
+    class Transform : public IComponent {
+    private:
+        glm::vec3 Position;
+        glm::vec3 Scale;
+        float Rotation;
+        IComponent *component;
+    public:
+        Transform() = default;
+        Transform(glm::vec3 position, glm::vec3 scale, float rotation);
+        void setPosition(glm::vec3 position);
+        void setScale(glm::vec3 scale);
+        void setRotation(float Rotation);
 
-        glm::vec2 position;
-        glm::vec2 scale;
-        float rotation;
-        int zIndex;
+        glm::vec3 getPosition();
+        glm::vec3 getScale();
+        float getRotation();
     };
-}

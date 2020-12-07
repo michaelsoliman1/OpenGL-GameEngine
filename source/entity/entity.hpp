@@ -1,13 +1,13 @@
+#include <vector>
 #include "../components/i_component.hpp"
-#include <unordered_map>
-#include "string"
+
 
 class Entity{
-    std::unordered_map<int, IComponent*> components;
+    std::vector<IComponent*> components;
 public:
-    Entity();
+    Entity() = default;
     ~Entity();
-    void addComponent(int id, IComponent* c);
+    void addComponent(IComponent* c);
     void removeComponent(IComponent* c);
     void getComponent(IComponent* c);
 };

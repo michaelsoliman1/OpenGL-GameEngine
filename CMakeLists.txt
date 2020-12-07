@@ -36,7 +36,7 @@ set(COMMON_SOURCES
 
         source/core/game_states/state_manager/state_manager.cpp
         source/graphics/shader.cpp
-        )
+        source/entity/entity.cpp source/entity/entity_manager.cpp source/entity/entity_manager.hpp)
 
 # Define the directories in which to search for the included headers
 include_directories(
