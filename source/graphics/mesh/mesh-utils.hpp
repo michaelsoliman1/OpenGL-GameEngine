@@ -1,11 +1,15 @@
-#ifndef OUR_MESH_UTILS_H
-#define OUR_MESH_UTILS_H
+//
+// Created by michael on ٢٠‏/١٢‏/٢٠٢٠.
+//
+
+#ifndef GRAPHICS_MESH_UTILS_HPP
+#define GRAPHICS_MESH_UTILS_HPP
 
 #include "mesh.hpp"
 
 #include <glm/glm.hpp>
 
-namespace our::mesh_utils {
+namespace xGame::mesh_utils {
 
     // Load an ".obj" file into the mesh
     bool loadOBJ(Mesh& mesh, const char* filename);
@@ -24,7 +28,7 @@ namespace our::mesh_utils {
                 const glm::vec2& texture_offset = {0, 0},
                 const glm::vec2& texture_tiling = {1, 1});
 
-    void Plane(our::Mesh& mesh,
+    void Plane(Mesh& mesh,
                const glm::ivec2& resolution = {1, 1},
                bool colored = false,
                const glm::vec3& center={0, 0, 0},
@@ -34,4 +38,5 @@ namespace our::mesh_utils {
 
 }
 
-#endif //OUR_MESH_UTILS_H
+
+#endif //GRAPHICS_MESH_UTILS_HPP

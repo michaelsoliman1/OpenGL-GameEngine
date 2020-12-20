@@ -1,3 +1,7 @@
+//
+// Created by michael on ٢٠‏/١٢‏/٢٠٢٠.
+//
+
 #include "mesh-utils.hpp"
 
 // We will use "Tiny OBJ Loader" to read and process '.obj" files
@@ -12,29 +16,29 @@
 #include "common-vertex-types.hpp"
 #include "common-vertex-attributes.hpp"
 
-#define WHITE   our::Color(255, 255, 255, 255)
-#define GRAY    our::Color(128, 128, 128, 255)
-#define BLACK   our::Color(  0,   0,   0, 255)
-#define RED     our::Color(255,   0,   0, 255)
-#define GREEN   our::Color(  0, 255,   0, 255)
-#define BLUE    our::Color(  0,   0, 255, 255)
-#define MAGENTA our::Color(255,   0, 255, 255)
-#define YELLOW  our::Color(255, 255,   0, 255)
-#define CYAN    our::Color(  0, 255, 255, 255)
+#define WHITE   xGame::Color(255, 255, 255, 255)
+#define GRAY    xGame::Color(128, 128, 128, 255)
+#define BLACK   xGame::Color(  0,   0,   0, 255)
+#define RED     xGame::Color(255,   0,   0, 255)
+#define GREEN   xGame::Color(  0, 255,   0, 255)
+#define BLUE    xGame::Color(  0,   0, 255, 255)
+#define MAGENTA xGame::Color(255,   0, 255, 255)
+#define YELLOW  xGame::Color(255, 255,   0, 255)
+#define CYAN    xGame::Color(  0, 255, 255, 255)
 
-bool our::mesh_utils::loadOBJ(our::Mesh &mesh, const char* filename) {
+bool xGame::mesh_utils::loadOBJ(xGame::Mesh &mesh, const char* filename) {
 
     // We get the parent path since we would like to see if contains any ".mtl" file that define the object materials
     auto parent_path_string = std::filesystem::path(filename).parent_path().string();
 
     // The data that we will use to initialize our mesh
-    std::vector<our::Vertex> vertices;
+    std::vector<xGame::Vertex> vertices;
     std::vector<GLuint> elements;
 
     // Since the OBJ can have duplicated vertices, we make them unique using this map
     // The key is the vertex, the value is its index in the vector "vertices".
     // That index will be used to populate the "elements" vector.
-    std::unordered_map<our::Vertex, GLuint> vertex_map;
+    std::unordered_map<xGame::Vertex, GLuint> vertex_map;
 
     // The data loaded by Tiny OBJ Loader
     tinyobj::attrib_t attrib;
@@ -100,19 +104,19 @@ bool our::mesh_utils::loadOBJ(our::Mesh &mesh, const char* filename) {
 
     // Create and populate the OpenGL objects in the mesh
     if (mesh.isCreated()) mesh.destroy();
-    mesh.create({our::setup_buffer_accessors<Vertex>});
+    mesh.create({xGame::setup_buffer_accessors<Vertex>});
     mesh.setVertexData(0, vertices);
     mesh.setElementData(elements);
     return true;
 }
 
 
-void our::mesh_utils::Cuboid(Mesh& mesh,
-            bool colored_faces,
-            const glm::vec3& center,
-            const glm::vec3& size,
-            const glm::vec2& texture_offset,
-            const glm::vec2& texture_tiling){
+void xGame::mesh_utils::Cuboid(Mesh& mesh,
+                             bool colored_faces,
+                             const glm::vec3& center,
+                             const glm::vec3& size,
+                             const glm::vec2& texture_offset,
+                             const glm::vec2& texture_tiling){
 
     // These are just temporary variables that will help us populate the vertex array
     glm::vec3 half_size = size * 0.5f;
@@ -190,16 +194,16 @@ void our::mesh_utils::Cuboid(Mesh& mesh,
 
     // Create and populate the OpenGL objects in the mesh
     if (mesh.isCreated()) mesh.destroy();
-    mesh.create({our::setup_buffer_accessors<Vertex>});
+    mesh.create({xGame::setup_buffer_accessors<Vertex>});
     mesh.setVertexData(0, vertices);
     mesh.setElementData(elements);
 };
 
-void our::mesh_utils::Sphere(our::Mesh& mesh, const glm::ivec2& segments, bool colored,
-            const glm::vec3& center, float radius,
-            const glm::vec2& texture_offset, const glm::vec2& texture_tiling){
+void xGame::mesh_utils::Sphere(xGame::Mesh& mesh, const glm::ivec2& segments, bool colored,
+                             const glm::vec3& center, float radius,
+                             const glm::vec2& texture_offset, const glm::vec2& texture_tiling){
 
-    std::vector<our::Vertex> vertices;
+    std::vector<xGame::Vertex> vertices;
     std::vector<GLuint> elements;
 
     // We populate the sphere vertices by looping over its longitude and latitude
@@ -213,7 +217,7 @@ void our::mesh_utils::Sphere(our::Mesh& mesh, const glm::ivec2& segments, bool c
             glm::vec3 normal = {cos * glm::cos(yaw), sin, cos * glm::sin(yaw)};
             glm::vec3 position = radius * normal + center;
             glm::vec2 tex_coords = texture_tiling * glm::vec2(u, v) + texture_offset;
-            our::Color color = colored ? our::Color(127.5f * (normal + 1.0f), 255) : WHITE;
+            xGame::Color color = colored ? xGame::Color(127.5f * (normal + 1.0f), 255) : WHITE;
             vertices.push_back({position, color, tex_coords, normal});
         }
     }
@@ -233,15 +237,15 @@ void our::mesh_utils::Sphere(our::Mesh& mesh, const glm::ivec2& segments, bool c
 
     // Create and populate the OpenGL objects in the mesh
     if (mesh.isCreated()) mesh.destroy();
-    mesh.create({our::setup_buffer_accessors<Vertex>});
+    mesh.create({xGame::setup_buffer_accessors<Vertex>});
     mesh.setVertexData(0, vertices);
     mesh.setElementData(elements);
 }
 
-void our::mesh_utils::Plane(our::Mesh& mesh, const glm::ivec2& resolution, bool colored,
-           const glm::vec3& center, const glm::vec2& size,
-           const glm::vec2& texture_offset, const glm::vec2& texture_tiling){
-    std::vector<our::Vertex> vertices;
+void xGame::mesh_utils::Plane(xGame::Mesh& mesh, const glm::ivec2& resolution, bool colored,
+                            const glm::vec3& center, const glm::vec2& size,
+                            const glm::vec2& texture_offset, const glm::vec2& texture_tiling){
+    std::vector<xGame::Vertex> vertices;
     std::vector<GLuint> elements;
 
     glm::ivec2 it; glm::vec3 position = {0, center.y, 0}; glm::vec2 uv;
@@ -252,9 +256,9 @@ void our::mesh_utils::Plane(our::Mesh& mesh, const glm::ivec2& resolution, bool 
             uv.t = ((float)it.y) / resolution.y;
             position.z = size.y * (uv.t - 0.5f) + center.z;
             glm::vec2 tex_coord = uv * texture_tiling + texture_offset;
-            our::Color color = colored ? glm::mix(
-                    glm::mix(our::Color(255, 0, 0, 255), our::Color(0, 255, 0, 255), uv.s),
-                    glm::mix(our::Color(255, 255, 0, 255), our::Color(0, 0, 255, 255), uv.s),
+            xGame::Color color = colored ? glm::mix(
+                    glm::mix(xGame::Color(255, 0, 0, 255), xGame::Color(0, 255, 0, 255), uv.s),
+                    glm::mix(xGame::Color(255, 255, 0, 255), xGame::Color(0, 0, 255, 255), uv.s),
                     uv.t) : WHITE;
             vertices.push_back({position, color, tex_coord, {0, 1, 0}});
         }
@@ -276,7 +280,7 @@ void our::mesh_utils::Plane(our::Mesh& mesh, const glm::ivec2& resolution, bool 
 
     // Create and populate the OpenGL objects in the mesh
     if (mesh.isCreated()) mesh.destroy();
-    mesh.create({our::setup_buffer_accessors<Vertex>});
+    mesh.create({xGame::setup_buffer_accessors<Vertex>});
     mesh.setVertexData(0, vertices);
     mesh.setElementData(elements);
 }

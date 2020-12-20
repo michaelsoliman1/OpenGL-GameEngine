@@ -1,18 +1,25 @@
 //
 // Created by ecs on 12/6/2020.
 //
-#include "renderer.hpp"
-#include "../graphics/shader.hpp"
-#include "../mesh/mesh.hpp"
-
 #ifndef GRAPHICS_MESHRENDERER_H
 #define GRAPHICS_MESHRENDERER_H
 
-class MeshRenderer : public Renderer {
-    xGame::Mesh *mesh;
-    xGame::ShaderProgram *renderShader;
-public:
-    MeshRenderer();
+#include "../graphics/shader/shader.hpp"
+#include "../graphics/mesh/mesh.hpp"
+#include "renderer.hpp"
 
+
+
+class MeshRenderer : public Renderer {
+public:
+    MeshRenderer(){
+        quad = new xGame::Mesh();
+        program = new xGame::ShaderProgram();
+    };
+
+    xGame::Mesh *quad;
+    xGame::ShaderProgram *program;
+    glm::vec4 tint = glm::vec4(1,1,1,1);
 };
+
 #endif //GRAPHICS_MESHRENDERER_H

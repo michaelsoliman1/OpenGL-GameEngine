@@ -1,21 +1,20 @@
 #include "application.hpp"
 #include "game_states/test_state.hpp"
 #include "game_states/state_manager/state_manager.hpp"
-#include "../components/transform.hpp"
-#include "../entity/entity_manager.hpp"
+
 
 
 int main() {
     xGame::Application app;
     GLFWwindow* window = app.initWindow();
-    xGame::Keyboard keyboard = app.getKeyboard();
-    xGame::Mouse mouse = app.getMouse();
-
+    xGame::Keyboard &keyboard = app.getKeyboard();
+    xGame::Mouse &mouse = app.getMouse();
 
     TestState* testState = new TestState();
 
     StateManager* stateManager = new StateManager();
     stateManager->goToState(testState);
+
     double last_frame_time = glfwGetTime();
     while(!glfwWindowShouldClose(window)){
         glfwPollEvents(); // Read all the user events and call relevant callbacks.

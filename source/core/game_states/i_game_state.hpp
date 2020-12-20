@@ -1,15 +1,15 @@
 #pragma once
 
-#include "../../graphics/shader.hpp"
+#include "../../graphics/shader/shader.hpp"
 #include "../../entity/entity_manager.hpp"
+#include "../system/renderSystem.h"
+
 
 
 class IGameState{
 protected:
-    xGame::ShaderProgram program;
-    GLuint vertex_array = 0;
     EntityManager entityManager;
-
+    RenderSystem* renderSystem;
 
 public:
     virtual void onEnter() = 0;

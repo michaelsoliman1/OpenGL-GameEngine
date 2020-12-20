@@ -1,5 +1,9 @@
-#ifndef OUR_MESH_H
-#define OUR_MESH_H
+//
+// Created by michael on ٢٠‏/١٢‏/٢٠٢٠.
+//
+
+#ifndef GRAPHICS_MESH_H
+#define GRAPHICS_MESH_H
 
 #include <map>
 #include <string>
@@ -247,4 +251,5 @@ namespace xGame {
 
 }
 
-#endif //OUR_MESH_H
+
+#endif //GRAPHICS_MESH_H

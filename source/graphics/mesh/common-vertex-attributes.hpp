@@ -1,12 +1,17 @@
-#ifndef OUR_COMMON_VERTEX_ATTRIBUTES_H
-#define OUR_COMMON_VERTEX_ATTRIBUTES_H
+//
+// Created by michael on ٢٠‏/١٢‏/٢٠٢٠.
+//
+
+#ifndef GRAPHICS_COMMON_VERTEX_ATTRIBUTES_H
+#define GRAPHICS_COMMON_VERTEX_ATTRIBUTES_H
+
 
 #include "vertex-attributes.hpp"
 #include "common-vertex-types.hpp"
 
 #include <glad/gl.h>
 
-namespace our {
+namespace xGame {
 
     // For each of our common vertex types, we are defining how they can be sent to the shader attributes
 
@@ -46,4 +51,5 @@ namespace our {
 
 }
 
-#endif //OUR_COMMON_VERTEX_ATTRIBUTES_H
+
+#endif //GRAPHICS_COMMON_VERTEX_ATTRIBUTES_H
