@@ -12,9 +12,11 @@
 class EntityManager{
     int size = 0;
     std::vector<Entity*> entities = {};
+    std::vector<Entity*> cachedEntities = {};
 public:
     Entity* createEntity();
     std::vector<Entity*> getEntities();
+    std::vector<Entity*> getEntitiesToRender();
 };
 
 

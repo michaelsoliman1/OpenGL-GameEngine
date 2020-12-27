@@ -5,20 +5,30 @@
 void TestState::onEnter() {
 
     renderSystem = new RenderSystem();
+    entityManager = new EntityManager();
+    Entity* box = entityManager->createEntity();
+    Entity* box2 = entityManager->createEntity();
 
-    auto* transform = new Transform({ {0,-100,0}, {0,0,0}, {500,20,1} });
+
+    auto* transform = new Transform({ {0.5,0.5,0}, {0,0,0}, {500,20,1} });
     auto* mesh = new MeshRenderer();
     box->addComponent(transform);
     box->addComponent(mesh);
 
-    renderSystem->initialize(box);
+    auto* transform2 = new Transform({ {-0.5,-0.5,0}, {0,0,0}, {500,20,1} });
+    auto* mesh2 = new MeshRenderer();
+    box2->addComponent(transform2);
+    box2->addComponent(mesh2);
+
+
+    renderSystem->initialize(entityManager);
 }
 
 void TestState::onDraw(float deltaTime) {
 
-    renderSystem->draw(box);;
+    renderSystem->draw(entityManager);
 }
 
 void TestState::onExit() {
-    renderSystem->destroy(box);
+    renderSystem->destroy(entityManager);
 }

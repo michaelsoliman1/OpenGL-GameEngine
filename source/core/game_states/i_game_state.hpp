@@ -8,7 +8,7 @@
 
 class IGameState{
 protected:
-    EntityManager entityManager;
+    EntityManager* entityManager;
     RenderSystem* renderSystem;
 
 public:

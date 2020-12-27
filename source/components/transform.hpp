@@ -15,7 +15,7 @@ public:
     ): translation(translation), rotation(rotation), scale(scale) {}
 
     glm::mat4 to_mat4() const {
-        return glm::mat4(1.0f);
+        return glm::translate(glm::mat4(1.0f), translation);
 
 //        return glm::translate(glm::mat4(1.0f), translation) *
 //               glm::yawPitchRoll(rotation.y, rotation.x, rotation.z) *

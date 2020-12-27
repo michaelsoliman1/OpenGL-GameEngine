@@ -9,9 +9,9 @@
 class RenderSystem {
 public:
     RenderSystem();
-    void initialize(Entity* entity);
-    void draw(Entity* entity);
-    void destroy(Entity* entity);
+    void initialize(EntityManager *entityManager);
+    void draw(EntityManager *entityManager);
+    void destroy(EntityManager *entityManager);
 };
 
 #endif //GRAPHICS_RENDERSYSTEM_H
