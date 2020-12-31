@@ -5,6 +5,7 @@
 #include "entity_manager.hpp"
 #include "../components/transform.hpp"
 #include "../components/meshRenderer.hpp"
+#include "../components/camera.h"
 
 Entity* EntityManager::createEntity() {
     Entity* entity = new Entity();
@@ -38,4 +39,17 @@ std::vector<Entity*> EntityManager::getEntitiesToRender() {
         }
     }
     return entitiesToRender;
+}
+
+Entity *EntityManager::getCameraEntity() {
+    for (auto& entity : this->entities){
+        std::vector<IComponent*> components = entity->getComponents();
+        Transform* transform;
+        MeshRenderer* meshRenderer;
+        for (auto& component: components ) {
+            if (dynamic_cast<Camera*>(component)) {
+                return entity;
+            }
+        }
+    }
 }

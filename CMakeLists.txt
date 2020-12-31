@@ -38,7 +38,7 @@ set(COMMON_SOURCES
         source/graphics/shader/shader.cpp
         source/entity/entity.cpp source/entity/entity_manager.cpp
         source/graphics/mesh/mesh-utils.cpp
-        )
+        source/system/camera_system.cpp source/system/camera_system.h)
 
 # Define the directories in which to search for the included headers
 include_directories(

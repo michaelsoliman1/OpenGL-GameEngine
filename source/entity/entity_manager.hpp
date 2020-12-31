@@ -17,6 +17,7 @@ public:
     Entity* createEntity();
     std::vector<Entity*> getEntities();
     std::vector<Entity*> getEntitiesToRender();
+    Entity* getCameraEntity();
 };
 
 

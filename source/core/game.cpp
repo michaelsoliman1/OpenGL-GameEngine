@@ -10,9 +10,9 @@ int main() {
     xGame::Keyboard &keyboard = app.getKeyboard();
     xGame::Mouse &mouse = app.getMouse();
 
-    TestState* testState = new TestState();
+    auto* testState = new TestState();
 
-    StateManager* stateManager = new StateManager();
+    auto* stateManager = new StateManager();
     stateManager->goToState(testState);
 
     double last_frame_time = glfwGetTime();
