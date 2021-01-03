@@ -25,7 +25,7 @@ std::vector<Entity*> EntityManager::getEntitiesToRender() {
     for (auto& entity : this->entities){
         std::vector<IComponent*> components = entity->getComponents();
         Transform* transform;
-        MeshRenderer* meshRenderer;
+        MeshRenderer* meshRenderer = nullptr;  //Why doesn't transform throw an error
         for (auto& component: components ) {
             if (dynamic_cast<Transform*>(component)) {
                 transform = dynamic_cast<Transform *>(component);
