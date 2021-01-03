@@ -13,7 +13,7 @@
 class camera_system {
 public:
     static void initialize(EntityManager *entityManager);
-    static void update(EntityManager *entityManager);
+    static void update(EntityManager *entityManager, float deltaTime);
     static void destroy(EntityManager *entityManager);
 };
 
