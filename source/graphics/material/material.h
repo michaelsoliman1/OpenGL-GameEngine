@@ -16,18 +16,16 @@ namespace xGame{
             program = new xGame::ShaderProgram();
             renderState = new xGame::RenderState();
             texture = new xGame::Texture();
-            hasTexture = false;
         }
 
         //we can pass a RenderState pointer here with a predefined data!! don't know if that's right or not
         //for now i'll just pass the parameters through the constructor
 //        Clang-Tidy: Single-argument constructors must be marked explicit
 //        to avoid unintentional implicit conversions!!!
-        Material(bool enableDepthTesting, bool enableFaceCulling = false, bool _hasTexture = false){
+        Material(bool enableDepthTesting, bool enableFaceCulling = false){
             program = new xGame::ShaderProgram();
             texture = new xGame::Texture();
             renderState = new xGame::RenderState(enableDepthTesting, enableFaceCulling);
-            hasTexture = _hasTexture;
         }
         ~Material(){
             delete program;
@@ -36,9 +34,6 @@ namespace xGame{
         xGame::ShaderProgram *program;
         xGame::RenderState *renderState;
         xGame::Texture * texture;
-
-        bool hasTexture;
-
         glm::vec4 tint = glm::vec4(1,1,1,1);
     };
 
