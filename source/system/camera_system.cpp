@@ -29,8 +29,8 @@ void CameraSystem::initialize(EntityManager *entityManager,xGame::Application *a
     camera->setupPerspective(glm::pi<float>()/2, static_cast<float>(1280)/720, 0.1f, 100.0f);
     controller->initialize(app, camera);
 }
-//should remove app and make eventManager responsible for listening to events idk || implement later
-void CameraSystem::update(EntityManager *entityManager,xGame::Application* app, float deltaTime) {
+//should make eventManager responsible for listening to events idk || implement later
+void CameraSystem::update(EntityManager *entityManager, float deltaTime) {
     //this the worst spaghetti code i've ever wrote :)
     if (cachedCamera == nullptr) {
         cachedCamera = entityManager->getCameraEntity();
@@ -55,7 +55,20 @@ void CameraSystem::update(EntityManager *entityManager,xGame::Application* app, 
     }
 }
 
-void CameraSystem::destroy(EntityManager *entityManager,xGame::Application *app) {
-
-
+void CameraSystem::destroy(EntityManager *entityManager) {
+    if (cachedCamera == nullptr) {
+        cachedCamera = entityManager->getCameraEntity();
+    }
+    std::vector<IComponent *> components = cachedCamera->getComponents();
+    Camera *camera;
+    Transform *transform;
+    CameraController *controller;
+    for (auto &component: components) {
+        if (dynamic_cast<CameraController *> (component)) {
+            controller = dynamic_cast<CameraController *> (component);
+        }
+    }
+    if(controller!=nullptr){
+        controller->release();
+    }
 }

@@ -4,13 +4,13 @@
 #include "../../components/camera.h"
 #include "../../components/camera_controller.h"
 
-void TestState::onEnter(xGame::Application* app) {
+void TestState::onEnter() {
 //    renderSystem = new RenderSystem();
 //    entityManager = new EntityManager();
 
     //predefined materials, can be put into a separate file or json! and imported.
     auto* material = new xGame::Material(true, true);
-    auto* material2 = new xGame::Material(false, false, true);
+    auto* material2 = new xGame::Material(true, false, true);
 
 
     Entity* box = entityManager->createEntity();
@@ -53,6 +53,7 @@ void TestState::onEnter(xGame::Application* app) {
 void TestState::onDraw(float deltaTime) {
     //CameraSystem::update(deltaTime);
     RenderSystem::draw(entityManager);
+    cameraSystem->update(entityManager, deltaTime);
 }
 
 void TestState::onExit() {

@@ -6,10 +6,10 @@
 
 class TestState : public IGameState {
 public:
-    TestState() = default;
+    TestState(xGame::Application* app) : IGameState(app){};
     ~TestState() = default;
 
-    void onEnter(xGame::Application*) override;
+    void onEnter() override;
     void onDraw(float deltaTime) override;
     void onExit() override;
 };

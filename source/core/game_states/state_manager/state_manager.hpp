@@ -7,7 +7,7 @@ private:
     bool _isExiting = false;
 
 public:
-    void runState(double deltaTime, xGame::Application*);
+    void runState(double deltaTime);
     void goToState(IGameState *nextState);
     void setIsExiting(bool isExiting){_isExiting = isExiting;}
     bool isExiting(){return _isExiting;}

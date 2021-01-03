@@ -10,7 +10,7 @@ int main() {
     xGame::Keyboard &keyboard = app.getKeyboard();
     xGame::Mouse &mouse = app.getMouse();
 
-    auto* testState = new TestState();
+    auto* testState = new TestState(&app);
 
     auto* stateManager = new StateManager();
     stateManager->goToState(testState);
@@ -22,7 +22,7 @@ int main() {
         // Get the current time (the time at which we are starting the current frame).
         double current_frame_time = glfwGetTime();
 
-        stateManager->runState(current_frame_time - last_frame_time, &app);
+        stateManager->runState(current_frame_time - last_frame_time);
 
         // Then update the last frame start time (this frame is now the last frame)
         last_frame_time = current_frame_time;

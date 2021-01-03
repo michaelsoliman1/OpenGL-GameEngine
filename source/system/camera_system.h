@@ -17,8 +17,8 @@ class CameraSystem {
 public:
     CameraSystem() = default;
     void initialize(EntityManager *entityManager,xGame::Application *app);
-    void update(EntityManager *entityManager,xGame::Application *app, float deltaTime);
-    void destroy(EntityManager *entityManager,xGame::Application *app);
+    void update(EntityManager *entityManager, float deltaTime);
+    void destroy(EntityManager *entityManager);
 };
 
 
