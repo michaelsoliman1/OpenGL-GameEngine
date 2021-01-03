@@ -10,7 +10,7 @@ int main() {
     xGame::Keyboard &keyboard = app.getKeyboard();
     xGame::Mouse &mouse = app.getMouse();
 
-    auto* testState = new TestState();
+    auto* testState = new TestState(&app);
 
     auto* stateManager = new StateManager();
     stateManager->goToState(testState);

@@ -33,7 +33,7 @@ set(VENDOR_SOURCES ${GLAD_SOURCE} ${IMGUI_SOURCES})
 set(COMMON_SOURCES
         source/core/application.cpp
         source/core/game_states/test_state.cpp
-        source/system/renderSystem.cpp
+        source/system/render_system.cpp
         source/core/game_states/state_manager/state_manager.cpp
         source/graphics/shader/shader.cpp
         source/entity/entity.cpp
@@ -45,7 +45,7 @@ set(COMMON_SOURCES
         source/graphics/material/material.h
         source/graphics/render_state/RenderState.cpp
         source/graphics/render_state/RenderState.h
-        source/graphics/texture/texture.cpp)
+        source/graphics/texture/texture.cpp source/components/camera_controller.h)
 
 # Define the directories in which to search for the included headers
 include_directories(

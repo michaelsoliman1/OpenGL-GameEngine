@@ -2,6 +2,7 @@
 #include "../../components/transform.hpp"
 #include "../../components/meshRenderer.hpp"
 #include "../../components/camera.h"
+#include "../../components/camera_controller.h"
 
 void TestState::onEnter() {
 //    renderSystem = new RenderSystem();
@@ -9,7 +10,7 @@ void TestState::onEnter() {
 
     //predefined materials, can be put into a separate file or json! and imported.
     auto* material = new xGame::Material(true, true);
-    auto* material2 = new xGame::Material(false, false, true);
+    auto* material2 = new xGame::Material(true, false, true);
 
 
     Entity* box = entityManager->createEntity();
@@ -20,8 +21,10 @@ void TestState::onEnter() {
 
     auto* cameraComponent = new Camera();
     auto* cameraTransform = new Transform({10, 10, 10},{0, 0, 0}, {0, 1, 0});
+    auto* cameraController = new CameraController();
     camera->addComponent(cameraComponent);
     camera->addComponent(cameraTransform);
+    camera->addComponent(cameraController);
 
 
     auto* transform = new Transform({ {0,-1,0}, {0,0,0}, {7,2,7} });
@@ -42,13 +45,15 @@ void TestState::onEnter() {
     box4->addComponent(transform4);
     box4->addComponent(mesh);
 
-
+    //should systems store data ? or there just functions that manipulates comp. data ?
     RenderSystem::initialize(entityManager);
+    cameraSystem->initialize(entityManager,app);
 }
 
 void TestState::onDraw(float deltaTime) {
     //CameraSystem::update(deltaTime);
     RenderSystem::draw(entityManager);
+    cameraSystem->update(entityManager, deltaTime);
 }
 
 void TestState::onExit() {

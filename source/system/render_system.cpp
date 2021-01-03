@@ -2,32 +2,15 @@
 // Created by ecs on 12/6/2020.
 //
 
-#include "renderSystem.h"
+#include "render_system.h"
 
 
 
 void RenderSystem::initialize(EntityManager *entityManager) {
-    //this logic won't work in case there are multiple cameras in the scene
-    Entity* cameraEntity = entityManager->getCameraEntity();
-    std::vector<IComponent*> components = cameraEntity->getComponents();
-    Camera* camera;
-    Transform* transform;
-    for (auto &component: components) {
-        if(dynamic_cast<Camera* > (component)){
-            camera = dynamic_cast<Camera* > (component);
-        }
-        if(dynamic_cast<Transform*> (component)){
-            transform = dynamic_cast<Transform*> (component);
-        }
-    }
-    camera->setTransform(transform->to_mat4());
-    camera->setupPerspective(glm::pi<float>()/2, static_cast<float>(1280)/720, 0.1f, 100.0f);
-
-
     std::vector<Entity*> entitiesToRender = entityManager->getEntitiesToRender();
     MeshRenderer* meshRenderer;
     for(auto& entity : entitiesToRender) {
-        components = entity->getComponents();
+        std::vector<IComponent*> components = entity->getComponents();
         for (auto &component: components) {
             if (dynamic_cast<MeshRenderer *>(component)) {
                 meshRenderer = dynamic_cast<MeshRenderer *>(component);
@@ -52,7 +35,6 @@ void RenderSystem::initialize(EntityManager *entityManager) {
         }
     }
     glClearColor(0, 0, 0, 0);
-
 }
 
 void RenderSystem::draw(EntityManager* entityManager) {
