@@ -4,28 +4,35 @@
 #ifndef GRAPHICS_MESHRENDERER_H
 #define GRAPHICS_MESHRENDERER_H
 
-#include "../graphics/shader/shader.hpp"
 #include "../graphics/mesh/mesh.hpp"
 #include "../graphics/mesh/mesh-utils.hpp"
-
 #include "renderer.hpp"
+#include "../graphics/material/material.h"
 
-
+enum MeshType{
+    Cuboid,
+};
 
 class MeshRenderer : public Renderer {
 public:
     MeshRenderer(){
         model = new xGame::Mesh();
-        program = new xGame::ShaderProgram();
+        material = new xGame::Material();
     };
+
+    MeshRenderer(xGame::Material* _material){
+        model = new xGame::Mesh();
+        material = _material;
+    }
 
     void createCuboid(bool coloredFaces){
         xGame::mesh_utils::Cuboid(*model, coloredFaces);
     };
 
     xGame::Mesh *model;
-    xGame::ShaderProgram *program;
-    glm::vec4 tint = glm::vec4(1,1,1,1);
+    xGame::Material *material;
+
+
 };
 
 #endif //GRAPHICS_MESHRENDERER_H

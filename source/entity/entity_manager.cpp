@@ -44,12 +44,11 @@ std::vector<Entity*> EntityManager::getEntitiesToRender() {
 Entity *EntityManager::getCameraEntity() {
     for (auto& entity : this->entities){
         std::vector<IComponent*> components = entity->getComponents();
-        Transform* transform;
-        MeshRenderer* meshRenderer;
         for (auto& component: components ) {
             if (dynamic_cast<Camera*>(component)) {
                 return entity;
             }
         }
     }
+    return nullptr;
 }

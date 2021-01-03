@@ -27,20 +27,19 @@ void RenderSystem::initialize(EntityManager *entityManager) {
     std::vector<Entity*> entitiesToRender = entityManager->getEntitiesToRender();
     MeshRenderer* meshRenderer;
     for(auto& entity : entitiesToRender) {
-        std::vector<IComponent*> components = entity->getComponents();
+        components = entity->getComponents();
         for (auto &component: components) {
             if (dynamic_cast<MeshRenderer *>(component)) {
                 meshRenderer = dynamic_cast<MeshRenderer *>(component);
             }
         }
         if(meshRenderer!=nullptr){
-            meshRenderer->program->create();
-            meshRenderer->program->attach("assets/shaders/transform/transform.vert", GL_VERTEX_SHADER);
-            meshRenderer->program->attach("assets/shaders/transform/tint.frag", GL_FRAGMENT_SHADER);
-            meshRenderer->program->link();
+            meshRenderer->material->program->create();
+            meshRenderer->material->program->attach("assets/shaders/transform/transform.vert", GL_VERTEX_SHADER);
+            meshRenderer->material->program->attach("assets/shaders/transform/tint.frag", GL_FRAGMENT_SHADER);
+            meshRenderer->material->program->link();
 
             meshRenderer->createCuboid(true);
-
         }
     }
     glClearColor(0, 0, 0, 0);
@@ -48,7 +47,6 @@ void RenderSystem::initialize(EntityManager *entityManager) {
 }
 
 void RenderSystem::draw(EntityManager* entityManager) {
-    enableDepthTesting();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     Entity* cameraEntity = entityManager->getCameraEntity();
     std::vector<IComponent*> components = cameraEntity->getComponents();
@@ -63,7 +61,7 @@ void RenderSystem::draw(EntityManager* entityManager) {
     MeshRenderer* meshRenderer;
     Transform* transform;
     for(auto& entity : entitiesToRender) {
-        std::vector<IComponent*> components = entity->getComponents();
+        components = entity->getComponents();
         for (auto& component: components ) {
             if (dynamic_cast<Transform*>(component)) {
                 transform = dynamic_cast<Transform *>(component);
@@ -73,10 +71,12 @@ void RenderSystem::draw(EntityManager* entityManager) {
             }
         }
         if(transform!= nullptr && meshRenderer!= nullptr){
-            glUseProgram(*meshRenderer->program);
+            meshRenderer->material->renderState->setRenderState();
 
-            meshRenderer->program->set("transform",camera->getVPMatrix()*transform->to_mat4());
-            meshRenderer->program->set("tint", meshRenderer->tint);
+            glUseProgram(*meshRenderer->material->program);
+
+            meshRenderer->material->program->set("transform",camera->getVPMatrix()* transform->to_mat4());
+            meshRenderer->material->program->set("tint", meshRenderer->material->tint);
 
             meshRenderer->model->draw();
         }
@@ -95,21 +95,22 @@ void RenderSystem::destroy(EntityManager* entityManager) {
             }
         }
         if(meshRenderer!= nullptr){
-            meshRenderer->program->destroy();
+            meshRenderer->material->program->destroy();
             meshRenderer->model->destroy();
+            meshRenderer->material->texture->destroy();
         }
     }
 
 
 }
 
-void RenderSystem::enableDepthTesting() {
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
-
-    glClearDepth(1.0f);
-
-    glDepthMask(true);
-    glColorMask(true, true, true, true);
-
-}
+//void RenderSystem::enableDepthTesting() {
+//    glEnable(GL_DEPTH_TEST);
+//    glDepthFunc(GL_LEQUAL);
+//
+//    glClearDepth(1.0f);
+//
+//    glDepthMask(true);
+//    glColorMask(true, true, true, true);
+//
+//}
