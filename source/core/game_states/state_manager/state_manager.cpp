@@ -1,6 +1,6 @@
 #include "state_manager.hpp"
 
-void StateManager::runState(double deltaTime) {
+void StateManager::runState(double deltaTime, xGame::Application* app) {
     if(!_isExiting){
         if(nextState!= nullptr){
             if(currentState!= nullptr){
@@ -8,7 +8,7 @@ void StateManager::runState(double deltaTime) {
             }
             currentState= nextState;
             nextState = nullptr;
-            currentState->onEnter();
+            currentState->onEnter(app);
         }
         if(currentState!= nullptr){
             currentState->onDraw(deltaTime);

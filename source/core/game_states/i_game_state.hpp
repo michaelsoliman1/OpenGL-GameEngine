@@ -2,7 +2,9 @@
 
 #include "../../graphics/shader/shader.hpp"
 #include "../../entity/entity_manager.hpp"
-#include "../system/renderSystem.h"
+#include "../system/render_system.h"
+#include "../system/camera_system.h"
+
 
 
 
@@ -11,6 +13,7 @@ class IGameState{
 protected:
     EntityManager* entityManager;
     RenderSystem* renderSystem;
+    CameraSystem* cameraSystem;
 //    GLFWwindow* window = nullptr;
 
 public:
@@ -19,6 +22,7 @@ public:
         //question: should we allocate the pointers here ? or in onEnter()?
         entityManager = new EntityManager();
         renderSystem = new RenderSystem();
+        cameraSystem = new CameraSystem();
     }
 
     ~IGameState(){
@@ -27,7 +31,7 @@ public:
         delete this->renderSystem;
     }
 
-    virtual void onEnter() = 0;
+    virtual void onEnter(xGame::Application*) = 0;
     virtual void onDraw(float deltaTime) = 0;
     virtual void onExit() = 0;
 };

@@ -9,12 +9,16 @@
 #include "../entity/entity_manager.hpp"
 #include "../components/transform.hpp"
 #include "../components/camera.h"
+#include "../components/camera_controller.h"
+#include <application.hpp>
 
-class camera_system {
+class CameraSystem {
+    Entity* cachedCamera;
 public:
-    static void initialize(EntityManager *entityManager);
-    static void update(EntityManager *entityManager, float deltaTime);
-    static void destroy(EntityManager *entityManager);
+    CameraSystem() = default;
+    void initialize(EntityManager *entityManager,xGame::Application *app);
+    void update(EntityManager *entityManager,xGame::Application *app, float deltaTime);
+    void destroy(EntityManager *entityManager,xGame::Application *app);
 };
 
 

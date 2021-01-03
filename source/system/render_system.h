@@ -1,8 +1,8 @@
 //
 // Created by ecs on 12/6/2020.
 //
-#ifndef GRAPHICS_RENDERSYSTEM_H
-#define GRAPHICS_RENDERSYSTEM_H
+#ifndef GRAPHICS_RENDER_SYSTEM_H
+#define GRAPHICS_RENDER_SYSTEM_H
 
 #include <vector>
 #include "../entity/entity_manager.hpp"
@@ -22,4 +22,4 @@ public:
     static void destroy(EntityManager *entityManager);
 };
 
-#endif //GRAPHICS_RENDERSYSTEM_H
+#endif //GRAPHICS_RENDER_SYSTEM_H

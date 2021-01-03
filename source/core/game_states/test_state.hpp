@@ -9,7 +9,7 @@ public:
     TestState() = default;
     ~TestState() = default;
 
-    void onEnter() override;
+    void onEnter(xGame::Application*) override;
     void onDraw(float deltaTime) override;
     void onExit() override;
 };

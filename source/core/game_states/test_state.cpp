@@ -2,8 +2,9 @@
 #include "../../components/transform.hpp"
 #include "../../components/meshRenderer.hpp"
 #include "../../components/camera.h"
+#include "../../components/camera_controller.h"
 
-void TestState::onEnter() {
+void TestState::onEnter(xGame::Application* app) {
 //    renderSystem = new RenderSystem();
 //    entityManager = new EntityManager();
 
@@ -20,8 +21,10 @@ void TestState::onEnter() {
 
     auto* cameraComponent = new Camera();
     auto* cameraTransform = new Transform({10, 10, 10},{0, 0, 0}, {0, 1, 0});
+    auto* cameraController = new CameraController();
     camera->addComponent(cameraComponent);
     camera->addComponent(cameraTransform);
+    camera->addComponent(cameraController);
 
 
     auto* transform = new Transform({ {0,-1,0}, {0,0,0}, {7,2,7} });
@@ -42,8 +45,9 @@ void TestState::onEnter() {
     box4->addComponent(transform4);
     box4->addComponent(mesh);
 
-
+    //should systems store data ? or there just functions that manipulates comp. data ?
     RenderSystem::initialize(entityManager);
+    cameraSystem->initialize(entityManager,app);
 }
 
 void TestState::onDraw(float deltaTime) {
