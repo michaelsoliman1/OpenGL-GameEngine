@@ -9,14 +9,14 @@ void TestState::onEnter() {
 
     //predefined materials, can be put into a separate file or json! and imported.
     auto* material = new xGame::Material(true, true);
-    auto* material2 = new xGame::Material(false, false, true);
+    auto* material2 = new xGame::Material(false);
 
 
     Entity* box = entityManager->createEntity();
     Entity* box2 = entityManager->createEntity();
     Entity* box3 = entityManager->createEntity();
     Entity* box4 = entityManager->createEntity();
-    Entity* camera = entityManager->createEntity();     
+    Entity* camera = entityManager->createEntity();
 
     auto* cameraComponent = new Camera();
     auto* cameraTransform = new Transform({10, 10, 10},{0, 0, 0}, {0, 1, 0});

@@ -8,7 +8,7 @@ void camera_system::initialize(EntityManager *entityManager) {
 
 }
 
-void camera_system::update(EntityManager *entityManager, float deltaTime) {
+void camera_system::update(EntityManager *entityManager) {
 
 }
 

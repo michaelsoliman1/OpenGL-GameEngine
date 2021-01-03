@@ -35,20 +35,11 @@ void RenderSystem::initialize(EntityManager *entityManager) {
         }
         if(meshRenderer!=nullptr){
             meshRenderer->material->program->create();
-            if(meshRenderer->material->hasTexture == true) {
-                meshRenderer->material->program->attach("assets/shaders/texture/transform.vert", GL_VERTEX_SHADER);
-                meshRenderer->material->program->attach("assets/shaders/texture/texture.frag", GL_FRAGMENT_SHADER);
-                meshRenderer->material->program->link();
-                meshRenderer->createCuboid(false);
-                meshRenderer->material->texture->loadImage("assets/images/moon.jpg");
-            }
-            else{
-                meshRenderer->material->program->attach("assets/shaders/transform/transform.vert", GL_VERTEX_SHADER);
-                meshRenderer->material->program->attach("assets/shaders/transform/tint.frag", GL_FRAGMENT_SHADER);
-                meshRenderer->material->program->link();
-                meshRenderer->createCuboid(true);
-            }
+            meshRenderer->material->program->attach("assets/shaders/transform/transform.vert", GL_VERTEX_SHADER);
+            meshRenderer->material->program->attach("assets/shaders/transform/tint.frag", GL_FRAGMENT_SHADER);
+            meshRenderer->material->program->link();
 
+            meshRenderer->createCuboid(true);
         }
     }
     glClearColor(0, 0, 0, 0);
@@ -86,6 +77,7 @@ void RenderSystem::draw(EntityManager* entityManager) {
 
             meshRenderer->material->program->set("transform",camera->getVPMatrix()* transform->to_mat4());
             meshRenderer->material->program->set("tint", meshRenderer->material->tint);
+
             meshRenderer->model->draw();
         }
     }
