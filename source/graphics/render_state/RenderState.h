@@ -37,8 +37,7 @@ namespace xGame {
             else glDisable(GL_DEPTH_TEST);
             if(faceCulling) enableFaceCulling();
             else glDisable(GL_CULL_FACE);
-            if(faceCulling) enableFaceCulling();
-            else glDisable(GL_CULL_FACE);
+            if(blending) enableBlending();
         }
 
         // TODO - add parameters
@@ -54,7 +53,7 @@ namespace xGame {
             glCullFace(GL_BACK);
             glFrontFace(GL_CCW);
         }
-
+        // TODO - add parameters
         static void enableBlending(){
             GLenum blend_equation = GL_FUNC_ADD;
             GLenum blend_source_factor = GL_SRC_ALPHA, blend_destination_factor = GL_ONE_MINUS_SRC_ALPHA;
