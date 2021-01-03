@@ -5,6 +5,8 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include <imgui.h>
+#include "../input/keyboard.hpp"
+#include "../input/mouse.hpp"
 
 
 
@@ -19,10 +21,14 @@ namespace xGame {
     };
 
     class Application {
-    protected:
         GLFWwindow * window = nullptr;      // Pointer to the window created by GLFW using "glfwCreateWindow()".
+
+        Keyboard keyboard;
+        Mouse mouse;
+
         void configureOpenGL();                             // This function sets OpenGL Window Hints in GLFW.
         WindowConfiguration getWindowConfiguration();       // Returns the WindowConfiguration current struct instance.
+        void setupCallbacks();                              // Sets-up the window callback functions from GLFW to our (Mouse/Keyboard) classes.
 
     public:
         GLFWwindow* initWindow();
@@ -30,6 +36,16 @@ namespace xGame {
         // Class Getters.
         GLFWwindow* getWindow(){ return window; }
         [[nodiscard]] const GLFWwindow* getWindow() const { return window; }
+        Keyboard& getKeyboard() { return keyboard; }
+        [[nodiscard]] const Keyboard& getKeyboard() const { return keyboard; }
+        Mouse& getMouse() { return mouse; }
+        [[nodiscard]] const Mouse& getMouse() const { return mouse; }
+
+        void onKeyEvent(int key, int scancode, int action, int mods){}
+        void onCursorMoveEvent(double x, double y){}
+        void onCursorEnterEvent(int entered){}
+        void onMouseButtonEvent(int button, int action, int mods){}
+        void onScrollEvent(double x_offset, double y_offset){}
 
         // Get the size of the frame buffer of the window in pixels.
         glm::ivec2 getFrameBufferSize() {

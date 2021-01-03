@@ -1,7 +1,6 @@
 #include "state_manager.hpp"
-#include "../i_game_state.hpp"
 
-void StateManager::runState(float deltaTime) {
+void StateManager::runState(double deltaTime) {
     if(!_isExiting){
         if(nextState!= nullptr){
             if(currentState!= nullptr){

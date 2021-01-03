@@ -1,26 +1,56 @@
 #include "test_state.hpp"
+#include "../../components/transform.hpp"
+#include "../../components/meshRenderer.hpp"
+#include "../../components/camera.h"
 
 void TestState::onEnter() {
-    program.create();
-    program.attach("assets/shaders/base_shader/quad.vert", GL_VERTEX_SHADER);
-    program.attach("assets/shaders/base_shader/color.frag", GL_FRAGMENT_SHADER);
-    program.link();
+//    renderSystem = new RenderSystem();
+//    entityManager = new EntityManager();
 
-    glGenVertexArrays(1, &vertex_array);
+    //predefined materials, can be put into a separate file or json! and imported.
+    auto* material = new xGame::Material(true, true);
+    auto* material2 = new xGame::Material(false);
 
-    glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+
+    Entity* box = entityManager->createEntity();
+    Entity* box2 = entityManager->createEntity();
+    Entity* box3 = entityManager->createEntity();
+    Entity* box4 = entityManager->createEntity();
+    Entity* camera = entityManager->createEntity();
+
+    auto* cameraComponent = new Camera();
+    auto* cameraTransform = new Transform({10, 10, 10},{0, 0, 0}, {0, 1, 0});
+    camera->addComponent(cameraComponent);
+    camera->addComponent(cameraTransform);
+
+
+    auto* transform = new Transform({ {0,-1,0}, {0,0,0}, {7,2,7} });
+    auto* mesh = new MeshRenderer(material);
+    box->addComponent(transform);
+    box->addComponent(mesh);
+
+    auto* transform2 = new Transform({ {-2,1,-2}, {0,0,0}, {2,2,2} });
+    auto* mesh2 = new MeshRenderer(material2);
+    box2->addComponent(transform2);
+    box2->addComponent(mesh2);
+
+    auto* transform3 = new Transform({ {2,1,-2}, {0,0,0}, {2,2,2} });
+    box3->addComponent(transform3);
+    box3->addComponent(mesh2);
+
+    auto* transform4 = new Transform({ {-2,1,2}, {0,0,0}, {2,2,2} });
+    box4->addComponent(transform4);
+    box4->addComponent(mesh);
+
+
+    RenderSystem::initialize(entityManager);
 }
 
 void TestState::onDraw(float deltaTime) {
-    glClear(GL_COLOR_BUFFER_BIT);
-    glUseProgram(program);
-
-    glBindVertexArray(vertex_array);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glBindVertexArray(0);
+    //CameraSystem::update(deltaTime);
+    RenderSystem::draw(entityManager);
 }
 
 void TestState::onExit() {
-    program.destroy();
-    glDeleteVertexArrays(1, &vertex_array);
+    RenderSystem::destroy(entityManager);
 }

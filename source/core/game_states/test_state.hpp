@@ -1,11 +1,13 @@
 #pragma once
 
+#include <application.hpp>
 #include "i_game_state.hpp"
+
 
 class TestState : public IGameState {
 public:
     TestState() = default;
-    virtual ~TestState() = default;
+    ~TestState() = default;
 
     void onEnter() override;
     void onDraw(float deltaTime) override;
