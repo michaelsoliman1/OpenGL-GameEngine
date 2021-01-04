@@ -45,7 +45,12 @@ set(COMMON_SOURCES
         source/graphics/material/material.h
         source/graphics/render_state/RenderState.cpp
         source/graphics/render_state/RenderState.h
-        source/graphics/texture/texture.cpp source/components/camera_controller.h)
+        source/graphics/texture/texture.cpp
+        source/graphics/sampler/sampler.h
+        source/graphics/sampler/sampler.cpp
+
+        source/components/camera_controller.h
+        )
 
 # Define the directories in which to search for the included headers
 include_directories(

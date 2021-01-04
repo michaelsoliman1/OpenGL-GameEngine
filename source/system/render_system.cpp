@@ -18,22 +18,19 @@ void RenderSystem::initialize(EntityManager *entityManager) {
         }
         if(meshRenderer!=nullptr){
             meshRenderer->material->program->create();
-            if(meshRenderer->material->hasTexture) {
-                meshRenderer->material->program->attach("assets/shaders/texture/transform.vert", GL_VERTEX_SHADER);
-                meshRenderer->material->program->attach("assets/shaders/texture/texture.frag", GL_FRAGMENT_SHADER);
-            }else {
-                meshRenderer->material->program->attach("assets/shaders/transform/transform.vert", GL_VERTEX_SHADER);
-                meshRenderer->material->program->attach("assets/shaders/transform/tint.frag", GL_FRAGMENT_SHADER);
-            }
-             meshRenderer->material->program->link();
-            if(meshRenderer->material->hasTexture) {
-                meshRenderer->material->texture->checkerBoard();
-                meshRenderer->createPlane();
-            }else
-                meshRenderer->createCuboid(true);
+            meshRenderer->material->program->attach("assets/shaders/texture/transform.vert", GL_VERTEX_SHADER);
+            meshRenderer->material->program->attach("assets/shaders/texture/texture.frag", GL_FRAGMENT_SHADER);
+//
+//          meshRenderer->material->program->attach("assets/shaders/transform/transform.vert", GL_VERTEX_SHADER);
+//          meshRenderer->material->program->attach("assets/shaders/transform/tint.frag", GL_FRAGMENT_SHADER);
+//
+            meshRenderer->material->program->link();
+            meshRenderer->material->sampler->generate();
+            meshRenderer->material->texture->load();
+
         }
     }
-    glClearColor(0, 0, 0, 0);
+    glClearColor(0.4,0.8,1,1.0);
 }
 
 void RenderSystem::draw(EntityManager* entityManager) {
@@ -64,10 +61,19 @@ void RenderSystem::draw(EntityManager* entityManager) {
             meshRenderer->material->renderState->setRenderState();
 
             glUseProgram(*meshRenderer->material->program);
-            if(meshRenderer->material->hasTexture){
-                meshRenderer->material->texture->draw();
-                meshRenderer->material->program->set("sampler", 0);
-            }
+
+            // Since we will always draw one texture per object, we set the active unit to be 0 and kept it active for the rest of the frame
+            meshRenderer->material->texture->setActive();
+
+            // To tell OpenGL which sampler object we will use for this unit, we bind the sampler to unit 0 (which is specified by the 1st parameter of the following function).
+            meshRenderer->material->sampler->bind();
+            meshRenderer->material->program->set("sampler", 0);
+
+            // instead of setting the parameters for each texture, we just set it to the sampler and each unit that uses that sampler will automatically use these parameters.
+            meshRenderer->material->sampler->setParameters();
+
+            // bind the texture with mesh before drawing
+            meshRenderer->material->texture->bind();
             meshRenderer->material->program->set("transform",camera->getVPMatrix()* transform->to_mat4());
             meshRenderer->material->program->set("tint", meshRenderer->material->tint);
             meshRenderer->model->draw();

@@ -6,54 +6,22 @@
 #define OPENGL_GAMEENGINE_PHASE3_SAMPLER_H
 
 #include <glad/gl.h>
-#include <glm/vec2.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/euler_angles.hpp>
-#include "../mesh/mesh.hpp"
-#include "../../core/camera/camera.hpp"
-#include "../../core/camera/controllers/fly_camera_controller.hpp"
-#include "../texture/texture.h"
-#include "../../components/transform.hpp"
-#include "../shader/shader.hpp"
-#include <fstream>
-#include <unordered_map>
-using namespace std;
-#include "../utils/data-types.h"
-#include <memory>
 
 namespace xGame {
     class Sampler{
     private:
-        std::unordered_map<std::string, std::unique_ptr<xGame::Mesh>> meshes;
-        std::shared_ptr<Transform> root;
+        // Samplers are OpenGL objects so we identify them using a GLuint.
         GLuint sampler;
-        GLuint texture;
-        std::unordered_map<std::string, GLuint> textures;
+
         GLenum magnification_filter = GL_LINEAR, minification_filter = GL_LINEAR_MIPMAP_LINEAR;
         GLenum wrap_s = GL_REPEAT, wrap_t = GL_REPEAT;
         glm::vec4 border_color = {1,1,1,1};
         GLfloat max_anisotropy = 1.0f;
         GLenum polygon_mode = GL_FILL;
-        xGame::Camera camera;
-        xGame::FlyCameraController camera_controller;
-        struct Transform {
-            glm::vec4 tint;
-            glm::vec3 translation, rotation, scale;
-            std::optional<std::string> mesh;
-            std::string texture;
-            std::unordered_map<std::string, std::shared_ptr<Transform>> children;
-
-            [[nodiscard]] glm::mat4 to_mat4() const {
-                return glm::translate(glm::mat4(1.0f), translation) *
-                       glm::yawPitchRoll(rotation.y, rotation.x, rotation.z) *
-                       glm::scale(glm::mat4(1.0f), scale);
-            }
-        };
-        xGame::ShaderProgram shader;
 
     public:
         Sampler(){
-            glGenSamplers(1, &sampler);
+            sampler= 0;
         };
         ~Sampler(){destroy();} //
 
@@ -63,10 +31,26 @@ namespace xGame {
         Sampler(Sampler const &) = delete;
         Sampler &operator=(Sampler const &) = delete;
 
-        void create(const void *data, glm::ivec2 size,bool generate_mipmap = true);
-        void destroy();
-        void drawNode(const std::shared_ptr<Transform>& node, const glm::mat4& parent_transform_matrix);
-        void onDraw(double deltaTime);
+        void generate() {
+            glGenSamplers(1, &sampler);
+        };
+        void bind(){
+            glBindSampler(0, sampler);
+        }
+
+        //TODO - add parameters
+        void setParameters() {
+            glSamplerParameteri(sampler, GL_TEXTURE_MAG_FILTER, magnification_filter);
+            glSamplerParameteri(sampler, GL_TEXTURE_MIN_FILTER, minification_filter);
+            glSamplerParameteri(sampler, GL_TEXTURE_WRAP_S, wrap_s);
+            glSamplerParameteri(sampler, GL_TEXTURE_WRAP_T, wrap_t);
+            glSamplerParameterfv(sampler, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(border_color));
+            glSamplerParameterf(sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, max_anisotropy);
+            glPolygonMode(GL_FRONT_AND_BACK, polygon_mode);
+        };
+        void destroy(){
+            glDeleteSamplers(1, &sampler);
+        };
 
     };
 }

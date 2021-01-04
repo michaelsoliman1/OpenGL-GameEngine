@@ -11,7 +11,8 @@
 
 
 void xGame::Texture::create(const void *data, glm::ivec2 size, bool generate_mipmap) {
-
+    //should we generate it here or in constructor?
+    glGenTextures(1, &texture);
     //Bind the texture such that we upload the image data to its storage
     glBindTexture(GL_TEXTURE_2D, texture);
     //Set Unpack Alignment to 4-byte (it means that each row takes multiple of 4 bytes in memory)
@@ -26,23 +27,23 @@ void xGame::Texture::create(const void *data, glm::ivec2 size, bool generate_mip
     if(generate_mipmap) glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void xGame::Texture::draw() {
-
+void xGame::Texture::setActive() {
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magnification_filter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minification_filter);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap_s);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap_t);
-    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(border_color));
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, max_anisotropy);
 }
+void xGame::Texture::bind() {
+    glBindTexture(GL_TEXTURE_2D, texture);
+}
+
 
 void xGame::Texture::destroy() {
     glDeleteTextures(1, &texture);
 }
 
-glm::ivec2 xGame::Texture::loadImage(const char *filename, bool generate_mipmap) {
+glm::ivec2 xGame::Texture::load(bool generate_mipmap) {
+    if(filename==nullptr){
+        //we can add default file to apply texture, or not apply texture at all ( question!)
+        return this->checkerBoard();
+    }
     glm::ivec2 size;
     int channels;
     //Since OpenGL puts the texture origin at the bottom left while images typically has the origin at the top left,
@@ -67,7 +68,7 @@ glm::ivec2 xGame::Texture::loadImage(const char *filename, bool generate_mipmap)
     return size;
 }
 
-void xGame::Texture::checkerBoard() {
+glm::ivec2 xGame::Texture::checkerBoard() {
     glm::ivec2 size = {256,256};
     glm::ivec2 patternSize = {128,128};
     xGame::Color color1 =  {255, 255, 255, 255};
@@ -82,4 +83,6 @@ void xGame::Texture::checkerBoard() {
     }
     create(data, size);
     delete[] data;
+    return size;
 }
+
