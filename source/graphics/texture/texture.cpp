@@ -28,7 +28,6 @@ void xGame::Texture::create(const void *data, glm::ivec2 size, bool generate_mip
 
 void xGame::Texture::draw() {
 
-
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magnification_filter);
@@ -68,8 +67,13 @@ glm::ivec2 xGame::Texture::loadImage(const char *filename, bool generate_mipmap)
     return size;
 }
 
-void xGame::Texture::checkerBoard(glm::ivec2 size, glm::ivec2 patternSize, xGame::Color color1, xGame::Color color2) {
-    auto* data = new xGame::Color[size.x * size.y];
+void xGame::Texture::checkerBoard() {
+    glm::ivec2 size = {256,256};
+    glm::ivec2 patternSize = {128,128};
+    xGame::Color color1 =  {255, 255, 255, 255};
+    xGame::Color color2 =  {16, 16, 16, 255};
+
+    auto *data = new xGame::Color[size.x * size.y];
     int ptr = 0;
     for(int y = 0; y < size.y; y++){
         for(int x = 0; x < size.x; x++){

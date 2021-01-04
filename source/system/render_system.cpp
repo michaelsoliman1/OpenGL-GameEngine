@@ -18,20 +18,19 @@ void RenderSystem::initialize(EntityManager *entityManager) {
         }
         if(meshRenderer!=nullptr){
             meshRenderer->material->program->create();
-            if(meshRenderer->material->hasTexture == true) {
+            if(meshRenderer->material->hasTexture) {
                 meshRenderer->material->program->attach("assets/shaders/texture/transform.vert", GL_VERTEX_SHADER);
                 meshRenderer->material->program->attach("assets/shaders/texture/texture.frag", GL_FRAGMENT_SHADER);
-                meshRenderer->material->program->link();
-                meshRenderer->createCuboid(false);
-                meshRenderer->material->texture->loadImage("assets/images/moon.jpg");
-            }
-            else{
+            }else {
                 meshRenderer->material->program->attach("assets/shaders/transform/transform.vert", GL_VERTEX_SHADER);
                 meshRenderer->material->program->attach("assets/shaders/transform/tint.frag", GL_FRAGMENT_SHADER);
-                meshRenderer->material->program->link();
-                meshRenderer->createCuboid(true);
             }
-
+             meshRenderer->material->program->link();
+            if(meshRenderer->material->hasTexture) {
+                meshRenderer->material->texture->checkerBoard();
+                meshRenderer->createPlane();
+            }else
+                meshRenderer->createCuboid(true);
         }
     }
     glClearColor(0, 0, 0, 0);
@@ -65,7 +64,10 @@ void RenderSystem::draw(EntityManager* entityManager) {
             meshRenderer->material->renderState->setRenderState();
 
             glUseProgram(*meshRenderer->material->program);
-
+            if(meshRenderer->material->hasTexture){
+                meshRenderer->material->texture->draw();
+                meshRenderer->material->program->set("sampler", 0);
+            }
             meshRenderer->material->program->set("transform",camera->getVPMatrix()* transform->to_mat4());
             meshRenderer->material->program->set("tint", meshRenderer->material->tint);
             meshRenderer->model->draw();
@@ -90,17 +92,4 @@ void RenderSystem::destroy(EntityManager* entityManager) {
             meshRenderer->material->texture->destroy();
         }
     }
-
-
 }
-
-//void RenderSystem::enableDepthTesting() {
-//    glEnable(GL_DEPTH_TEST);
-//    glDepthFunc(GL_LEQUAL);
-//
-//    glClearDepth(1.0f);
-//
-//    glDepthMask(true);
-//    glColorMask(true, true, true, true);
-//
-//}

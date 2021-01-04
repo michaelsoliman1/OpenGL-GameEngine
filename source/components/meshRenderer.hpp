@@ -28,6 +28,9 @@ public:
     void createCuboid(bool coloredFaces){
         xGame::mesh_utils::Cuboid(*model, coloredFaces);
     };
+    void createPlane(){
+        xGame::mesh_utils::Plane(*model, {1, 1}, false, {0, 0, 0}, {1, 1}, {0, 0}, {100, 100});;
+    }
 
     xGame::Mesh *model;
     xGame::Material *material;

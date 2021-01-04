@@ -50,6 +50,7 @@ namespace xGame {
         };
         // TODO - add parameters
         static void enableFaceCulling(){
+            glEnable(GL_CULL_FACE);
             glCullFace(GL_BACK);
             glFrontFace(GL_CCW);
         }

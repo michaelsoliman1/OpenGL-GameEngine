@@ -23,10 +23,10 @@ namespace xGame{
         //for now i'll just pass the parameters through the constructor
 //        Clang-Tidy: Single-argument constructors must be marked explicit
 //        to avoid unintentional implicit conversions!!!
-        Material(bool enableDepthTesting, bool enableFaceCulling = false, bool _hasTexture = false){
+        Material(bool enableDepthTesting, bool enableFaceCulling = false,bool enableBlending = false, bool _hasTexture = false){
             program = new xGame::ShaderProgram();
             texture = new xGame::Texture();
-            renderState = new xGame::RenderState(enableDepthTesting, enableFaceCulling);
+            renderState = new xGame::RenderState(enableDepthTesting, enableFaceCulling, enableBlending);
             hasTexture = _hasTexture;
         }
         ~Material(){

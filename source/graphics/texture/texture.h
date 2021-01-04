@@ -16,8 +16,8 @@ namespace xGame{
     class Texture {
     private:
         GLuint texture;
-        GLenum magnification_filter = GL_NEAREST, minification_filter = GL_NEAREST;
-        GLenum wrap_s = GL_CLAMP_TO_EDGE, wrap_t = GL_CLAMP_TO_EDGE;
+        GLenum magnification_filter = GL_LINEAR, minification_filter = GL_LINEAR_MIPMAP_LINEAR;
+        GLenum wrap_s = GL_REPEAT, wrap_t = GL_REPEAT;
         glm::vec4 border_color = {1,1,1,1};
         GLfloat max_anisotropy = 1.0f;
     public:
@@ -40,7 +40,7 @@ namespace xGame{
         // Load an image from a file
         glm::ivec2 loadImage(const char* filename, bool generate_mipmap = true);;
 
-        void checkerBoard(glm::ivec2 size, glm::ivec2 patternSize, xGame::Color color1, xGame::Color color2);
+        void checkerBoard();
     };
 }
 
