@@ -18,7 +18,6 @@ protected:
 
 public:
     IGameState(xGame::Application* application){
-        //question: should we allocate the pointers here ? or in onEnter()?
         app = application;
     }
 

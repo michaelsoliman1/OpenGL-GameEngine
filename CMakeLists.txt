@@ -33,24 +33,20 @@ set(VENDOR_SOURCES ${GLAD_SOURCE} ${IMGUI_SOURCES})
 set(COMMON_SOURCES
         source/core/application.cpp
         source/core/game_states/test_state.cpp
-        source/system/render_system.cpp
         source/core/game_states/state_manager/state_manager.cpp
-        source/graphics/shader/shader.cpp
         source/entity/entity.cpp
         source/entity/entity_manager.cpp
-        source/graphics/mesh/mesh-utils.cpp
         source/system/camera_system.cpp
-        source/system/camera_system.h
-        source/graphics/material/material.cpp
-        source/graphics/material/material.h
-        source/graphics/render_state/RenderState.cpp
-        source/graphics/render_state/RenderState.h
-        source/graphics/texture/texture.cpp
-        source/graphics/sampler/sampler.h
-        source/graphics/sampler/sampler.cpp
-
-        source/components/camera_controller.h
+        source/system/render_system.cpp
         )
+set(RENDERING
+        source/graphics/shader/shader.cpp
+        source/graphics/mesh/mesh-utils.cpp
+        source/graphics/material/material.cpp
+        source/graphics/texture/texture.cpp
+        source/graphics/sampler/sampler.cpp
+        source/graphics/render_state/RenderState.cpp
+        source/events/event.cpp source/events/event.h)
 
 # Define the directories in which to search for the included headers
 include_directories(
@@ -66,6 +62,6 @@ include_directories(
 # Each target compiles one example source file and the common & vendor source files
 # Then we link GLFW with each target
 
-add_executable(Game source/core/game.cpp ${COMMON_SOURCES} ${VENDOR_SOURCES})
+add_executable(Game source/core/game.cpp ${COMMON_SOURCES} ${VENDOR_SOURCES} ${RENDERING})
 target_link_libraries(Game glfw)
 

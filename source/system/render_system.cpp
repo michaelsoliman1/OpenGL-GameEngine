@@ -20,14 +20,14 @@ void RenderSystem::initialize(EntityManager *entityManager) {
             meshRenderer->material->program->create();
             meshRenderer->material->program->attach("assets/shaders/texture/transform.vert", GL_VERTEX_SHADER);
             meshRenderer->material->program->attach("assets/shaders/texture/texture.frag", GL_FRAGMENT_SHADER);
-//
+//          //TODO? how can i use multiple shaders ?
 //          meshRenderer->material->program->attach("assets/shaders/transform/transform.vert", GL_VERTEX_SHADER);
 //          meshRenderer->material->program->attach("assets/shaders/transform/tint.frag", GL_FRAGMENT_SHADER);
 //
             meshRenderer->material->program->link();
+            //TODO? how not to use a texture ?
             meshRenderer->material->sampler->generate();
             meshRenderer->material->texture->load();
-
         }
     }
     glClearColor(0.4,0.8,1,1.0);
@@ -45,6 +45,7 @@ void RenderSystem::draw(EntityManager* entityManager) {
     }
 
     std::vector<Entity*> entitiesToRender = entityManager->getEntitiesToRender();
+    //TODO? sort entities based on their depth and transparency
     MeshRenderer* meshRenderer;
     Transform* transform;
     for(auto& entity : entitiesToRender) {
@@ -93,9 +94,8 @@ void RenderSystem::destroy(EntityManager* entityManager) {
             }
         }
         if(meshRenderer!= nullptr){
-            meshRenderer->material->program->destroy();
+            meshRenderer->material->destroy();
             meshRenderer->model->destroy();
-            meshRenderer->material->texture->destroy();
         }
     }
 }

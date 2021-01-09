@@ -7,7 +7,7 @@ class Entity{
 
 public:
     Entity() = default;
-    ~Entity();
+    ~Entity() = default;
     void addComponent(IComponent* c);
     void removeComponent(IComponent* c);
     std::vector<IComponent*> getComponents();

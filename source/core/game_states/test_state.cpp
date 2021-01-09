@@ -11,19 +11,22 @@ void TestState::onEnter() {
 
     //predefined data, can be put into a separate file or json! and imported.
 
+    //TODO?
     //can i add mesh_utils functions inside mesh class and return pointer 3latol? what is a good practice!
     //is it right t create meshes here? how can i create different meshes in onInitialize ?
-    xGame::Mesh* meshCube = new xGame::Mesh();
+    auto* meshCube = new xGame::Mesh();
     xGame::mesh_utils::Cuboid(*meshCube, true);
-    xGame::Mesh* meshPlane = new xGame::Mesh();
+
+    auto* meshPlane = new xGame::Mesh();
     xGame::mesh_utils::Plane(*meshPlane, {1, 1}, false, {0, 0, 0}, {1, 1}, {0, 0}, {100, 100});;
 
     //moon texture
     auto* moonTexture = new xGame::Texture("assets/images/moon.jpg");
 
     //materials
-    auto* checkersMaterial = new xGame::Material(nullptr, true, false);
-    auto* moonMat = new xGame::Material(moonTexture,true, true, true);
+    auto* checkersMaterial = new xGame::Material(nullptr, false, false, false, true);
+    //TODO when Face Culling is true, Depth Testing is enabled even when i pass false !!
+    auto* moonMat = new xGame::Material(moonTexture,true, true, true,true);
 
     //Camera Entity
     Entity* camera = entityManager->createEntity();
@@ -54,7 +57,8 @@ void TestState::onEnter() {
     box1->addComponent(transform1);
     box1->addComponent(mesh);
 
-    //should systems store data ? or there just functions that manipulates comp. data ?
+    //TODO?
+    //should systems store data ? or there just functions that manipulates components data ?
     RenderSystem::initialize(entityManager);
     cameraSystem->initialize(entityManager,app);
 }

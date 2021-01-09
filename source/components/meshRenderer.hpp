@@ -25,6 +25,13 @@ public:
         xGame::mesh_utils::Cuboid(*model, coloredFaces);
         return model;
     };
+
+    ~MeshRenderer(){
+        delete model;
+        delete material;
+    }
+
+
 };
 
 #endif //GRAPHICS_MESHRENDERER_H

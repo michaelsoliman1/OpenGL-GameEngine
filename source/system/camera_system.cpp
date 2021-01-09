@@ -29,7 +29,7 @@ void CameraSystem::initialize(EntityManager *entityManager,xGame::Application *a
     camera->setupPerspective(glm::pi<float>()/2, static_cast<float>(1280)/720, 0.1f, 100.0f);
     controller->initialize(app, camera);
 }
-//should make eventManager responsible for listening to events idk || implement later
+//TODO? should make eventManager responsible for listening to events idk || implement later
 void CameraSystem::update(EntityManager *entityManager, float deltaTime) {
     //this the worst spaghetti code i've ever wrote :)
     if (cachedCamera == nullptr) {
@@ -37,14 +37,10 @@ void CameraSystem::update(EntityManager *entityManager, float deltaTime) {
     }
     std::vector<IComponent *> components = cachedCamera->getComponents();
     Camera *camera;
-    Transform *transform;
     CameraController *controller;
     for (auto &component: components) {
         if (dynamic_cast<Camera * > (component)) {
             camera = dynamic_cast<Camera * > (component);
-        }
-        if (dynamic_cast<Transform *> (component)) {
-            transform = dynamic_cast<Transform *> (component);
         }
         if (dynamic_cast<CameraController *> (component)) {
             controller = dynamic_cast<CameraController *> (component);

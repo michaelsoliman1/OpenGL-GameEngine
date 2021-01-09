@@ -19,6 +19,7 @@ std::vector<Entity*> EntityManager::getEntities() {
 }
 
 std::vector<Entity*> EntityManager::getEntitiesToRender() {
+    //TODO!
     // to be implemented :: add cached list
     // question : can we return the entities with just the transform and mesh meshRenderer components ?
     std::vector<Entity*> entitiesToRender;

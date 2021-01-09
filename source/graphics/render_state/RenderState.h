@@ -16,20 +16,23 @@ namespace xGame {
         bool depthTesting;
         bool faceCulling;
         bool blending;
+        bool transparent;
 
+        ~RenderState(){delete this;}
 
         RenderState() {
             depthTesting = true;
             faceCulling = false;
             blending = false;
+            transparent= false;
 
         };
 
-        RenderState(bool _enableDepthTesting, bool _enableFaceCulling = false, bool _enableBlending = false){
+        RenderState(bool _transparent, bool _enableDepthTesting, bool _enableFaceCulling = false, bool _enableBlending = false){
             depthTesting = _enableDepthTesting;
             faceCulling = _enableFaceCulling;
             blending = _enableBlending;
-
+            transparent = _transparent;
         }
 
         void setRenderState() const {
@@ -37,7 +40,8 @@ namespace xGame {
             else glDisable(GL_DEPTH_TEST);
             if(faceCulling) enableFaceCulling();
             else glDisable(GL_CULL_FACE);
-            if(blending) enableBlending();
+            if(blending && transparent) enableBlending();
+            else glDisable(GL_BLEND);
         }
 
         // TODO - add parameters
@@ -56,9 +60,11 @@ namespace xGame {
         }
         // TODO - add parameters
         static void enableBlending(){
+            //GLenum blend_source_factor = GL_SRC_COLOR, blend_destination_factor = GL_ONE_MINUS_SRC_COLOR;
             GLenum blend_equation = GL_FUNC_ADD;
             GLenum blend_source_factor = GL_SRC_ALPHA, blend_destination_factor = GL_ONE_MINUS_SRC_ALPHA;
-            glm::vec4 blend_constant_color = {1.0f,1.0f,1.0f,1.0f};
+            // glm::vec4 blend_constant_color = {1.0f,1.0f,1.0f,1.0f};
+
             // The blending formula has the following form: (source_factor * source) operation (destination_factor * destination).
             // The operation is specified by the blend equation function.
             // The possible values are:
@@ -86,7 +92,10 @@ namespace xGame {
             //  -   GL_ONE_MINUS_CONSTANT_ALPHA
             glBlendFunc(blend_source_factor, blend_destination_factor);
             // In case you're using any of the factors that use the constant color, you need to define it via the glBlendColor function.
-            glBlendColor(blend_constant_color.r, blend_constant_color.g, blend_constant_color.b, blend_constant_color.a);
+            // we don't need right now
+            // glBlendColor(blend_constant_color.r, blend_constant_color.g, blend_constant_color.b, blend_constant_color.a);
+            glEnable(GL_BLEND);
+
         }
     };
 }

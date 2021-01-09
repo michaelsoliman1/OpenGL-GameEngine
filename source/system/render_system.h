@@ -16,7 +16,6 @@ class RenderSystem {
     std::vector<Entity*> cachedEntities;
 public:
     RenderSystem() = default;
-//    static void enableDepthTesting();
     static void initialize(EntityManager *entityManager);
     static void draw(EntityManager *entityManager);
     static void destroy(EntityManager *entityManager);
