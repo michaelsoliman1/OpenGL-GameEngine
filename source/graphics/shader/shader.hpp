@@ -33,6 +33,8 @@ namespace xGame {
         //Link Program (Do this after all shaders are attached)
         bool link() const; // NOLINT: link does alter the object state so [[nodiscard]] is unneeded
 
+        void useProgram(){glUseProgram(this->program);}
+
         //Get the location of a uniform variable in the shader
         GLuint getUniformLocation(const std::string &name) {
             // It is not efficient to ask OpenGL for Uniform location everytime we need them

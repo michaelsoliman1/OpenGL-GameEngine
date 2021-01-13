@@ -17,6 +17,8 @@ namespace xGame {
         bool faceCulling;
         bool blending;
         bool transparent;
+        // TODO add members
+        // GLenum
 
         ~RenderState(){delete this;}
 

@@ -34,8 +34,10 @@ namespace xGame {
         void generate() {
             glGenSamplers(1, &sampler);
         };
-        void bind(){
-            glBindSampler(0, sampler);
+        void bind(int units){
+            // We will bind our sampler to all the units we will use.
+            // Since we have 5 maps in our material, we will need 5 units.
+            for(GLuint unit = 0; unit < units; ++unit) glBindSampler(unit, sampler);
         }
 
         //TODO - add parameters
@@ -45,8 +47,9 @@ namespace xGame {
             glSamplerParameteri(sampler, GL_TEXTURE_WRAP_S, wrap_s);
             glSamplerParameteri(sampler, GL_TEXTURE_WRAP_T, wrap_t);
             glSamplerParameterfv(sampler, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(border_color));
+            glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &max_anisotropy);
             glSamplerParameterf(sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, max_anisotropy);
-            glPolygonMode(GL_FRONT_AND_BACK, polygon_mode);
+//            glPolygonMode(GL_FRONT_AND_BACK, polygon_mode);
         };
         void destroy(){
             glDeleteSamplers(1, &sampler);

@@ -5,10 +5,6 @@
 #include "../system/render_system.h"
 #include "../system/camera_system.h"
 
-
-
-
-
 class IGameState{
 protected:
     EntityManager* entityManager;

@@ -27,8 +27,8 @@ void xGame::Texture::create(const void *data, glm::ivec2 size, bool generate_mip
     if(generate_mipmap) glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void xGame::Texture::setActive() {
-    glActiveTexture(GL_TEXTURE0);
+void xGame::Texture::setActive(GLenum texture) {
+    glActiveTexture(texture);
 }
 void xGame::Texture::bind() {
     glBindTexture(GL_TEXTURE_2D, texture);

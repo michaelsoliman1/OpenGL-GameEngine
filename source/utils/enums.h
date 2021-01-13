@@ -11,6 +11,20 @@ namespace xGame {
         Orthographic,
         Perspective
     };
+    // An enum for light types
+    enum class LightType {
+        DIRECTIONAL,
+        POINT,
+        SPOT
+    };
+
+    enum struct TextureType {
+        ALBEDO,
+        SPECULAR,
+        AMBIENT,
+        ROUGHNESS,
+        EMISSIVE
+    };
 }
 
 #endif //GRAPHICS_ENUMS_H

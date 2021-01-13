@@ -19,9 +19,11 @@ std::vector<Entity*> EntityManager::getEntities() {
 }
 
 std::vector<Entity*> EntityManager::getEntitiesToRender() {
+    // function templates , adelha types
     //TODO!
-    // to be implemented :: add cached list
-    // question : can we return the entities with just the transform and mesh meshRenderer components ?
+    //
+    // question : can we return the entities with just the transform and mesh meshRenderer components ? no
+    //
     std::vector<Entity*> entitiesToRender;
     for (auto& entity : this->entities){
         std::vector<IComponent*> components = entity->getComponents();

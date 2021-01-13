@@ -9,6 +9,7 @@
 #include "../components/transform.hpp"
 #include "../components/meshRenderer.hpp"
 #include "../components/camera.h"
+#include "../components/light.h"
 #include <../graphics/mesh/common-vertex-attributes.hpp>
 
 

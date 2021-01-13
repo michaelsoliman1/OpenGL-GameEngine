@@ -33,9 +33,11 @@ namespace xGame{
 
         void create(const void *data, glm::ivec2 size,bool generate_mipmap = true);
 
-        void setActive();
+        void setActive(GLenum texture);
         void bind();
         void destroy();
+
+        GLuint getTexture(){return texture;};
 
         // Load an image from a file
         glm::ivec2 load( bool generate_mipmap = true);;

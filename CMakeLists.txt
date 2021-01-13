@@ -46,7 +46,7 @@ set(RENDERING
         source/graphics/texture/texture.cpp
         source/graphics/sampler/sampler.cpp
         source/graphics/render_state/RenderState.cpp
-        source/events/event.cpp source/events/event.h)
+        source/events/event.cpp source/events/event.h source/core/resources.cpp source/graphics/mesh/mesh.cpp)
 
 # Define the directories in which to search for the included headers
 include_directories(
