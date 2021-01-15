@@ -41,7 +41,8 @@ void xGame::Texture::destroy() {
 
 glm::ivec2 xGame::Texture::load(bool generate_mipmap) {
     if(filename==nullptr){
-        //we can add default file to apply texture, or not apply texture at all ( question! how to not apply a texture?)
+        // TODO change defualt texture
+        // default texture ,
         return this->checkerBoard();
     }
     glm::ivec2 size;

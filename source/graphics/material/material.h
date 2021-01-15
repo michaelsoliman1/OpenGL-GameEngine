@@ -23,12 +23,12 @@ namespace xGame{
 
         xGame::Sampler* sampler;
         bool transparent;
-        glm::vec4 tint = glm::vec4(0.94,0.94,0.9,0.5);
+        glm::vec3 tint = glm::vec3(1,1,1);
 
-        glm::vec3 albedoTint = {0, 0, 0};
-        glm::vec3 specularTint = {0.4, 0.4, 0.4};
-        glm::vec3 emissiveTint = {1, 1, 1};
-        glm::vec2 roughnessRange = {20,30};
+        glm::vec3 albedoTint = {1,1,1};
+        glm::vec3 specularTint = {1,1,1};
+        glm::vec3 emissiveTint = {0.5,0.5,0.5};
+        glm::vec2 roughnessRange = {0.5,0.5};
 
 
         //TODO
@@ -36,16 +36,16 @@ namespace xGame{
         //and how can i make it dynamic? the user creates it with the settings he need right away (is passing all the the options in the constructor a good way?
         // i can create a struct with parameters
         explicit Material(std::unordered_map<xGame::TextureType, xGame::Texture*> _textures = {},bool _transparent = false,bool enableDepthTesting = true, bool enableFaceCulling = false,bool enableBlending = false){
+            //TODO--add shader parameter
             program = new xGame::ShaderProgram();
             sampler = new xGame::Sampler();
-            //TODO add default map for texture
-            (_textures.empty()) ? textures = {} : textures = _textures;
+            //TODO--add default map for texture
+            textures = _textures;
             transparent = _transparent;
+            //TODO--add renderState object as a paramater
             renderState = new xGame::RenderState(transparent, enableDepthTesting, enableFaceCulling, enableBlending);
         }
         void destroy() const{
-            delete program;
-            delete renderState;
             delete sampler;
         }
         ~Material(){

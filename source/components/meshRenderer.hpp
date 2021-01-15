@@ -30,8 +30,6 @@ public:
         delete model;
         delete material;
     }
-
-
 };
 
 #endif //GRAPHICS_MESHRENDERER_H

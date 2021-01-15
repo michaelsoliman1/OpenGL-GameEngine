@@ -11,11 +11,13 @@
 
 class EntityManager{
     int size = 0;
+    //TODO--convert to map of typeIndex,Entity
     std::vector<Entity*> entities = {};
     std::vector<Entity*> cachedEntities = {};
 public:
     Entity* createEntity();
     std::vector<Entity*> getEntities();
+    //TODO--remove and only pass the components type to be returned
     std::vector<Entity*> getEntitiesToRender();
     Entity* getCameraEntity();
 };

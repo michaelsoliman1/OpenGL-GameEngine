@@ -7,8 +7,9 @@
 
 class Light : public IComponent{
 public:
-    xGame::LightType type;
     bool enabled;
+    bool isSkyLight;
+    xGame::LightType type;
     glm::vec3 color;
     glm::vec3 position; // Used for Point and Spot Lights only
     glm::vec3 direction; // Used for Directional and Spot Lights only
@@ -17,7 +18,10 @@ public:
     } attenuation; // Used for Point and Spot Lights only
     struct {
         float inner, outer;
-    } spot_angle; // Used for Spot Lights only
+    } spotAngle; // Used for Spot Lights only
+    struct {
+        glm::vec3 top_color, middle_color, bottom_color;
+    } skyLight;
     Light() = default;
 
 };
