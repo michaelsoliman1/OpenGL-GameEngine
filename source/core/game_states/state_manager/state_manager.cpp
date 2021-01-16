@@ -18,7 +18,6 @@ void StateManager::runState(double deltaTime) {
             currentState->onExit();
         }
     };
-
 }
 
 void StateManager::goToState(IGameState *nextState) {

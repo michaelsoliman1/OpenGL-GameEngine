@@ -6,7 +6,7 @@
 
 class TestState : public IGameState {
 public:
-    TestState() = default;
+    TestState(xGame::Application* app) : IGameState(app){};
     ~TestState() = default;
 
     void onEnter() override;

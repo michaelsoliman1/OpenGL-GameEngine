@@ -16,13 +16,12 @@ namespace xGame{
     class Texture {
     private:
         GLuint texture;
-        GLenum magnification_filter = GL_NEAREST, minification_filter = GL_NEAREST;
-        GLenum wrap_s = GL_CLAMP_TO_EDGE, wrap_t = GL_CLAMP_TO_EDGE;
-        glm::vec4 border_color = {1,1,1,1};
-        GLfloat max_anisotropy = 1.0f;
+
     public:
-        Texture(){
-            glGenTextures(1, &texture);
+        const char *filename;
+
+        Texture(const char *_filename = nullptr){
+            filename = _filename;
         };
         ~Texture(){destroy();}
 
@@ -34,13 +33,16 @@ namespace xGame{
 
         void create(const void *data, glm::ivec2 size,bool generate_mipmap = true);
 
-        void draw();
+        void setActive(GLenum texture);
+        void bind();
         void destroy();
 
-        // Load an image from a file
-        glm::ivec2 loadImage(const char* filename, bool generate_mipmap = true);;
+        GLuint getTexture() const{return texture;};
 
-        void checkerBoard(glm::ivec2 size, glm::ivec2 patternSize, xGame::Color color1, xGame::Color color2);
+        // Load an image from a file
+        glm::ivec2 load( bool generate_mipmap = true);;
+
+        glm::ivec2 checkerBoard();
     };
 }
 

@@ -13,6 +13,7 @@
 #include <cassert>
 
 #include <glad/gl.h>
+#include <glm/glm.hpp>
 
 #include "vertex-attributes.hpp"
 
@@ -32,6 +33,10 @@ namespace xGame {
         GLsizei element_count = 0, vertex_count = 0; // How meany elements/vertices are there. Needed by draw()
 
     public:
+        explicit Mesh(const char* filename){
+            if(filename!= nullptr)
+                loadOBJ(filename);
+        }
         // The underlying OpenGL objects creator
         // This receives a list of functions with the signature void(void).
         // Each function setups up how to access each buffer to send data to the attributes
@@ -240,6 +245,34 @@ namespace xGame {
                 glBindVertexArray(0); // Then unbind the vertex array
             }
         }
+
+
+        // Load an ".obj" file into the mesh
+        static xGame::Mesh* loadOBJ(const char* filename);
+
+        static xGame::Mesh*  Cuboid(bool colored_faces = false,
+                    const glm::vec3& center = {0,0,0},
+                    const glm::vec3& size = {1,1,1},
+                    const glm::vec2& texture_offset = {0, 0},
+                    const glm::vec2& texture_tiling = {1, 1});
+
+        static xGame::Mesh*  Sphere(
+                    const glm::ivec2& segments = {32, 16},
+                    bool colored = false,
+                    const glm::vec3& center = {0,0,0},
+                    float radius = 0.5f,
+                    const glm::vec2& texture_offset = {0, 0},
+                    const glm::vec2& texture_tiling = {1, 1});
+
+        static xGame::Mesh*  Plane(
+                   const glm::ivec2& resolution = {1, 1},
+                   bool colored = false,
+                   const glm::vec3& center={0, 0, 0},
+                   const glm::vec2& size={1, 1},
+                   const glm::vec2& texture_offset = {0, 0},
+                   const glm::vec2& texture_tiling = {1, 1});
+
+
 
         //Delete copy constructor and assignment operation
         //This is important for Class that follow the RAII pattern since we destroy the underlying OpenGL object in deconstruction

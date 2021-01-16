@@ -2,29 +2,25 @@
 
 #include "../../graphics/shader/shader.hpp"
 #include "../../entity/entity_manager.hpp"
-#include "../system/renderSystem.h"
-
-
-
+#include "../system/render_system.h"
+#include "../system/camera_system.h"
 
 class IGameState{
 protected:
     EntityManager* entityManager;
     RenderSystem* renderSystem;
-//    GLFWwindow* window = nullptr;
+    CameraSystem* cameraSystem;
+    xGame::Application* app;
 
 public:
-    IGameState(){
-//        this->window = window;
-        //question: should we allocate the pointers here ? or in onEnter()?
-        entityManager = new EntityManager();
-        renderSystem = new RenderSystem();
+    IGameState(xGame::Application* application){
+        app = application;
     }
 
     ~IGameState(){
-//        delete this->window;
         delete this->entityManager;
         delete this->renderSystem;
+        delete this->cameraSystem;
     }
 
     virtual void onEnter() = 0;

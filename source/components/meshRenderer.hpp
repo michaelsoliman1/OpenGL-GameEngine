@@ -9,30 +9,27 @@
 #include "renderer.hpp"
 #include "../graphics/material/material.h"
 
-enum MeshType{
-    Cuboid,
-};
 
 class MeshRenderer : public Renderer {
 public:
-    MeshRenderer(){
-        model = new xGame::Mesh();
-        material = new xGame::Material();
-    };
-
-    MeshRenderer(xGame::Material* _material){
-        model = new xGame::Mesh();
-        material = _material;
-    }
-
-    void createCuboid(bool coloredFaces){
-        xGame::mesh_utils::Cuboid(*model, coloredFaces);
-    };
-
     xGame::Mesh *model;
     xGame::Material *material;
 
+    MeshRenderer(xGame::Mesh* _mesh = nullptr,xGame::Material* _material = nullptr){
+        _mesh == nullptr ? createDefaultCuboid(true) : model = _mesh;
+        _material == nullptr ? material = new xGame::Material() :material = _material;
+    }
 
+    xGame::Mesh* createDefaultCuboid(bool coloredFaces){
+        model = new xGame::Mesh();
+        model->Cuboid(coloredFaces);
+        return model;
+    };
+
+    ~MeshRenderer(){
+        delete model;
+        delete material;
+    }
 };
 
 #endif //GRAPHICS_MESHRENDERER_H
