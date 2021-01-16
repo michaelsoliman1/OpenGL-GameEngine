@@ -32,6 +32,9 @@ public:
     std::vector<Transform*> getChildren(){
         return children;
     }
+    void deleteChildren(){
+        children.clear();
+    }
 
     bool isParent(){return !children.empty();}
     bool isFree(){return _isFree;}
