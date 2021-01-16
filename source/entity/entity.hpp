@@ -1,14 +1,44 @@
+
+
 #include <vector>
+#include <typeinfo>
+#include <typeindex>
+#include <unordered_map>
+#include <iostream>
+
 #include "../components/i_component.hpp"
 
 
 class Entity{
-    std::vector<IComponent*> components;
-
+    std::unordered_map<std::type_index, IComponent*> components = {};
 public:
-    Entity() = default;
+    int id;
+    std::string tag;
+
+    explicit Entity(int _id, std::string _tag = ""){
+        id=_id;
+        //why should i use std_move??
+        tag = std::move(_tag);
+    };
     ~Entity() = default;
-    void addComponent(IComponent* c);
-    void removeComponent(IComponent* c);
-    std::vector<IComponent*> getComponents();
+
+    template<typename T>
+    void addComponent(T c){
+        components[std::type_index(typeid(*c))] = c;
+    };
+
+    template<typename T>
+    IComponent* getComponentByType(T c){
+        return this->components[std::type_index(typeid(*c))];
+    };
+
+    std::unordered_map<std::type_index, IComponent*> getAllComponents(){
+        return components;
+    };
+
+    template<typename T>
+    void removeComponent(T* c){
+        components.erase(std::type_index(typeid(c)));
+    }
 };
+

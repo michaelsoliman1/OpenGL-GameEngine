@@ -6,15 +6,10 @@
 
 
 void RenderSystem::initialize(EntityManager *entityManager) {
-    std::vector<Entity*> entitiesToRender = entityManager->getEntitiesToRender();
-    MeshRenderer* meshRenderer;
+    auto* meshRenderer = new MeshRenderer();
+    std::vector<Entity*> entitiesToRender = entityManager->getEntitiesHaving(meshRenderer);
     for(auto& entity : entitiesToRender) {
-        std::vector<IComponent*> components = entity->getComponents();
-        for (auto &component: components) {
-            if (dynamic_cast<MeshRenderer *>(component)) {
-                meshRenderer = dynamic_cast<MeshRenderer *>(component);
-            }
-        }
+        meshRenderer = dynamic_cast<MeshRenderer*>(entity->getComponentByType(meshRenderer));
         if(meshRenderer!=nullptr){
             //TODO create shaders and pass them in material
             meshRenderer->material->program->create();
@@ -28,40 +23,34 @@ void RenderSystem::initialize(EntityManager *entityManager) {
             }
         }
     }
-    glClearColor(0.0,0.0,0.0, 1);
+    glClearColor(0.4,0.8,1,1.0);
 }
 
 void RenderSystem::draw(EntityManager* entityManager) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    Entity* cameraEntity = entityManager->getCameraEntity();
-    std::vector<IComponent*> components = cameraEntity->getComponents();
-    Camera* camera;
-    for (auto &component: components) {
-        if(dynamic_cast<Camera* > (component)) {
-            camera = dynamic_cast<Camera*> (component);
-        }
-    }
-    //TODO--adjust this function to take a filter parameter
-    std::vector<Entity*> entitiesToRender = entityManager->getEntitiesToRender();
-    //TODO? sort entities based on their depth and transparency
-    //    here
-    MeshRenderer* meshRenderer;
-    Transform* transform;
+    auto* cameraComponent = new Camera();
+    Entity* cameraEntity = entityManager->getEntityHaving(cameraComponent);
+    cameraComponent = dynamic_cast<Camera*>(cameraEntity->getComponentByType(cameraComponent));
+
+    auto * meshRenderer = new MeshRenderer();
+    auto* transform = new Transform();
+    auto* light = new Light();
+    std::vector<IComponent*> reqComponents;
+    reqComponents.push_back(meshRenderer);
+    reqComponents.push_back(transform);
+    std::vector<Entity*> entitiesToRender = entityManager->getEntitiesHaving(reqComponents);
+
+    //TODO--sort entities based on their depth and transparency here
     for(auto& entity : entitiesToRender) {
+        //TODO? how to add different lights to the same object? can we add more that one light component ?
+        //and what about SkyLight ? should i make it a different component (inherit from light) ?
         std::vector<Light*> lights;
-        components = entity->getComponents();
-        for (auto& component: components ) {
-            if (dynamic_cast<Transform*>(component)) {
-                transform = dynamic_cast<Transform *>(component);
-            }
-            if (dynamic_cast<MeshRenderer *>(component)) {
-                meshRenderer = dynamic_cast<MeshRenderer *>(component);
-            }
-            if(dynamic_cast<Light*> (component)){
-                auto* light = dynamic_cast<Light*>(component);
-                lights.push_back(light);
-            }
-        }
+        light = dynamic_cast<Light*>(entity->getComponentByType(light));
+        lights.push_back(light);
+
+        transform = dynamic_cast<Transform *>(entity->getComponentByType(transform));
+        meshRenderer = dynamic_cast<MeshRenderer *>(entity->getComponentByType(meshRenderer));
+
         if(transform!= nullptr && meshRenderer!= nullptr){
             // set the renderState for every entity, enable depthTesting, faceCulling, etc.
             meshRenderer->material->renderState->setRenderState();
@@ -159,11 +148,12 @@ void RenderSystem::draw(EntityManager* entityManager) {
             meshRenderer->material->program->set("material.roughness_range", meshRenderer->material->roughnessRange);
 
             // From the camera, we will send the camera position and view-projection matrix.
-            meshRenderer->material->program->set("camera_position", camera->getEyePosition());
-            meshRenderer->material->program->set("view_projection", camera->getVPMatrix());
+            meshRenderer->material->program->set("camera_position", cameraComponent->getEyePosition());
+            meshRenderer->material->program->set("view_projection", cameraComponent->getVPMatrix());
             // Since we already sent the view-projection matrix already, we will only send the model matrices from the drawNode function.
             // That's why we are now sending an identity matrix as the transform matrix.
             meshRenderer->material->program->set("transform", glm::mat4(1.0f));
+            meshRenderer->material->program->set("tint",meshRenderer->material->tint);
             // draw the model on the screen
             meshRenderer->model->draw();
         }
@@ -171,20 +161,5 @@ void RenderSystem::draw(EntityManager* entityManager) {
 }
 
 void RenderSystem::destroy(EntityManager* entityManager) {
-    // TODO should not destroy anything here
-//    std::vector<Entity*> entitiesToRender = entityManager->getEntitiesToRender();
-//    MeshRenderer* meshRenderer;
-//
-//    for(auto& entity : entitiesToRender) {
-//        std::vector<IComponent*> components = entity->getComponents();
-//        for (auto &component: components) {
-//            if (dynamic_cast<MeshRenderer *>(component)) {
-//                meshRenderer = dynamic_cast<MeshRenderer *>(component);
-//            }
-//        }
-//        if(meshRenderer!= nullptr){
-//            meshRenderer->material->destroy();
-//            meshRenderer->model->destroy();
-//        }
-//    }
+    // should not destroy anything here
 }
