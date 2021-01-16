@@ -16,24 +16,12 @@
  * Mesh -> nameMesh
  * Transform -> nameTransform
  * MeshRenderer -> nameRenderer
+ * Light -> lightComponent
+ * Camera -> cameraCompenent
  */
 
 namespace xGame::Scene {
     void loadScene(EntityManager *entityManager) {
-
-        //lights
-        auto *light = new Light();
-        light->type = xGame::LightType::DIRECTIONAL;
-        light->enabled = true;
-        light->color = {1, 0.8, 0.2};
-        light->direction = {-1, -1, -1};
-
-        auto *skyLight = new Light();
-        skyLight->enabled = false;
-        skyLight->isSkyLight = true;
-        skyLight->skyLight.top_color = {0, 0, 0};
-        skyLight->skyLight.middle_color= {0.35, 0.35, 0.4};
-        skyLight->skyLight.bottom_color = {0.25, 1, 0.25};
 
         // Shaders
         auto* defaultShader = new xGame::ShaderProgram();
@@ -100,6 +88,36 @@ namespace xGame::Scene {
         camera->addComponent(cameraTransform);
         camera->addComponent(cameraController);
 
+        //lights
+        Entity* lightEntity = entityManager->createEntity();
+        auto *lightComponent = new Light();
+        // for light transform {Color, Position, Direction}
+        auto *lightTransform = new Transform({1, 0.8, 0.2}, {0, 0, 0}, {-1, -1, -1});
+        lightComponent->type = xGame::LightType::DIRECTIONAL;
+        lightComponent->enabled = true;
+        lightEntity->addComponent(lightComponent);
+        lightEntity->addComponent(lightTransform);
+
+        Entity* spotLightEntity = entityManager->createEntity();
+        auto *spotLightComponent = new Light();
+        auto *spotLightTransform = new Transform({1, 0.1, 0.2}, {0, 4, 0}, {3,3,3});
+        lightComponent->enabled = true;
+        spotLightComponent->type = xGame::LightType::SPOT;
+        spotLightComponent->spotAngle.inner = 0.78539816339;
+        spotLightComponent->spotAngle.outer = 1.57079632679;
+        spotLightEntity->addComponent(spotLightComponent);
+        spotLightEntity->addComponent(spotLightTransform);
+
+//        Entity* skyLightEntity = entityManager->createEntity();
+//        auto *skyLightComponent = new Light();
+//        skyLightComponent->enabled = true;
+//        skyLightComponent->isSkyLight = true;
+//        skyLightComponent->skyLight.top_color = {1, 0, 0};
+//        skyLightComponent->skyLight.middle_color= {0.35, 0.35, 0.4};
+//        skyLightComponent->skyLight.bottom_color = {0.25, 1, 0.25};
+//        skyLightEntity->addComponent(skyLightComponent);
+//        skyLightEntity->addComponent(lightTransform);
+
         //Ground
         Entity *ground = entityManager->createEntity();
         auto *groundTransform = new Transform({{0,   0, 0},
@@ -108,8 +126,6 @@ namespace xGame::Scene {
         auto *groundRenderer = new MeshRenderer(plane, asphaltMaterial);
         ground->addComponent(groundTransform);
         ground->addComponent(groundRenderer);
-        ground->addComponent(light);
-//        ground->addComponent(skyLight);
 
 
         //Box
@@ -120,8 +136,6 @@ namespace xGame::Scene {
         auto *cubeRenderer = new MeshRenderer(cube, woodMaterial);
         box->addComponent(boxTransform);
         box->addComponent(cubeRenderer);
-        box->addComponent(light);
-//        box->addComponent(skyLight);
 
 
         //Suzanne
@@ -132,8 +146,6 @@ namespace xGame::Scene {
         auto *suzanneRenderer= new MeshRenderer(monkey, metalMaterial);
         suzanne->addComponent(suzanneRenderer);
         suzanne->addComponent(suzanneTransform);
-        suzanne->addComponent(light);
-//        suzanne->addComponent(skyLight);
     };
 }
 

@@ -40,6 +40,7 @@ set(COMMON_SOURCES
         source/system/render_system.cpp
         source/events/event.cpp
         source/events/event.h
+        source/utils/screenshot/screenshot.cpp
         )
 set(RENDERING
         source/graphics/shader/shader.cpp

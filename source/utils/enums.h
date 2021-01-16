@@ -15,7 +15,7 @@ namespace xGame {
     enum class LightType {
         DIRECTIONAL,
         POINT,
-        SPOT
+        SPOT,
     };
 
     enum struct TextureType {

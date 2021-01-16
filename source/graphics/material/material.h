@@ -26,7 +26,7 @@ namespace xGame{
         glm::vec3 tint = glm::vec3(1,1,1);
         glm::vec3 albedoTint = {1,1,1};
         glm::vec3 specularTint = {1,1,1};
-        glm::vec3 emissiveTint = {0.5,0.5,0.5};
+        glm::vec3 emissiveTint = {0.2,0.2,0.2};
         glm::vec2 roughnessRange = {0.5,0.5};
 
 

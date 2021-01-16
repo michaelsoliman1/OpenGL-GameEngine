@@ -21,6 +21,7 @@
         vec3 ambient;
         vec3 emissive;
         float shininess;
+        float alpha;
     };
 
     // This contains all the material properties and texture maps for the object.
@@ -47,6 +48,9 @@
         mat.emissive = tex_mat.emissive_tint * texture(tex_mat.emissive_map, tex_coord).rgb;
         // Ambient is computed by multiplying the diffuse by the ambient occlusion factor. This allows occluded crevices to look darker.
         mat.ambient = mat.diffuse * texture(tex_mat.ambient_occlusion_map, tex_coord).r;
+        // Alpha for blending
+        mat.alpha = texture(tex_mat.albedo_map, tex_coord).a;
+
 
         // Roughness is used to compute the shininess (specular power).
         float roughness = mix(tex_mat.roughness_range.x, tex_mat.roughness_range.y,

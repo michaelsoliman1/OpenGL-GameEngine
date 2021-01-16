@@ -54,9 +54,9 @@ namespace xGame {
         }
         static void enableBlending(){
             // TODO ? why GL_SRC_ALPHA not working ?
-            GLenum blend_source_factor = GL_SRC_COLOR, blend_destination_factor = GL_ONE_MINUS_SRC_COLOR;
+//            GLenum blend_source_factor = GL_SRC_COLOR, blend_destination_factor = GL_ONE_MINUS_SRC_COLOR;
             GLenum blend_equation = GL_FUNC_ADD;
-//            GLenum blend_source_factor = GL_SRC_ALPHA, blend_destination_factor = GL_ONE_MINUS_SRC_ALPHA;
+            GLenum blend_source_factor = GL_SRC_ALPHA, blend_destination_factor = GL_ONE_MINUS_SRC_ALPHA;
             // glm::vec4 blend_constant_color = {1.0f,1.0f,1.0f,1.0f};
 
             // The blending formula has the following form: (source_factor * source) operation (destination_factor * destination).

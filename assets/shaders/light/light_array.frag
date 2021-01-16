@@ -19,6 +19,8 @@ in Varyings {
 #define TYPE_DIRECTIONAL    0
 #define TYPE_POINT          1
 #define TYPE_SPOT           2
+//#define TYPE_SKYLIGHT       0
+
 
 // Now we will use a single struct for all light types.
 struct Light {
@@ -37,6 +39,7 @@ struct Light {
     float attenuation_quadratic;
     // Cone angles are used for spot lights.
     float inner_angle, outer_angle;
+//    vec3 top_color, middle_color, bottom_color;
 };
 
 // The sky light will allow us to vary the ambient light based on the surface normal which is slightly more realistic compared to constant ambient lighting.
@@ -78,6 +81,12 @@ void main() {
         Light light = lights[index];
         vec3 light_direction;
         float attenuation = 1;
+//        if(light.type == TYPE_SKYLIGHT){
+//            ambient*= normal.y > 0
+//            ?
+//            mix(sky_light.middle_color, sky_light.top_color, normal.y) :
+//            mix(sky_light.middle_color, sky_light.bottom_color, -normal.y);
+//        }
         if(light.type == TYPE_DIRECTIONAL)
             light_direction = light.direction; // If light is directional, use its direction as the light direction
         else {
@@ -106,5 +115,5 @@ void main() {
         accumulated_light += (diffuse + specular) * attenuation;
     }
 
-    frag_color = fsin.color * vec4(accumulated_light, 1.0f);
+    frag_color = fsin.color * vec4(accumulated_light, sampled.alpha);
 }

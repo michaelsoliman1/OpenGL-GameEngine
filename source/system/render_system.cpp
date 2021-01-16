@@ -22,7 +22,7 @@ void RenderSystem::initialize(EntityManager *entityManager) {
             }
         }
     }
-    glClearColor(0.4,0.8,1,1.0);
+    glClearColor(0,0,0,0);
 }
 
 void RenderSystem::draw(EntityManager* entityManager) {
@@ -31,9 +31,11 @@ void RenderSystem::draw(EntityManager* entityManager) {
     Entity* cameraEntity = entityManager->getEntityHaving(cameraComponent);
     cameraComponent = dynamic_cast<Camera*>(cameraEntity->getComponentByType(cameraComponent));
 
+    auto* light = new Light();
+    std::vector<Entity*> lightEntities = entityManager->getEntitiesHaving(light);
+
     auto * meshRenderer = new MeshRenderer();
     auto* transform = new Transform();
-    auto* light = new Light();
     std::vector<IComponent*> reqComponents;
     reqComponents.push_back(meshRenderer);
     reqComponents.push_back(transform);
@@ -41,11 +43,8 @@ void RenderSystem::draw(EntityManager* entityManager) {
 
     //TODO--sort entities based on their depth and transparency here
     for(auto& entity : entitiesToRender) {
-        //TODO? how to add different lights to the same object? can we add more that one light component ?
+        //add a light entity
         //and what about SkyLight ? should i make it a different component (inherit from light) ?
-        std::vector<Light*> lights;
-        light = dynamic_cast<Light*>(entity->getComponentByType(light));
-        lights.push_back(light);
 
         transform = dynamic_cast<Transform *>(entity->getComponentByType(transform));
         meshRenderer = dynamic_cast<MeshRenderer *>(entity->getComponentByType(meshRenderer));
@@ -95,21 +94,21 @@ void RenderSystem::draw(EntityManager* entityManager) {
                     }
                 }
             }
-            for (const auto &light : lights){
-                if(light->isSkyLight){
-                    meshRenderer->material->program->set("sky_light.top_color", light->enabled ? light->skyLight.top_color : glm::vec3(0.0f));
-                    meshRenderer->material->program->set("sky_light.middle_color", light->enabled ? light->skyLight.middle_color : glm::vec3(0.0f));
-                    meshRenderer->material->program->set("sky_light.bottom_color", light->enabled ? light->skyLight.bottom_color : glm::vec3(0.0f));
-                }
-            }
             // We will go through all the lights and send the enabled ones to the shader.
             int light_index = 0;
             const int MAX_LIGHT_COUNT = 16;
-            if(!lights.empty()) {
-                for (const auto &light : lights) {
+            if(!lightEntities.empty()) {
+                for (const auto &lightEntity : lightEntities) {
+                    light = dynamic_cast<Light*>(lightEntity->getComponentByType(light));
+                    auto* lightTransform = dynamic_cast<Transform*>(lightEntity->getComponentByType(transform));
+                    light->setTransform(lightTransform->to_mat4());
+                    if(light->isSkyLight){
+                        meshRenderer->material->program->set("sky_light.top_color", light->enabled ? light->skyLight.top_color : glm::vec3(0.0f));
+                        meshRenderer->material->program->set("sky_light.middle_color", light->enabled ? light->skyLight.middle_color : glm::vec3(0.0f));
+                        meshRenderer->material->program->set("sky_light.bottom_color", light->enabled ? light->skyLight.bottom_color : glm::vec3(0.0f));
+                    }
                     if (!light->enabled) continue;
                     std::string prefix = "lights[" + std::to_string(light_index) + "].";
-
                     meshRenderer->material->program->set(prefix + "type", static_cast<int>(light->type));
                     meshRenderer->material->program->set(prefix + "color", light->color);
                     switch (light->type) {
@@ -130,6 +129,8 @@ void RenderSystem::draw(EntityManager* entityManager) {
                             meshRenderer->material->program->set(prefix + "attenuation_quadratic", light->attenuation.quadratic);
                             meshRenderer->material->program->set(prefix + "inner_angle", light->spotAngle.inner);
                             meshRenderer->material->program->set(prefix + "outer_angle", light->spotAngle.outer);
+                            break;
+                        default:
                             break;
                     }
                     light_index++;
