@@ -8,6 +8,7 @@
 #include "../components/camera.h"
 #include "../components/camera_controller.h"
 #include <../graphics/mesh/common-vertex-attributes.hpp>
+#include <memory>
 
 /**
  * Texture -> nameTexture
@@ -96,7 +97,7 @@ namespace xGame::Scene {
         ground->addComponent(groundTransform);
         ground->addComponent(groundRenderer);
         ground->addComponent(light);
-        ground->addComponent(skyLight);
+//        ground->addComponent(skyLight);
 
 
         //Box
@@ -108,7 +109,7 @@ namespace xGame::Scene {
         box->addComponent(boxTransform);
         box->addComponent(cubeRenderer);
         box->addComponent(light);
-        box->addComponent(skyLight);
+//        box->addComponent(skyLight);
 
 
         //Suzanne
@@ -120,7 +121,7 @@ namespace xGame::Scene {
         suzanne->addComponent(suzanneRenderer);
         suzanne->addComponent(suzanneTransform);
         suzanne->addComponent(light);
-        suzanne->addComponent(skyLight);
+//        suzanne->addComponent(skyLight);
     };
 }
 
