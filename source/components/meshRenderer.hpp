@@ -22,7 +22,7 @@ public:
 
     xGame::Mesh* createDefaultCuboid(bool coloredFaces){
         model = new xGame::Mesh();
-        xGame::mesh_utils::Cuboid(*model, coloredFaces);
+        model->Cuboid(coloredFaces);
         return model;
     };
 
@@ -30,8 +30,6 @@ public:
         delete model;
         delete material;
     }
-
-
 };
 
 #endif //GRAPHICS_MESHRENDERER_H

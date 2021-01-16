@@ -13,22 +13,18 @@
 namespace xGame {
     class RenderState {
     public:
-        bool depthTesting;
-        bool faceCulling;
-        bool blending;
-        bool transparent;
+        bool depthTesting = true;
+        bool faceCulling = true;
+        bool blending = true;
+        bool transparent = false;
+        // TODO add members
+        // GLenum
 
         ~RenderState(){delete this;}
 
-        RenderState() {
-            depthTesting = true;
-            faceCulling = false;
-            blending = false;
-            transparent= false;
+        RenderState() = default;
 
-        };
-
-        RenderState(bool _transparent, bool _enableDepthTesting, bool _enableFaceCulling = false, bool _enableBlending = false){
+        explicit RenderState(bool _transparent, bool _enableDepthTesting = true, bool _enableFaceCulling = true, bool _enableBlending = true){
             depthTesting = _enableDepthTesting;
             faceCulling = _enableFaceCulling;
             blending = _enableBlending;
@@ -44,7 +40,6 @@ namespace xGame {
             else glDisable(GL_BLEND);
         }
 
-        // TODO - add parameters
         static void enableDepthTesting() {
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LEQUAL);
@@ -52,15 +47,14 @@ namespace xGame {
             glDepthMask(true);
             glColorMask(true, true, true, true);
         };
-        // TODO - add parameters
         static void enableFaceCulling(){
             glEnable(GL_CULL_FACE);
             glCullFace(GL_BACK);
             glFrontFace(GL_CCW);
         }
-        // TODO - add parameters
         static void enableBlending(){
-            //GLenum blend_source_factor = GL_SRC_COLOR, blend_destination_factor = GL_ONE_MINUS_SRC_COLOR;
+            // TODO ? why GL_SRC_ALPHA not working ?
+//            GLenum blend_source_factor = GL_SRC_COLOR, blend_destination_factor = GL_ONE_MINUS_SRC_COLOR;
             GLenum blend_equation = GL_FUNC_ADD;
             GLenum blend_source_factor = GL_SRC_ALPHA, blend_destination_factor = GL_ONE_MINUS_SRC_ALPHA;
             // glm::vec4 blend_constant_color = {1.0f,1.0f,1.0f,1.0f};

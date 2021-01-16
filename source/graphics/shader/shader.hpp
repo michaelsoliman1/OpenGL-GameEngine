@@ -16,22 +16,30 @@ namespace xGame {
         //Shader Program Handle
         GLuint program;
         std::map<std::string, GLuint> uniform_location_cache;
-
+        std::string vertFilename = "assets/shaders/light/light_transform.vert";
+        std::string fragFilename = "assets/shaders/light/light_array.frag";
     public:
         void create();
         void destroy();
 
         ShaderProgram(){ program = 0; }
+        ShaderProgram(const std::string &_vertFilename, const std::string &_fragFilename){
+            program = 0;
+            vertFilename = _vertFilename;
+            fragFilename = _fragFilename;
+        }
         ~ShaderProgram(){ destroy(); }
 
         //Cast Class to an OpenGL Object name
         operator GLuint() const { return program; } // NOLINT: Allow implicit casting for convenience
 
         //Read shader from file, send it to GPU, compile it then attach it to shader
-        bool attach(const std::string &filename, GLenum type) const; // NOLINT: attach does alter the object state so [[nodiscard]] is unneeded
+        bool attach(GLenum type) const; // NOLINT: attach does alter the object state so [[nodiscard]] is unneeded
 
         //Link Program (Do this after all shaders are attached)
         bool link() const; // NOLINT: link does alter the object state so [[nodiscard]] is unneeded
+
+        void useProgram() const{glUseProgram(this->program);}
 
         //Get the location of a uniform variable in the shader
         GLuint getUniformLocation(const std::string &name) {

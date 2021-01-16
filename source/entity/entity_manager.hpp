@@ -6,6 +6,10 @@
 #define GRAPHICS_ENTITY_MANAGER_HPP
 
 #include <vector>
+#include <typeinfo>
+#include <typeindex>
+#include <unordered_map>
+
 #include "entity.hpp"
 
 
@@ -15,9 +19,13 @@ class EntityManager{
     std::vector<Entity*> cachedEntities = {};
 public:
     Entity* createEntity();
-    std::vector<Entity*> getEntities();
-    std::vector<Entity*> getEntitiesToRender();
-    Entity* getCameraEntity();
+    std::vector<Entity*> getAllEntities();
+    //TODO? template<typename T>
+    std::vector<Entity*> getEntitiesHaving(IComponent* reqComponent);
+    std::vector<Entity*> getEntitiesHaving(const std::vector<IComponent*>& reqComponents);
+    Entity* getEntityHaving(IComponent* reqComponent);
+    Entity* getEntityHaving(const std::vector<IComponent*>& reqComponents);
+    void destroyEntity(int id){};
 };
 
 

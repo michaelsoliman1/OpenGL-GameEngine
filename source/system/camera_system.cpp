@@ -6,65 +6,42 @@
 
 void CameraSystem::initialize(EntityManager *entityManager,xGame::Application *app) {
     //this logic won't work in case there are multiple cameras in the scene
+    auto* cameraComponent = new Camera();
     if(cachedCamera== nullptr){
-        cachedCamera = entityManager->getCameraEntity();
+        cachedCamera = entityManager->getEntityHaving(cameraComponent);
     }
-    std::vector<IComponent*> components = cachedCamera->getComponents();
-    Camera* camera;
-    Transform* transform;
-    CameraController *controller;
+    auto* cameraController = new CameraController;
+    auto* cameraTransform = new Transform();
+    cameraComponent = dynamic_cast<Camera*>(cachedCamera->getComponentByType(cameraComponent));
+    cameraTransform = dynamic_cast<Transform*>(cachedCamera->getComponentByType(cameraTransform));
+    cameraController = dynamic_cast<CameraController*>(cachedCamera->getComponentByType(cameraController));
 
-    for (auto &component: components) {
-        if (dynamic_cast<Camera * > (component)) {
-            camera = dynamic_cast<Camera * > (component);
-        }
-        if (dynamic_cast<Transform *> (component)) {
-            transform = dynamic_cast<Transform *> (component);
-        }
-        if (dynamic_cast<CameraController *> (component)) {
-            controller = dynamic_cast<CameraController *> (component);
-        }
-    }
-    camera->setTransform(transform->to_mat4());
-    camera->setupPerspective(glm::pi<float>()/2, static_cast<float>(1280)/720, 0.1f, 100.0f);
-    controller->initialize(app, camera);
+    cameraComponent->setTransform(cameraTransform->to_mat4());
+    cameraComponent->setupPerspective(glm::pi<float>()/2, static_cast<float>(1280)/720, 0.1f, 100.0f);
+    cameraController->initialize(app, cameraComponent);
 }
 //TODO? should make eventManager responsible for listening to events idk || implement later
 void CameraSystem::update(EntityManager *entityManager, float deltaTime) {
-    //this the worst spaghetti code i've ever wrote :)
+    auto* cameraComponent = new Camera();
     if (cachedCamera == nullptr) {
-        cachedCamera = entityManager->getCameraEntity();
+        cachedCamera = entityManager->getEntityHaving(cameraComponent);
     }
-    std::vector<IComponent *> components = cachedCamera->getComponents();
-    Camera *camera;
-    CameraController *controller;
-    for (auto &component: components) {
-        if (dynamic_cast<Camera * > (component)) {
-            camera = dynamic_cast<Camera * > (component);
-        }
-        if (dynamic_cast<CameraController *> (component)) {
-            controller = dynamic_cast<CameraController *> (component);
-        }
-    }
-    if(camera!=nullptr && controller!=nullptr){
-        controller->update(deltaTime);
+    auto* cameraController = new CameraController;
+    cameraComponent = dynamic_cast<Camera*>(cachedCamera->getComponentByType(cameraComponent));
+    cameraController = dynamic_cast<CameraController*>(cachedCamera->getComponentByType(cameraController));
+    if(cameraComponent!=nullptr && cameraController!=nullptr){
+        cameraController->update(deltaTime);
     }
 }
 
 void CameraSystem::destroy(EntityManager *entityManager) {
+    auto* cameraController = new CameraController;
     if (cachedCamera == nullptr) {
-        cachedCamera = entityManager->getCameraEntity();
+        cachedCamera = entityManager->getEntityHaving(cameraController);
     }
-    std::vector<IComponent *> components = cachedCamera->getComponents();
-    Camera *camera;
-    Transform *transform;
-    CameraController *controller;
-    for (auto &component: components) {
-        if (dynamic_cast<CameraController *> (component)) {
-            controller = dynamic_cast<CameraController *> (component);
-        }
+    cameraController = dynamic_cast<CameraController*>(cachedCamera->getComponentByType(cameraController));
+    if(cameraController!=nullptr){
+        cameraController->release();
     }
-    if(controller!=nullptr){
-        controller->release();
-    }
+    delete cachedCamera;
 }

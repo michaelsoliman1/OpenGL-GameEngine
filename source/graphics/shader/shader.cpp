@@ -20,9 +20,10 @@ void xGame::ShaderProgram::destroy() {
     program = 0;
 }
 
-bool xGame::ShaderProgram::attach(const std::string &filename, GLenum type) const {
+bool xGame::ShaderProgram::attach(GLenum type) const {
     // first, we use C++17 filesystem library to get the directory (parent) path of the file.
     // the parent path will be sent to stb_include to search for files referenced by any "#include" preprocessor command.
+    std::string filename = type == GL_VERTEX_SHADER ? vertFilename : fragFilename;
     auto file_path = std::filesystem::path(filename);
     auto file_path_string = file_path.string();
     auto parent_path_string = file_path.parent_path().string();

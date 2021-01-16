@@ -5,39 +5,41 @@
 #ifndef GRAPHICS_MATERIAL_H
 #define GRAPHICS_MATERIAL_H
 
+#include <unordered_map>
+#include <utility>
+
 #include "../graphics/shader/shader.hpp"
 #include "../render_state/RenderState.h"
 #include "../texture/texture.h"
 #include "../sampler/sampler.h"
+#include "../../utils/enums.h"
 
 namespace xGame{
     class Material {
     public:
         xGame::ShaderProgram *program;
-        xGame::RenderState *renderState;
-        xGame::Texture * texture;
+        std::unordered_map<xGame::TextureType, xGame::Texture*> textures;
         xGame::Sampler* sampler;
-        glm::vec4 tint = glm::vec4(0.94,0.94,0.9,0.5);
-        bool transparent;
+        xGame::RenderState *renderState;
 
-        //TODO?
-        //we can pass a RenderState pointer here with a predefined data!! don't know if that's right or not.
-        //and how can i make it dynamic? the user creates it with the settings he need right away (is passing all the the options in the constructor a good way?
-        //for now i'll just pass the parameters through the constructor
-//        Clang-Tidy: Single-argument constructors must be marked explicit
-//        to avoid unintentional implicit conversions!!!
-        Material(xGame::Texture* _texture = nullptr,bool _transparent = false,bool enableDepthTesting = true, bool enableFaceCulling = false,bool enableBlending = false){
+        //TODO add them in map or dict
+        glm::vec3 tint = glm::vec3(1,1,1);
+        glm::vec3 albedoTint = {1,1,1};
+        glm::vec3 specularTint = {1,1,1};
+        glm::vec3 emissiveTint = {0.2,0.2,0.2};
+        glm::vec2 roughnessRange = {0.5,0.5};
+
+
+        explicit Material(xGame::ShaderProgram* _program = nullptr, std::unordered_map<xGame::TextureType, xGame::Texture*> _textures = {}, xGame::Sampler* _sampler = nullptr, xGame::RenderState* _renderState = nullptr){
+            //TODO--add shader object as parameter
             program = new xGame::ShaderProgram();
-            sampler = new xGame::Sampler();
-            (_texture== nullptr) ? texture = new xGame::Texture() : texture = _texture;
-            transparent = _transparent;
-            renderState = new xGame::RenderState(transparent, enableDepthTesting, enableFaceCulling, enableBlending);
+            _sampler== nullptr ? sampler = new xGame::Sampler() : sampler = _sampler;
+            _renderState == nullptr ? renderState = new xGame::RenderState() : renderState = _renderState;
+            //TODO--add default map for texture
+            textures = std::move(_textures);
         }
         void destroy() const{
-            delete program;
-            delete renderState;
-            delete sampler;
-            delete texture;
+
         }
         ~Material(){
             destroy();

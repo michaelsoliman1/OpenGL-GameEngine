@@ -3,53 +3,73 @@
 //
 
 #include "entity_manager.hpp"
-#include "../components/transform.hpp"
-#include "../components/meshRenderer.hpp"
-#include "../components/camera.h"
 
 Entity* EntityManager::createEntity() {
-    Entity* entity = new Entity();
+    auto* entity = new Entity(size);
     this->entities.push_back(entity);
     size++;
     return entity;
 }
 
-std::vector<Entity*> EntityManager::getEntities() {
+std::vector<Entity*> EntityManager::getAllEntities() {
     return entities;
 }
 
-std::vector<Entity*> EntityManager::getEntitiesToRender() {
-    //TODO!
-    // to be implemented :: add cached list
-    // question : can we return the entities with just the transform and mesh meshRenderer components ?
-    std::vector<Entity*> entitiesToRender;
-    for (auto& entity : this->entities){
-        std::vector<IComponent*> components = entity->getComponents();
-        Transform* transform;
-        MeshRenderer* meshRenderer = nullptr;  //Why doesn't transform throw an error
-        for (auto& component: components ) {
-            if (dynamic_cast<Transform*>(component)) {
-                transform = dynamic_cast<Transform *>(component);
-            }
-            if (dynamic_cast<MeshRenderer *>(component)) {
-                meshRenderer = dynamic_cast<MeshRenderer *>(component);
-            }
-        }
-        if (transform!= nullptr && meshRenderer != nullptr){
-            entitiesToRender.push_back(entity);
+// search only for on component
+std::vector<Entity *> EntityManager::getEntitiesHaving(IComponent *reqComponent) {
+    // return a vector of entities satisfying the condition
+    std::vector<Entity *> matchedEntities;
+    for(auto& entity : entities){
+        IComponent* c = entity->getComponentByType(reqComponent);
+        if(c != nullptr){
+            matchedEntities.push_back(entity);
         }
     }
-    return entitiesToRender;
+    return matchedEntities;
 }
 
-Entity *EntityManager::getCameraEntity() {
-    for (auto& entity : this->entities){
-        std::vector<IComponent*> components = entity->getComponents();
-        for (auto& component: components ) {
-            if (dynamic_cast<Camera*>(component)) {
+std::vector<Entity *> EntityManager::getEntitiesHaving(const std::vector<IComponent*>& reqComponents) {
+    // return a vector of entities satisfying the condition
+    std::vector<Entity *> matchedEntities;
+    for(auto& entity : entities){
+        bool isMatched = true;
+        for(auto& component : reqComponents){
+            if(entity->getComponentByType(component)== nullptr){
+                isMatched = false;
+            }
+        }
+        if(isMatched){
+            matchedEntities.push_back(entity);
+        }
+    }
+    return matchedEntities;
+}
+
+Entity* EntityManager::getEntityHaving(const std::vector<IComponent *> &reqComponents) {
+    // return just one entity satisfying the condition
+    for (auto &entity : entities) {
+        for (auto &component : reqComponents) {
+            if (entity->getComponentByType(component) != nullptr) {
+                // found, return the entity
                 return entity;
             }
         }
     }
     return nullptr;
 }
+
+// search only for on component
+Entity *EntityManager::getEntityHaving(IComponent *reqComponent) {
+    // return just one entity satisfying the condition
+    for(auto& entity : entities){
+        if(entity->getComponentByType(reqComponent)!= nullptr){
+            return entity;
+        }
+    }
+    return nullptr;
+}
+
+
+
+
+

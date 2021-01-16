@@ -27,8 +27,8 @@ void xGame::Texture::create(const void *data, glm::ivec2 size, bool generate_mip
     if(generate_mipmap) glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void xGame::Texture::setActive() {
-    glActiveTexture(GL_TEXTURE0);
+void xGame::Texture::setActive(GLenum texture) {
+    glActiveTexture(texture);
 }
 void xGame::Texture::bind() {
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -41,7 +41,8 @@ void xGame::Texture::destroy() {
 
 glm::ivec2 xGame::Texture::load(bool generate_mipmap) {
     if(filename==nullptr){
-        //we can add default file to apply texture, or not apply texture at all ( question! how to not apply a texture?)
+        // TODO change defualt texture
+        // default texture ,
         return this->checkerBoard();
     }
     glm::ivec2 size;

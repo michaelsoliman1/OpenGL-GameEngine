@@ -13,14 +13,23 @@ namespace xGame {
         // Samplers are OpenGL objects so we identify them using a GLuint.
         GLuint sampler;
 
-        GLenum magnification_filter = GL_LINEAR, minification_filter = GL_LINEAR_MIPMAP_LINEAR;
-        GLenum wrap_s = GL_REPEAT, wrap_t = GL_REPEAT;
-        glm::vec4 border_color = {1,1,1,1};
-        GLfloat max_anisotropy = 1.0f;
-        GLenum polygon_mode = GL_FILL;
+        GLenum magnificationFilter = GL_LINEAR, minificationFilter = GL_LINEAR_MIPMAP_LINEAR;
+        GLenum wrapS = GL_REPEAT, wrapT = GL_REPEAT;
+        GLfloat maxAnisotropy = 1.0f;
+        GLenum polygonMode = GL_FILL;
 
     public:
         Sampler(){
+            sampler= 0;
+        }
+        Sampler(GLenum _magnificationFilter, GLenum _minificationFilter, GLenum _wrapS, GLenum _wrapT,
+                GLfloat _maxAnisotropy = 1.0f, GLenum _polygonMode = GL_FILL){
+            magnificationFilter = _magnificationFilter;
+            minificationFilter = _minificationFilter;
+            wrapS = _wrapS;
+            wrapT = _wrapT;
+            maxAnisotropy = _maxAnisotropy;
+            polygonMode = _polygonMode;
             sampler= 0;
         };
         ~Sampler(){destroy();} //
@@ -34,19 +43,20 @@ namespace xGame {
         void generate() {
             glGenSamplers(1, &sampler);
         };
-        void bind(){
-            glBindSampler(0, sampler);
+        void bind(int units){
+            // We will bind our sampler to all the units we will use.
+            // Since we have 5 maps in our material, we will need 5 units.
+            for(GLuint unit = 0; unit < units; ++unit) glBindSampler(unit, sampler);
         }
 
-        //TODO - add parameters
         void setParameters() {
-            glSamplerParameteri(sampler, GL_TEXTURE_MAG_FILTER, magnification_filter);
-            glSamplerParameteri(sampler, GL_TEXTURE_MIN_FILTER, minification_filter);
-            glSamplerParameteri(sampler, GL_TEXTURE_WRAP_S, wrap_s);
-            glSamplerParameteri(sampler, GL_TEXTURE_WRAP_T, wrap_t);
-            glSamplerParameterfv(sampler, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(border_color));
-            glSamplerParameterf(sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, max_anisotropy);
-            glPolygonMode(GL_FRONT_AND_BACK, polygon_mode);
+            glSamplerParameteri(sampler, GL_TEXTURE_MAG_FILTER, magnificationFilter);
+            glSamplerParameteri(sampler, GL_TEXTURE_MIN_FILTER, minificationFilter);
+            glSamplerParameteri(sampler, GL_TEXTURE_WRAP_S, wrapS);
+            glSamplerParameteri(sampler, GL_TEXTURE_WRAP_T, wrapT);
+            glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
+            glSamplerParameterf(sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAnisotropy);
+            glPolygonMode(GL_FRONT_AND_BACK, polygonMode);
         };
         void destroy(){
             glDeleteSamplers(1, &sampler);
