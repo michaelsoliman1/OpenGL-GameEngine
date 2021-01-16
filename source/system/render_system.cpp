@@ -41,11 +41,21 @@ void RenderSystem::draw(EntityManager* entityManager) {
     reqComponents.push_back(transform);
     std::vector<Entity*> entitiesToRender = entityManager->getEntitiesHaving(reqComponents);
 
+    for(auto& entity : entitiesToRender){
+        // first we loop over all the transforms and multiple its children (if any) with its parent transform
+        transform = dynamic_cast<Transform *>(entity->getComponentByType(transform));
+        if (transform->isParent()){
+            if(!transform->isFree()){
+                for(auto& childTransform : transform->getChildren()){
+                    childTransform->setParentTransform(transform->to_mat4());
+                }
+            }
+        }
+
+    }
+
     //TODO--sort entities based on their depth and transparency here
     for(auto& entity : entitiesToRender) {
-        //add a light entity
-        //and what about SkyLight ? should i make it a different component (inherit from light) ?
-
         transform = dynamic_cast<Transform *>(entity->getComponentByType(transform));
         meshRenderer = dynamic_cast<MeshRenderer *>(entity->getComponentByType(meshRenderer));
 
@@ -56,7 +66,7 @@ void RenderSystem::draw(EntityManager* entityManager) {
             meshRenderer->material->program->useProgram();
             // instead of setting the parameters for each texture, we just set it to the sampler and each unit that uses that sampler will automatically use these parameters.
             meshRenderer->material->sampler->setParameters();
-            // we bind the sampler for every texture (i.e: number od textures in the material)
+            // we bind the sampler for every texture (i.e: number of textures in the material)
             meshRenderer->material->sampler->bind(meshRenderer->material->textures.size());
 
             //loop over the texture map in material and bind and set texture
