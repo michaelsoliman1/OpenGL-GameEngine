@@ -130,9 +130,9 @@ namespace xGame::Scene {
 
         //Box
         Entity *box = entityManager->createEntity();
-        auto *boxTransform = new Transform({{0,  1, 0},
+        auto *boxTransform = new Transform({{-4, 0, -4},
                                          {0,  0, 0},
-                                         {10, 2, 10}});
+                                         {2,2,2}});
         auto *cubeRenderer = new MeshRenderer(cube, woodMaterial);
         box->addComponent(boxTransform);
         box->addComponent(cubeRenderer);
@@ -140,9 +140,11 @@ namespace xGame::Scene {
 
         //Suzanne
         Entity *suzanne = entityManager->createEntity();
-        auto *suzanneTransform = new Transform({{0, 4, 0},
+        auto *suzanneTransform = new Transform({{-2, 2, 0},
                                           {0, 0, 0},
                                           {2, 2, 2}});
+        suzanneTransform->addChild(boxTransform);
+//        suzanneTransform->freeMe();
         auto *suzanneRenderer= new MeshRenderer(monkey, metalMaterial);
         suzanne->addComponent(suzanneRenderer);
         suzanne->addComponent(suzanneTransform);
