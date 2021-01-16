@@ -5,8 +5,6 @@
 #include "game_states/test_state.hpp"
 #include "game_states/state_manager/state_manager.hpp"
 #include "../utils/screenshot/screenshot.h"
-//phase3
-
 
 int main() {
     xGame::Application app;
