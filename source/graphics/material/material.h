@@ -6,6 +6,7 @@
 #define GRAPHICS_MATERIAL_H
 
 #include <unordered_map>
+#include <utility>
 
 #include "../graphics/shader/shader.hpp"
 #include "../render_state/RenderState.h"
@@ -17,13 +18,11 @@ namespace xGame{
     class Material {
     public:
         xGame::ShaderProgram *program;
-
-        xGame::RenderState *renderState;
         std::unordered_map<xGame::TextureType, xGame::Texture*> textures;
-
         xGame::Sampler* sampler;
-        bool transparent;
-        //TODO
+        xGame::RenderState *renderState;
+
+        //TODO add them in map or dict
         glm::vec3 tint = glm::vec3(1,1,1);
         glm::vec3 albedoTint = {1,1,1};
         glm::vec3 specularTint = {1,1,1};
@@ -31,23 +30,16 @@ namespace xGame{
         glm::vec2 roughnessRange = {0.5,0.5};
 
 
-        //TODO
-        //create a RenderState object and pass it
-        //and how can i make it dynamic? the user creates it with the settings he need right away (is passing all the the options in the constructor a good way?
-        // i can create a struct with parameters
-        explicit Material(std::unordered_map<xGame::TextureType, xGame::Texture*> _textures = {},bool _transparent = false,bool enableDepthTesting = true, bool enableFaceCulling = false,bool enableBlending = false){
+        explicit Material(xGame::ShaderProgram* _program = nullptr, std::unordered_map<xGame::TextureType, xGame::Texture*> _textures = {}, xGame::Sampler* _sampler = nullptr, xGame::RenderState* _renderState = nullptr){
             //TODO--add shader object as parameter
             program = new xGame::ShaderProgram();
-            //TODO--add sampler object as parameter
-            sampler = new xGame::Sampler();
+            _sampler== nullptr ? sampler = new xGame::Sampler() : sampler = _sampler;
+            _renderState == nullptr ? renderState = new xGame::RenderState() : renderState = _renderState;
             //TODO--add default map for texture
-            textures = _textures;
-            transparent = _transparent;
-            //TODO--add renderState object as a parameter
-            renderState = new xGame::RenderState(transparent, enableDepthTesting, enableFaceCulling, enableBlending);
+            textures = std::move(_textures);
         }
         void destroy() const{
-            delete sampler;
+
         }
         ~Material(){
             destroy();

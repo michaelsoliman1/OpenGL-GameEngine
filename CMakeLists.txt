@@ -35,7 +35,6 @@ set(COMMON_SOURCES
         source/core/application.cpp
         source/core/game_states/test_state.cpp
         source/core/game_states/state_manager/state_manager.cpp
-        source/entity/entity.cpp
         source/entity/entity_manager.cpp
         source/system/camera_system.cpp
         source/system/render_system.cpp

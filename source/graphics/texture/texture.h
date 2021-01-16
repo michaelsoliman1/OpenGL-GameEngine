@@ -37,7 +37,7 @@ namespace xGame{
         void bind();
         void destroy();
 
-        GLuint getTexture(){return texture;};
+        GLuint getTexture() const{return texture;};
 
         // Load an image from a file
         glm::ivec2 load( bool generate_mipmap = true);;

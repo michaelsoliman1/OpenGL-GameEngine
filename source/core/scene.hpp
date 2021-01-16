@@ -35,6 +35,18 @@ namespace xGame::Scene {
         skyLight->skyLight.middle_color= {0.35, 0.35, 0.4};
         skyLight->skyLight.bottom_color = {0.25, 1, 0.25};
 
+        // Shaders
+        auto* defaultShader = new xGame::ShaderProgram();
+        //auto* skyShader = new xGame::ShaderProgram("assets/shaders/light/sky_transform.vert", "assets/shaders/light/sky.frag");
+
+        //TODO--loadOBJ
+        // meshes
+        xGame::Mesh *cube = xGame::Mesh::Cuboid(false);
+        xGame::Mesh *sphere = xGame::Mesh::Sphere({32, 16}, false);
+        xGame::Mesh *monkey = xGame::Mesh::loadOBJ("assets/models/Suzanne/Suzanne.obj");
+        xGame::Mesh *plane = xGame::Mesh::Plane({1, 1}, false, {0, 0, 0}, {1, 1}, {0, 0}, {100, 100});
+
+
         //textures
         auto *moonTexture= new xGame::Texture("assets/images/moon.jpg");
 
@@ -68,17 +80,17 @@ namespace xGame::Scene {
         woodTexture[xGame::TextureType::SPECULAR] = woodSpecular;
         woodTexture[xGame::TextureType::ROUGHNESS] = woodRoughness;
 
-        //TODO--loadOBJ
-        // meshes
-        xGame::Mesh *cube = xGame::Mesh::Cuboid(false);
-        xGame::Mesh *sphere = xGame::Mesh::Sphere({32, 16}, false);
-        xGame::Mesh *monkey = xGame::Mesh::loadOBJ("assets/models/Suzanne/Suzanne.obj");
-        xGame::Mesh *plane = xGame::Mesh::Plane({1, 1}, false, {0, 0, 0}, {1, 1}, {0, 0}, {100, 100});
+        // Samplers
+        auto* sampler = new xGame::Sampler(GL_LINEAR,GL_LINEAR_MIPMAP_LINEAR, GL_REPEAT,GL_REPEAT);
+
+        auto* renderState = new xGame::RenderState(false);
+        auto* transparentState = new xGame::RenderState(true);
 
         //materials
-        auto *asphaltMaterial = new xGame::Material(asphaltTexture, false, true, false, true);
-        auto *metalMaterial = new xGame::Material(metalTexture, false, true, true, true);
-        auto* woodMaterial = new xGame::Material(woodTexture, false, true, true);
+        auto *asphaltMaterial = new xGame::Material(defaultShader, asphaltTexture, sampler, renderState);
+        auto *metalMaterial = new xGame::Material(defaultShader, metalTexture, sampler, transparentState);
+        auto* woodMaterial = new xGame::Material(defaultShader, woodTexture, sampler, renderState);
+
         //Camera Entity
         Entity *camera = entityManager->createEntity();
         auto *cameraComponent = new Camera();

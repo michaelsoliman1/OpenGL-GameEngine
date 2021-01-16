@@ -13,8 +13,8 @@ void RenderSystem::initialize(EntityManager *entityManager) {
         if(meshRenderer!=nullptr){
             //TODO create shaders and pass them in material
             meshRenderer->material->program->create();
-            meshRenderer->material->program->attach("assets/shaders/light/light_transform.vert", GL_VERTEX_SHADER);
-            meshRenderer->material->program->attach("assets/shaders/light/light_array.frag", GL_FRAGMENT_SHADER);
+            meshRenderer->material->program->attach(GL_VERTEX_SHADER);
+            meshRenderer->material->program->attach(GL_FRAGMENT_SHADER);
             meshRenderer->material->program->link();
 
             meshRenderer->material->sampler->generate();
