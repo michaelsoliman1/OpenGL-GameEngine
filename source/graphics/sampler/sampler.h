@@ -49,7 +49,6 @@ namespace xGame {
             for(GLuint unit = 0; unit < units; ++unit) glBindSampler(unit, sampler);
         }
 
-        //TODO - add parameters
         void setParameters() {
             glSamplerParameteri(sampler, GL_TEXTURE_MAG_FILTER, magnificationFilter);
             glSamplerParameteri(sampler, GL_TEXTURE_MIN_FILTER, minificationFilter);

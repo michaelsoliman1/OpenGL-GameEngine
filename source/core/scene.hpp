@@ -39,7 +39,7 @@ namespace xGame::Scene {
         auto* defaultShader = new xGame::ShaderProgram();
         //auto* skyShader = new xGame::ShaderProgram("assets/shaders/light/sky_transform.vert", "assets/shaders/light/sky.frag");
 
-        //TODO--loadOBJ
+        //TODO?--loadOBJ // blender export problem
         // meshes
         xGame::Mesh *cube = xGame::Mesh::Cuboid(false);
         xGame::Mesh *sphere = xGame::Mesh::Sphere({32, 16}, false);

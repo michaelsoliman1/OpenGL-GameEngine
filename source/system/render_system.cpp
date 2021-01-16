@@ -11,7 +11,6 @@ void RenderSystem::initialize(EntityManager *entityManager) {
     for(auto& entity : entitiesToRender) {
         meshRenderer = dynamic_cast<MeshRenderer*>(entity->getComponentByType(meshRenderer));
         if(meshRenderer!=nullptr){
-            //TODO create shaders and pass them in material
             meshRenderer->material->program->create();
             meshRenderer->material->program->attach(GL_VERTEX_SHADER);
             meshRenderer->material->program->attach(GL_FRAGMENT_SHADER);
