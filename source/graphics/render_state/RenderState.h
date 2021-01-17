@@ -14,7 +14,7 @@ namespace xGame {
     class RenderState {
     public:
         bool depthTesting = true;
-        bool faceCulling = true;
+        bool faceCulling = false;
         bool blending = true;
         bool transparent = false;
         // TODO add members
@@ -24,7 +24,7 @@ namespace xGame {
 
         RenderState() = default;
 
-        explicit RenderState(bool _transparent, bool _enableDepthTesting = true, bool _enableFaceCulling = true, bool _enableBlending = true){
+        explicit RenderState(bool _transparent, bool _enableDepthTesting = true, bool _enableFaceCulling = false, bool _enableBlending = true){
             depthTesting = _enableDepthTesting;
             faceCulling = _enableFaceCulling;
             blending = _enableBlending;

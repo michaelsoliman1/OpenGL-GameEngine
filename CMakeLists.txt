@@ -50,7 +50,7 @@ set(RENDERING
         source/graphics/texture/texture.cpp
         source/graphics/sampler/sampler.cpp
         source/graphics/render_state/RenderState.cpp
-        source/graphics/mesh/mesh.cpp source/system/movement_system/movement_system.cpp source/system/movement_system/movement_system.h)
+        source/graphics/mesh/mesh.cpp source/system/movement_system/movement_system.cpp source/system/movement_system/movement_system.h source/system/collision_system/collision_system.cpp source/system/collision_system/collision_system.h)
 
 # Define the directories in which to search for the included headers
 include_directories(

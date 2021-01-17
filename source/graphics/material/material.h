@@ -7,6 +7,7 @@
 
 #include <unordered_map>
 #include <utility>
+#include <any>
 
 #include "../graphics/shader/shader.hpp"
 #include "../render_state/RenderState.h"
@@ -17,26 +18,23 @@
 namespace xGame{
     class Material {
     public:
-        xGame::ShaderProgram *program;
-        std::unordered_map<xGame::TextureType, xGame::Texture*> textures;
-        xGame::Sampler* sampler;
-        xGame::RenderState *renderState;
+        ShaderProgram *program;
+        std::unordered_map<std::string , std::any> properties;
+        std::unordered_map<TextureType, Texture*> textures;
+        RenderState *renderState;
 
-        //TODO add them in map or dict
-        glm::vec3 tint = glm::vec3(1,1,1);
-        glm::vec3 albedoTint = {1,1,1};
-        glm::vec3 specularTint = {1,1,1};
-        glm::vec3 emissiveTint = {0.2,0.2,0.2};
-        glm::vec2 roughnessRange = {0.5,0.5};
+        // TODO? do i need a sampler for each texture ?
+        // if yes? use std::unordered_map<TextureType, std::pair<Texture*, Sampler*>>
+        Sampler* sampler;
 
-
-        explicit Material(xGame::ShaderProgram* _program = nullptr, std::unordered_map<xGame::TextureType, xGame::Texture*> _textures = {}, xGame::Sampler* _sampler = nullptr, xGame::RenderState* _renderState = nullptr){
+        explicit Material(ShaderProgram* _program = nullptr, std::unordered_map<TextureType, Texture*> _textures = {}, std::unordered_map<std::string , std::any> _properties = {}, Sampler* _sampler = nullptr, RenderState* _renderState = nullptr){
             //TODO--add shader object as parameter
             program = new xGame::ShaderProgram();
             _sampler== nullptr ? sampler = new xGame::Sampler() : sampler = _sampler;
             _renderState == nullptr ? renderState = new xGame::RenderState() : renderState = _renderState;
             //TODO--add default map for texture
             textures = std::move(_textures);
+            properties = std::move(_properties);
         }
         void destroy() const{
 

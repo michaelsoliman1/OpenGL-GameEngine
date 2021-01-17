@@ -50,6 +50,9 @@ public:
     }
 
     void update(double delta_time){
+        // TODO--move to CameraSystem and make eventManager responsiple for that
+        // TODO-- make movement in just two axes
+        // maybe divide it to two, movement system for moving in xy, and camera for looking around
         if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1) && !mouse_locked){
             app->getMouse().lockMouse(app->getWindow());
             mouse_locked = true;
@@ -77,7 +80,9 @@ public:
         glm::vec3 current_sensitivity = this->position_sensitivity;
         if(app->getKeyboard().isPressed(GLFW_KEY_LEFT_SHIFT)) current_sensitivity *= speedup_factor;
 
-        if(app->getKeyboard().isPressed(GLFW_KEY_W)) position += front * ((float)delta_time * current_sensitivity.z);
+        if(app->getKeyboard().isPressed(GLFW_KEY_W)) {
+            position += front * ((float)delta_time * current_sensitivity.z);
+        }
         if(app->getKeyboard().isPressed(GLFW_KEY_S)) position -= front * ((float)delta_time * current_sensitivity.z);
         if(app->getKeyboard().isPressed(GLFW_KEY_Q)) position += up * ((float)delta_time * current_sensitivity.y);
         if(app->getKeyboard().isPressed(GLFW_KEY_E)) position -= up * ((float)delta_time * current_sensitivity.y);
