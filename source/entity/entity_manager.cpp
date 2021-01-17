@@ -69,6 +69,15 @@ Entity *EntityManager::getEntityHaving(IComponent *reqComponent) {
     return nullptr;
 }
 
+Entity *EntityManager::getEntityByTag(const std::string &_tag) {
+    for(auto& entity : entities){
+        if(entity->tag == _tag){
+            return entity;
+        }
+    }
+    return nullptr;
+}
+
 
 
 

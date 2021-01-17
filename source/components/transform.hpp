@@ -4,13 +4,12 @@
 #include <glm/gtx/euler_angles.hpp>
 
 class Transform : public IComponent {
-private:
+public:
     glm::vec3 translation,  rotation, scale;
     std::vector<Transform*> children = {};
     glm::mat4 parentMatrix = glm::mat4(1.0f);
     bool _isFree = false;
 
-public:
     Transform(
             const glm::vec3& translation = {0,0,0},
             const glm::vec3& rotation = {0,0,0},

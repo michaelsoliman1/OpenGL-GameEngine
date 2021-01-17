@@ -79,6 +79,7 @@ void RenderSystem::draw(EntityManager* entityManager) {
                             meshRenderer->material->textures[xGame::TextureType::ALBEDO]->setActive(GL_TEXTURE0);
                             // bind the texture with mesh before drawing
                             meshRenderer->material->textures[xGame::TextureType::ALBEDO]->bind();
+                            //TODO--change all uniforms to enum
                             meshRenderer->material->program->set("material.albedo_map", 0);
                             break;
                         case xGame::TextureType::SPECULAR:

@@ -7,6 +7,7 @@
 #include "../components/meshRenderer.hpp"
 #include "../components/camera.h"
 #include "../components/camera_controller.h"
+#include "../components/light.h"
 #include <../graphics/mesh/common-vertex-attributes.hpp>
 #include <memory>
 
@@ -17,7 +18,7 @@
  * Transform -> nameTransform
  * MeshRenderer -> nameRenderer
  * Light -> lightComponent
- * Camera -> cameraCompenent
+ * Camera -> cameraComponent
  */
 
 namespace xGame::Scene {
@@ -82,16 +83,18 @@ namespace xGame::Scene {
         //Camera Entity
         Entity *camera = entityManager->createEntity();
         auto *cameraComponent = new Camera();
-        auto *cameraTransform = new Transform({10, 10, 10}, {0, 0, 0}, {0, 1, 0});
         auto *cameraController = new CameraController();
+        auto *cameraTransform = new Transform({0, 5, 0}, {0, 0, 0}, {0, 1, 0});
+//        cameraTransform->addChild(suzanneTransform);
         camera->addComponent(cameraComponent);
         camera->addComponent(cameraTransform);
         camera->addComponent(cameraController);
+        camera->tag = "Camera";
 
         //lights
         Entity* lightEntity = entityManager->createEntity();
         auto *lightComponent = new Light();
-        // for light transform {Color, Position, Direction}
+        // for light transform -> {Color, Position, Direction}
         auto *lightTransform = new Transform({1, 0.8, 0.2}, {0, 0, 0}, {-1, -1, -1});
         lightComponent->type = xGame::LightType::DIRECTIONAL;
         lightComponent->enabled = true;
@@ -140,10 +143,11 @@ namespace xGame::Scene {
 
         //Suzanne
         Entity *suzanne = entityManager->createEntity();
-        auto *suzanneTransform = new Transform({{-2, 2, 0},
+        suzanne->tag = "Player";
+        auto *suzanneTransform = new Transform({{6, 2, 0.1},
                                           {0, 0, 0},
                                           {2, 2, 2}});
-        suzanneTransform->addChild(boxTransform);
+        suzanneTransform->addChild(cameraTransform);
 //        suzanneTransform->freeMe();
         auto *suzanneRenderer= new MeshRenderer(monkey, metalMaterial);
         suzanne->addComponent(suzanneRenderer);

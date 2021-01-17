@@ -2,14 +2,12 @@
 
 #include "../../graphics/shader/shader.hpp"
 #include "../../entity/entity_manager.hpp"
-#include "../system/render_system.h"
-#include "../system/camera_system.h"
+#include "../system/render_system/render_system.h"
+#include "../system/camera_system/camera_system.h"
 
 class IGameState{
 protected:
     EntityManager* entityManager;
-    RenderSystem* renderSystem;
-    CameraSystem* cameraSystem;
     xGame::Application* app;
 
 public:
@@ -19,8 +17,7 @@ public:
 
     ~IGameState(){
         delete this->entityManager;
-        delete this->renderSystem;
-        delete this->cameraSystem;
+
     }
 
     virtual void onEnter() = 0;

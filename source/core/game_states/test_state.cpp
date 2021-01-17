@@ -3,21 +3,20 @@
 
 void TestState::onEnter() {
     entityManager = new EntityManager();
-    renderSystem = new RenderSystem();
-    cameraSystem = new CameraSystem();
-
     xGame::Scene::loadScene(entityManager);
 
     RenderSystem::initialize(entityManager);
-    cameraSystem->initialize(entityManager,app);
+    CameraSystem::initialize(entityManager, app);
 }
 
 void TestState::onDraw(float deltaTime) {
     RenderSystem::draw(entityManager);
-    cameraSystem->update(entityManager, deltaTime);
+    CameraSystem::update(entityManager, deltaTime);
+    MovementSystem::update(entityManager, app, deltaTime);
+
 }
 
 void TestState::onExit() {
     RenderSystem::destroy(entityManager);
-    cameraSystem->destroy(entityManager);
+    CameraSystem::destroy(entityManager);
 }
