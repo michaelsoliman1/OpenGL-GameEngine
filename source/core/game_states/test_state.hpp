@@ -2,11 +2,15 @@
 
 #include <application.hpp>
 #include "i_game_state.hpp"
+#include "../system/render_system/render_system.h"
+#include "../system/camera_system/camera_system.h"
+#include "../system/movement_system/movement_system.h"
+#include "../system/collision_system/collision_system.h"
 
 
 class TestState : public IGameState {
 public:
-    TestState(xGame::Application* app) : IGameState(app){};
+    explicit TestState(xGame::Application* app) : IGameState(app){};
     ~TestState() = default;
 
     void onEnter() override;

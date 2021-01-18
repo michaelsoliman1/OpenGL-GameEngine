@@ -14,7 +14,6 @@
 
 
 class RenderSystem {
-    std::vector<Entity*> cachedEntities;
 public:
     RenderSystem() = default;
     static void initialize(EntityManager *entityManager);

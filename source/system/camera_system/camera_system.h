@@ -10,15 +10,16 @@
 #include "../components/transform.hpp"
 #include "../components/camera.h"
 #include "../components/camera_controller.h"
+#include "../components/camera_freelook_controller.h"
+
 #include <application.hpp>
 
 class CameraSystem {
-    Entity* cachedCamera;
 public:
     CameraSystem() = default;
-    void initialize(EntityManager *entityManager,xGame::Application *app);
-    void update(EntityManager *entityManager, float deltaTime);
-    void destroy(EntityManager *entityManager);
+    static void initialize(EntityManager *entityManager,xGame::Application *app);
+    static void update(EntityManager *entityManager, float deltaTime);
+    static void destroy(EntityManager *entityManager);
 };
 
 
