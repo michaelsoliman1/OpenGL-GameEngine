@@ -1,23 +1,25 @@
 #include "test_state.hpp"
 #include "../scene.hpp"
+#include "../system/collision_system/collision_system.h"
 
 void TestState::onEnter() {
     entityManager = new EntityManager();
-    renderSystem = new RenderSystem();
-    cameraSystem = new CameraSystem();
+    movementSystem = new MovementSystem();
 
     xGame::Scene::loadScene(entityManager);
 
     RenderSystem::initialize(entityManager);
-    cameraSystem->initialize(entityManager,app);
+    CameraSystem::initialize(entityManager, app);
 }
 
 void TestState::onDraw(float deltaTime) {
+    CameraSystem::update(entityManager, deltaTime);
+    CollisionSystem::update(entityManager,app,deltaTime);
+    movementSystem->update(entityManager, app, deltaTime);
     RenderSystem::draw(entityManager);
-    cameraSystem->update(entityManager, deltaTime);
 }
 
 void TestState::onExit() {
     RenderSystem::destroy(entityManager);
-    cameraSystem->destroy(entityManager);
+    CameraSystem::destroy(entityManager);
 }

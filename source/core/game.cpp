@@ -7,13 +7,14 @@
 #include "../utils/screenshot/screenshot.h"
 
 int main() {
-    xGame::Application app;
-    GLFWwindow* window = app.initWindow();
-    xGame::Keyboard &keyboard = app.getKeyboard();
-    xGame::Mouse &mouse = app.getMouse();
+    auto* eventManager = new EventManager();
+    xGame::Application* app = new xGame::Application(eventManager);
+    GLFWwindow* window = app->initWindow();
+    xGame::Keyboard &keyboard = app->getKeyboard();
+    xGame::Mouse &mouse = app->getMouse();
 
 
-    auto* testState = new TestState(&app);
+    auto* testState = new TestState(app);
 
     auto* stateManager = new StateManager();
     stateManager->goToState(testState);
@@ -30,7 +31,7 @@ int main() {
         // Then update the last frame start time (this frame is now the last frame)
         last_frame_time = current_frame_time;
 
-        auto frame_buffer_size = app.getFrameBufferSize();
+        auto frame_buffer_size = app->getFrameBufferSize();
         glViewport(0, 0, frame_buffer_size.x, frame_buffer_size.y);
 
         // If F12 is pressed, take a screenshot

@@ -14,7 +14,7 @@ namespace xGame {
     class RenderState {
     public:
         bool depthTesting = true;
-        bool faceCulling = true;
+        bool faceCulling = false;
         bool blending = true;
         bool transparent = false;
         // TODO add members
@@ -24,7 +24,7 @@ namespace xGame {
 
         RenderState() = default;
 
-        explicit RenderState(bool _transparent, bool _enableDepthTesting = true, bool _enableFaceCulling = true, bool _enableBlending = true){
+        explicit RenderState(bool _transparent, bool _enableDepthTesting = true, bool _enableFaceCulling = false, bool _enableBlending = true){
             depthTesting = _enableDepthTesting;
             faceCulling = _enableFaceCulling;
             blending = _enableBlending;
@@ -53,8 +53,6 @@ namespace xGame {
             glFrontFace(GL_CCW);
         }
         static void enableBlending(){
-            // TODO ? why GL_SRC_ALPHA not working ?
-//            GLenum blend_source_factor = GL_SRC_COLOR, blend_destination_factor = GL_ONE_MINUS_SRC_COLOR;
             GLenum blend_equation = GL_FUNC_ADD;
             GLenum blend_source_factor = GL_SRC_ALPHA, blend_destination_factor = GL_ONE_MINUS_SRC_ALPHA;
             // glm::vec4 blend_constant_color = {1.0f,1.0f,1.0f,1.0f};

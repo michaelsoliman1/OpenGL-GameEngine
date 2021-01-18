@@ -19,6 +19,7 @@ class EntityManager{
     std::vector<Entity*> cachedEntities = {};
 public:
     Entity* createEntity();
+    Entity* getEntityByTag(const std::string& _tag);
     std::vector<Entity*> getAllEntities();
     //TODO? template<typename T>
     std::vector<Entity*> getEntitiesHaving(IComponent* reqComponent);
