@@ -21,12 +21,13 @@ void CameraSystem::initialize(EntityManager *entityManager,xGame::Application *a
     cameraFreeLookController = dynamic_cast<CameraFreeLookController*>(cameraEntity->getComponentByType(cameraFreeLookController));
 
     if( cameraComponent!=nullptr && cameraTransform != nullptr ) {
-        // TODO-Debug this , A REALLY STRANGE ERROR!!!!
-        cameraFreeLookController->initialize(app, cameraComponent);
-        cameraComponent->setTransform(cameraTransform->to_mat4());
+        cameraComponent->setTransform(cameraTransform);
         // cameraComponent->setDirection({1, 0, 0});
         cameraComponent->setupPerspective(glm::pi<float>() / 2, static_cast<float>(1280) / 720, 0.1f, 200.0f);
     }
+    if(cameraFreeLookController!= nullptr)
+       cameraFreeLookController->initialize(app, cameraComponent);
+
     if(cameraController!= nullptr)
         cameraController->initialize(app, cameraComponent);
 }

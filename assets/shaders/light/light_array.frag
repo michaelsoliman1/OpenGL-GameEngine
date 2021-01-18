@@ -19,7 +19,6 @@ in Varyings {
 #define TYPE_DIRECTIONAL    0
 #define TYPE_POINT          1
 #define TYPE_SPOT           2
-//#define TYPE_SKYLIGHT       0
 
 
 // Now we will use a single struct for all light types.
@@ -82,12 +81,6 @@ void main() {
         Light light = lights[index];
         vec3 light_direction;
         float attenuation = 1;
-//        if(light.type == TYPE_SKYLIGHT){
-//            ambient*= normal.y > 0
-//            ?
-//            mix(sky_light.middle_color, sky_light.top_color, normal.y) :
-//            mix(sky_light.middle_color, sky_light.bottom_color, -normal.y);
-//        }
         if(light.type == TYPE_DIRECTIONAL)
             light_direction = light.direction; // If light is directional, use its direction as the light direction
         else {

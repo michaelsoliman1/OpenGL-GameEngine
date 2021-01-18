@@ -121,7 +121,7 @@ void RenderSystem::draw(EntityManager* entityManager) {
                     light = dynamic_cast<Light*>(lightEntity->getComponentByType(light));
                     auto* lightTransform = dynamic_cast<Transform*>(lightEntity->getComponentByType(transform));
                     if(lightTransform!= nullptr)
-                        light->setTransform(lightTransform->to_mat4());
+                        light->setTransform(lightTransform);
                     if(light->isSkyLight){
                         meshRenderer->material->program->set("sky_light.top_color", light->enabled ? light->skyLight.top_color : glm::vec3(0.0f));
                         meshRenderer->material->program->set("sky_light.middle_color", light->enabled ? light->skyLight.middle_color : glm::vec3(0.0f));

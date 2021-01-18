@@ -9,7 +9,7 @@ class Light : public IComponent{
 public:
     bool enabled = true;
     bool isSkyLight = false;
-    xGame::LightType type = xGame::LightType::DIRECTIONAL;
+    xGame::LightType type;
 
     glm::vec3 color = {1, 1, 1};
     glm::vec3 position = {0, 2, 0}; // Used for Point and Spot Lights only
@@ -35,10 +35,10 @@ public:
         this->direction = _direction;
     }
 
-    void setTransform(glm::mat4 transform){
-        setColor(transform* glm::vec4(0,0,0,1));
-        setPosition(transform* glm::vec4(0,0,-1,0) );
-        setDirection(transform* glm::vec4(0,1,0,0));
+    void setTransform(Transform* transform){
+        setPosition(transform->translation);
+        setDirection(transform->rotation);
+        setColor(transform->scale);
     }
 
     glm::vec3 getColor() const {return this->color;}

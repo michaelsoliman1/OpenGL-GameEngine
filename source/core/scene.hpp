@@ -121,10 +121,9 @@ namespace xGame::Scene {
         //Camera Entity
         Entity *camera = entityManager->createEntity();
         auto *cameraComponent = new Camera();
-        auto *cameraController = new CameraController();
         auto* cameraVelocity = new Velocity(2.0);
         auto* cameraFreeLookController = new CameraFreeLookController();
-        auto *cameraTransform = new Transform({0, 3, 0}, {0, 0, 0}, {0, 1, 0});
+        auto *cameraTransform = new Transform({0, 3, 0}, {1, 0, 0}, {0, 1, 0});
         auto* cameraCollider = new Collider();
         camera->addComponent(cameraComponent);
         camera->addComponent(cameraTransform);
@@ -157,14 +156,24 @@ namespace xGame::Scene {
 
         Entity* skyLightEntity = entityManager->createEntity();
         auto *skyLightComponent = new Light();
+        auto *skyLightTransform = new Transform({1, 1, 1}, {0, 0, 0}, {0, -1, 0});
+        // SkyLight is a Directional Light but have 3 extra colors to emulate a sky light
         skyLightComponent->enabled = true;
         skyLightComponent->isSkyLight = true;
         skyLightComponent->skyLight.top_color = {1, 1, 1};
         skyLightComponent->skyLight.middle_color= {0.35, 0.35, 0.4};
         skyLightComponent->skyLight.bottom_color = {1, 0, 0};
         skyLightEntity->addComponent(skyLightComponent);
-        skyLightEntity->addComponent(skyLightComponent);
+        skyLightEntity->addComponent(skyLightTransform);
 
+
+        Entity* spotLightEntity = entityManager->createEntity();
+        auto *spotLightComponent = new Light();
+        auto *spotLightTransform = new Transform({0, 4, 0}, {0,-1,0}, {1,1,1});
+        spotLightComponent->enabled = true;
+        spotLightComponent->type = xGame::LightType::POINT;
+        spotLightEntity->addComponent(spotLightComponent);
+        spotLightEntity->addComponent(spotLightTransform);
     };
 }
 
@@ -203,7 +212,7 @@ namespace xGame::Scene {
 //        Entity* lightEntity = entityManager->createEntity();
 //        auto *lightComponent = new Light();
 //        // for light transform -> Color, Position, Direction
-//        auto *lightTransform = new Transform({1, 1, 1}, {0, 0, 0}, {-1, -1, -1});
+//        auto *lightTransform = new Transform({1, 1, 1}, {0, 0, 0}, {0, -1, 0});
 //        lightComponent->type = xGame::LightType::DIRECTIONAL;
 //        lightComponent->enabled = true;
 //        lightEntity->addComponent(lightComponent);
