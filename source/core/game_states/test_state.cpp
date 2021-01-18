@@ -4,6 +4,8 @@
 
 void TestState::onEnter() {
     entityManager = new EntityManager();
+    movementSystem = new MovementSystem();
+
     xGame::Scene::loadScene(entityManager);
 
     RenderSystem::initialize(entityManager);
@@ -13,7 +15,7 @@ void TestState::onEnter() {
 void TestState::onDraw(float deltaTime) {
     CameraSystem::update(entityManager, deltaTime);
     CollisionSystem::update(entityManager,app,deltaTime);
-    MovementSystem::update(entityManager, app, deltaTime);
+    movementSystem->update(entityManager, app, deltaTime);
     RenderSystem::draw(entityManager);
 }
 

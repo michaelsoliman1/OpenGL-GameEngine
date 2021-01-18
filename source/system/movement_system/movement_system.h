@@ -17,9 +17,10 @@
 class MovementSystem {
 public:
     MovementSystem() = default;
-    static void initialize(EntityManager *entityManager,xGame::Application *app);
-    static void update(EntityManager *entityManager,xGame::Application *app, float deltaTime);
-    static void destroy(EntityManager *entityManager);
+    glm::vec3 playerPosition;
+    void initialize(EntityManager *entityManager,xGame::Application *app);
+    void update(EntityManager *entityManager,xGame::Application *app, float deltaTime);
+    void destroy(EntityManager *entityManager);
 };
 
 

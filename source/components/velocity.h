@@ -8,7 +8,7 @@
 class Velocity : public IComponent{
 public:
     // we can make it vec3 if we want different velocities in different directions
-    float velocity = 3.0f;
+    float velocity = 1.0f;
     bool canMove = true;
 
     Velocity(float velocity = 0.005, bool canMove = true) : velocity(velocity), canMove(canMove){};
