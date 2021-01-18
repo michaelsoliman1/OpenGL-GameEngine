@@ -121,7 +121,7 @@ namespace xGame::Scene {
         //Camera Entity
         Entity *camera = entityManager->createEntity();
         auto *cameraComponent = new Camera();
-        auto* cameraVelocity = new Velocity(2.0);
+        auto* cameraVelocity = new Velocity(0.7);
         auto* cameraFreeLookController = new CameraFreeLookController();
         auto *cameraTransform = new Transform({0, 3, 0}, {1, 0, 0}, {0, 1, 0});
         auto* cameraCollider = new Collider();
@@ -153,6 +153,7 @@ namespace xGame::Scene {
         reich->addComponent(reichTransform);
         reich->addComponent(reichRenderer);
         reich->addComponent(reichCollider);
+        reich->tag = "wall";
 
         Entity* skyLightEntity = entityManager->createEntity();
         auto *skyLightComponent = new Light();

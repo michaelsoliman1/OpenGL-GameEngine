@@ -10,10 +10,10 @@
 
 class TestState : public IGameState {
 public:
+    MovementSystem* movementSystem;
     explicit TestState(xGame::Application* app) : IGameState(app){};
-    ~TestState() = default;
-
     void onEnter() override;
     void onDraw(float deltaTime) override;
     void onExit() override;
+    ~TestState() = default;
 };
