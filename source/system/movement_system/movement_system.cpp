@@ -10,24 +10,24 @@ void MovementSystem::initialize(EntityManager *entityManager, xGame::Application
 
 void MovementSystem::update(EntityManager *entityManager,xGame::Application *app, float deltaTime) {
     //add callback here
-    Entity* camera = entityManager->getEntityByTag("Camera");
     Entity* player = entityManager->getEntityByTag("Player");
 
+    if(player == nullptr) return;
+
     auto* transform = new Transform();
-    transform = dynamic_cast<Transform*>(player->getComponentByType(transform));
     auto* cameraController = new CameraController();
-    cameraController = dynamic_cast<CameraController*>(camera->getComponentByType(cameraController));
+    cameraController = dynamic_cast<CameraController*>(player->getComponentByType(cameraController));
+    auto* cameraComponent = new Camera();
+    cameraComponent = dynamic_cast<Camera*>(player->getComponentByType(cameraComponent));
 
     glm::vec3 position = transform->translation;
-    // add colliderComponent
-    // have state, boxCollider, size, collisionDirection maybe
 
     // check if something collides with me
-    // if yes ? stop moving in that direction : no keep moving
+    // if yes ? stop moving in that direction, no : keep moving
     app->getEventManager()->collisionEvents.addListener([](Entity* entity1, Entity* entity2) {
-        // entity1, entity2 are the two entities collided
-        // if one of them is our player
-        // stop moving (maybe can know the direction from the entity's transform)
+        if(entity1->tag == "Player" || entity2->tag =="Player"){
+            std::cout<<"inn"<<"\n";
+        }
     });
 
     app->getEventManager()->keyboardEvents.addListener([transform, deltaTime](int key, int scancode, int action, int mods) {

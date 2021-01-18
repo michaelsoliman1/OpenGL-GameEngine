@@ -6,8 +6,10 @@
 #define GRAPHICS_COLLIDER_H
 
 class Collider : public IComponent{
-    bool isCollided = false;
-    glm::vec2 size;
+public:
+    bool enabled = true;
+    glm::vec3 position;
+    glm::vec3 scale;
 };
 
 #endif //GRAPHICS_COLLIDER_H

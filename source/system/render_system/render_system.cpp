@@ -22,7 +22,7 @@ void RenderSystem::initialize(EntityManager *entityManager) {
             }
         }
     }
-    glClearColor(0,0,0,0);
+    glClearColor(0.4,0.8,1,1.0);
 }
 
 void RenderSystem::draw(EntityManager* entityManager) {
@@ -36,9 +36,7 @@ void RenderSystem::draw(EntityManager* entityManager) {
 
     auto * meshRenderer = new MeshRenderer();
     auto* transform = new Transform();
-    std::vector<IComponent*> reqComponents;
-    reqComponents.push_back(meshRenderer);
-    reqComponents.push_back(transform);
+    std::vector<IComponent*> reqComponents {meshRenderer, transform};
     std::vector<Entity*> entitiesToRender = entityManager->getEntitiesHaving(reqComponents);
 
     for(auto& entity : entitiesToRender){
@@ -60,6 +58,7 @@ void RenderSystem::draw(EntityManager* entityManager) {
         meshRenderer = dynamic_cast<MeshRenderer *>(entity->getComponentByType(meshRenderer));
 
         if(transform!= nullptr && meshRenderer!= nullptr){
+//            std::cout<< "Player  : " <<cameraComponent->getEyePosition().x<<"\n";
             // set the renderState for every entity, enable depthTesting, faceCulling, etc.
             meshRenderer->material->renderState->setRenderState();
             // use the passed shader program in the material

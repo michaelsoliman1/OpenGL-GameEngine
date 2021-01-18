@@ -24,7 +24,7 @@ class Camera : public IComponent {
 
         // The field_of_view_y is in radians and is only used for perspective cameras
         // The orthographic_height is only used for orthographic cameras
-        float field_of_view_y = glm::radians(90.0f), orthographic_height = 2.0f, aspect_ratio = 1.0f, near = 0.01f, far = 100.0f;
+        float field_of_view_y = 0.2, orthographic_height = 2.0f, aspect_ratio = 1.0f, near = 0.01f, far = 100.0f;
 
         glm::mat4 V{}, P{}, VP{};
     public:

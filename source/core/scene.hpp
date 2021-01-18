@@ -73,7 +73,7 @@ namespace xGame::Scene {
         auto* sampler = new xGame::Sampler(GL_LINEAR,GL_LINEAR_MIPMAP_LINEAR, GL_REPEAT,GL_REPEAT);
 
          // RenderStates
-        auto* renderState = new xGame::RenderState(false, true, false);
+        auto* renderState = new xGame::RenderState(false);
         auto* transparentState = new xGame::RenderState(true);
 
         // Tints
@@ -109,11 +109,13 @@ namespace xGame::Scene {
         Entity *camera = entityManager->createEntity();
         auto *cameraComponent = new Camera();
         auto *cameraController = new CameraController();
-        auto *cameraTransform = new Transform({0, 5, 0}, {0, 0, 0}, {0, 1, 0});
+        auto *cameraTransform = new Transform({8, 15, 0}, {0, 0, 0}, {0, 1, 0});
+        auto* cameraCollider = new Collider();
         camera->addComponent(cameraComponent);
         camera->addComponent(cameraTransform);
         camera->addComponent(cameraController);
-        camera->tag = "Camera";
+        camera->addComponent(cameraCollider);
+        camera->tag = "Player";
 
         //Ground
         Entity *ground = entityManager->createEntity();
@@ -126,18 +128,20 @@ namespace xGame::Scene {
 
         //Box
         Entity *box = entityManager->createEntity();
-        auto *boxTransform = new Transform({{-4, 0, -4},
+        auto *boxTransform = new Transform({{20, 5, 0},
                                          {0,  0, 0},
-                                         {2,2,2}});
-        auto *cubeRenderer = new MeshRenderer(cube, woodMaterial);
+                                         {10,10,10}});
+        auto *boxRenderer = new MeshRenderer(cube, woodMaterial);
+        auto *boxCollider = new Collider();
         box->addComponent(boxTransform);
-        box->addComponent(cubeRenderer);
+        box->addComponent(boxRenderer);
+        box->addComponent(boxCollider);
 
 
         //Suzanne
         Entity *suzanne = entityManager->createEntity();
-        suzanne->tag = "Player";
-        auto *suzanneTransform = new Transform({{6, 2, 0.1},
+        suzanne->tag = "Suzanne";
+        auto *suzanneTransform = new Transform({{10, 2, 0},
                                           {0, 0, 0},
                                           {2, 2, 2}});
 //        suzanneTransform->addChild(cameraTransform);

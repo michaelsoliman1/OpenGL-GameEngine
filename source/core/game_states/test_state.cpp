@@ -1,5 +1,6 @@
 #include "test_state.hpp"
 #include "../scene.hpp"
+#include "../system/collision_system/collision_system.h"
 
 void TestState::onEnter() {
     entityManager = new EntityManager();
@@ -10,10 +11,10 @@ void TestState::onEnter() {
 }
 
 void TestState::onDraw(float deltaTime) {
-    RenderSystem::draw(entityManager);
     CameraSystem::update(entityManager, deltaTime);
+    CollisionSystem::update(entityManager,app,deltaTime);
     MovementSystem::update(entityManager, app, deltaTime);
-
+    RenderSystem::draw(entityManager);
 }
 
 void TestState::onExit() {
