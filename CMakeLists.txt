@@ -36,12 +36,12 @@ set(COMMON_SOURCES
         source/core/game_states/test_state.cpp
         source/core/game_states/state_manager/state_manager.cpp
         source/entity/entity_manager.cpp
+        source/utils/screenshot/screenshot.cpp
         source/system/camera_system/camera_system.cpp
         source/system/render_system/render_system.cpp
         source/system/movement_system/movement_system.cpp
-        source/events/event.cpp
-        source/events/event.h
-        source/utils/screenshot/screenshot.cpp
+        source/system/movement_system/movement_system.cpp
+        source/system/collision_system/collision_system.cpp
         )
 set(RENDERING
         source/graphics/shader/shader.cpp
@@ -50,7 +50,8 @@ set(RENDERING
         source/graphics/texture/texture.cpp
         source/graphics/sampler/sampler.cpp
         source/graphics/render_state/RenderState.cpp
-        source/graphics/mesh/mesh.cpp source/system/movement_system/movement_system.cpp source/system/movement_system/movement_system.h source/system/collision_system/collision_system.cpp source/system/collision_system/collision_system.h)
+        source/graphics/mesh/mesh.cpp
+       )
 
 # Define the directories in which to search for the included headers
 include_directories(
