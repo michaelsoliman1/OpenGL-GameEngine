@@ -11,43 +11,54 @@ void CameraSystem::initialize(EntityManager *entityManager,xGame::Application *a
 
     if(cameraEntity == nullptr) return;
 
+    auto* cameraFreeLookController = new CameraFreeLookController;
     auto* cameraController = new CameraController;
     auto* cameraTransform = new Transform();
+
     cameraComponent = dynamic_cast<Camera*>(cameraEntity->getComponentByType(cameraComponent));
     cameraTransform = dynamic_cast<Transform*>(cameraEntity->getComponentByType(cameraTransform));
     cameraController = dynamic_cast<CameraController*>(cameraEntity->getComponentByType(cameraController));
+    cameraFreeLookController = dynamic_cast<CameraFreeLookController*>(cameraEntity->getComponentByType(cameraFreeLookController));
+
     if( cameraComponent!=nullptr && cameraTransform != nullptr ) {
-        //TODO-Debug this , A REALLY STRANGE ERROR!!!!
+        // TODO-Debug this , A REALLY STRANGE ERROR!!!!
+        cameraFreeLookController->initialize(app, cameraComponent);
         cameraComponent->setTransform(cameraTransform->to_mat4());
-        cameraComponent->setDirection({1, 0, 0});
-        cameraComponent->setupPerspective(glm::pi<float>() / 2, static_cast<float>(1280) / 720, 0.1f, 100.0f);
+        // cameraComponent->setDirection({1, 0, 0});
+        cameraComponent->setupPerspective(glm::pi<float>() / 2, static_cast<float>(1280) / 720, 0.1f, 200.0f);
     }
     if(cameraController!= nullptr)
         cameraController->initialize(app, cameraComponent);
 }
+
+
 //TODO? should make eventManager responsible for listening to events idk || implement later
 void CameraSystem::update(EntityManager *entityManager, float deltaTime) {
     auto* cameraController = new CameraController();
     auto* cameraComponent = new Camera();
     auto* cameraTransform = new Transform();
+    auto* cameraFreeLookController = new CameraFreeLookController;
 
-    std::vector<IComponent*> reqComps = {cameraComponent, cameraController};
-    auto* cameraEntity = entityManager->getEntityHaving(reqComps);
 
+    auto* cameraEntity = entityManager->getEntityHaving(cameraComponent);
     if(cameraEntity == nullptr) return;
 
     cameraComponent = dynamic_cast<Camera*>(cameraEntity->getComponentByType(cameraComponent));
     cameraController = dynamic_cast<CameraController*>(cameraEntity->getComponentByType(cameraController));
+    cameraFreeLookController = dynamic_cast<CameraFreeLookController*>(cameraEntity->getComponentByType(cameraFreeLookController));
     cameraTransform = dynamic_cast<Transform*>(cameraEntity->getComponentByType(cameraTransform));
 
-    //TODO definitely need to change that
+    // TODO definitely need to change that
+    // but for now I'll just update the camera eyePosition and Direction and update the transform from them
     cameraTransform->translation = cameraComponent->getEyePosition();
     cameraTransform->rotation = cameraComponent->getDirection();
 
-    if(cameraController!=nullptr){
+    if(cameraFreeLookController != nullptr){
+        cameraFreeLookController->update(deltaTime);
+    }
+    if(cameraController != nullptr){
         cameraController->update(deltaTime);
     }
-
 
 }
 

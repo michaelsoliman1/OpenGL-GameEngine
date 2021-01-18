@@ -10,6 +10,8 @@
 #include "../components/transform.hpp"
 #include "../components/camera.h"
 #include "../components/camera_controller.h"
+#include "../components/camera_freelook_controller.h"
+
 #include <application.hpp>
 
 class CameraSystem {

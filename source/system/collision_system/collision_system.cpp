@@ -32,7 +32,7 @@ void CollisionSystem::update(EntityManager *entityManager,xGame::Application *ap
             double dist = distance(transforms[i]->translation, transforms[j]->translation);
             // if yes ? notify the listeners that those two entities collided
             // for simplicity, we'll assume that all entity cubes ( scale x = y = z)
-            // 2.5 added for points at corners
+            // there a lot of not handled cases
             if(dist<(transforms[i]->scale.x/2 + transforms[j]->scale.x/2)+2.5){
                 app->getEventManager()->collisionEvents.notifyListeners(entities[i], entities[j]);
             }

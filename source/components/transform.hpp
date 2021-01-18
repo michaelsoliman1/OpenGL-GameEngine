@@ -35,6 +35,13 @@ public:
         children.clear();
     }
 
+    glm::vec3 getPosition(){
+        return translation;
+    }
+    void setPosition(glm::vec3 position){
+        translation = position;
+    }
+
     bool isParent(){return !children.empty();}
     bool isFree(){return _isFree;}
     void freeMe(){

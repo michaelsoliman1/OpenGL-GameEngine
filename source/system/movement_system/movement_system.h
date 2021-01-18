@@ -8,8 +8,10 @@
 #include <application.hpp>
 #include "../entity/entity_manager.hpp"
 #include "../components/transform.hpp"
+#include "../components/velocity.h"
 #include "../components/camera.h"
 #include "../components/camera_controller.h"
+#include "../components/camera_freelook_controller.h"
 
 
 class MovementSystem {

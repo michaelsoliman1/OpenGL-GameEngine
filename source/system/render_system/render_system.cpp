@@ -17,6 +17,7 @@ void RenderSystem::initialize(EntityManager *entityManager) {
             meshRenderer->material->program->link();
 
             meshRenderer->material->sampler->generate();
+
             for(auto & texture : meshRenderer->material->textures){
                 texture.second->load();
             }
@@ -58,7 +59,6 @@ void RenderSystem::draw(EntityManager* entityManager) {
         meshRenderer = dynamic_cast<MeshRenderer *>(entity->getComponentByType(meshRenderer));
 
         if(transform!= nullptr && meshRenderer!= nullptr){
-//            std::cout<< "Player  : " <<cameraComponent->getEyePosition().x<<"\n";
             // set the renderState for every entity, enable depthTesting, faceCulling, etc.
             meshRenderer->material->renderState->setRenderState();
             // use the passed shader program in the material
@@ -71,6 +71,7 @@ void RenderSystem::draw(EntityManager* entityManager) {
             //set material tints
             std::string mprefix = "material.";
             for(auto& [name, tint] : meshRenderer->material->properties){
+                if(name=="texture_tiling") meshRenderer->material->program->set(name , std::any_cast<float>(tint));
                 if(name=="roughness_range")
                     meshRenderer->material->program->set(mprefix + name , std::any_cast<glm::vec2>(tint));
                 else
@@ -119,7 +120,8 @@ void RenderSystem::draw(EntityManager* entityManager) {
                 for (const auto &lightEntity : lightEntities) {
                     light = dynamic_cast<Light*>(lightEntity->getComponentByType(light));
                     auto* lightTransform = dynamic_cast<Transform*>(lightEntity->getComponentByType(transform));
-                    light->setTransform(lightTransform->to_mat4());
+                    if(lightTransform!= nullptr)
+                        light->setTransform(lightTransform->to_mat4());
                     if(light->isSkyLight){
                         meshRenderer->material->program->set("sky_light.top_color", light->enabled ? light->skyLight.top_color : glm::vec3(0.0f));
                         meshRenderer->material->program->set("sky_light.middle_color", light->enabled ? light->skyLight.middle_color : glm::vec3(0.0f));

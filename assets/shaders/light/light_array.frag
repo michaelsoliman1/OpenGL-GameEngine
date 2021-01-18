@@ -55,6 +55,7 @@ uniform TexturedMaterial material;
 uniform Light lights[MAX_LIGHT_COUNT];
 uniform int light_count;
 uniform SkyLight sky_light;
+//uniform float texture_tiling;
 
 out vec4 frag_color;
 

@@ -4,6 +4,7 @@
 
 #include "movement_system.h"
 
+
 void MovementSystem::initialize(EntityManager *entityManager, xGame::Application *app) {
 
 }
@@ -14,28 +15,36 @@ void MovementSystem::update(EntityManager *entityManager,xGame::Application *app
 
     if(player == nullptr) return;
 
-    auto* transform = new Transform();
-    auto* cameraController = new CameraController();
-    cameraController = dynamic_cast<CameraController*>(player->getComponentByType(cameraController));
+    auto* velocity = new Velocity();
     auto* cameraComponent = new Camera();
     cameraComponent = dynamic_cast<Camera*>(player->getComponentByType(cameraComponent));
+    velocity = dynamic_cast<Velocity*>(player->getComponentByType(velocity));
 
-    glm::vec3 position = transform->translation;
+    // the logic for our game is that the player is the camera, so we need to check for the camera != null,
+    if(cameraComponent != nullptr){
+        if(velocity != nullptr && velocity->canMove){
+            app->getEventManager()->keyboardEvents.addListener([cameraComponent,velocity, deltaTime](int key, int scancode, int action, int mods) {
+                glm::vec3 position = cameraComponent->getEyePosition();
+                std::cout<<"x before : " << position.x <<"\n";
+                if(key == GLFW_KEY_W) position += cameraComponent->Forward() * (deltaTime * velocity->velocity);
+                if(key == GLFW_KEY_S) position -= cameraComponent->Forward() * (deltaTime * velocity->velocity);;
+                if(key == GLFW_KEY_D) position += cameraComponent->Right() * (deltaTime * velocity->velocity);;
+                if(key == GLFW_KEY_A) position -= cameraComponent->Right() * (deltaTime * velocity->velocity);;
+                std::cout<<"x after : " << position.x<<"\n";
+                cameraComponent->setEyePosition(position);
+            });
+        }
+    }
 
-    // check if something collides with me
-    // if yes ? stop moving in that direction, no : keep moving
+
+    /// check if something collides with me
+    /// if yes ? stop moving in that direction, no : keep moving
     app->getEventManager()->collisionEvents.addListener([](Entity* entity1, Entity* entity2) {
         if(entity1->tag == "Player" || entity2->tag =="Player"){
-            std::cout<<"inn"<<"\n";
+//            std::cout<<"inn"<<"\n";
         }
     });
 
-    app->getEventManager()->keyboardEvents.addListener([transform, deltaTime](int key, int scancode, int action, int mods) {
-//        if(key == GLFW_KEY_W) transform->translation += glm::vec3(0.001,0,0);
-//        if(key == GLFW_KEY_S) transform->translation += glm::vec3(-0.001,0,0);
-//        if(key == GLFW_KEY_D) transform->translation += glm::vec3(0,0,0.001);
-//        if(key == GLFW_KEY_A) transform->translation += glm::vec3(0,0,-0.001);
-    });
 }
 
 void MovementSystem::destroy(EntityManager *entityManager) {
