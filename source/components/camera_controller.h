@@ -50,6 +50,8 @@ public:
     }
 
     void update(double delta_time){
+        // TODO-- move to CameraSystem and make eventManager responsible for that
+        // maybe divide it to two, movement system for moving in xy, and camera for looking around
         if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1) && !mouse_locked){
             app->getMouse().lockMouse(app->getWindow());
             mouse_locked = true;
@@ -86,7 +88,7 @@ public:
 
         camera->setDirection(glm::vec3(glm::cos(yaw), 0, -glm::sin(yaw)) * glm::cos(pitch) + glm::vec3(0, glm::sin(pitch), 0));
         camera->setEyePosition(position);
-    }
+        }
 
     [[nodiscard]] float getYaw() const {return yaw;}
     [[nodiscard]] float getPitch() const {return pitch;}

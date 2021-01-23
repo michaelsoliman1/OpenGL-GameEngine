@@ -1,14 +1,14 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include <utility>
 #include <glm/vec2.hpp>
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include <imgui.h>
 #include "../input/keyboard.hpp"
 #include "../input/mouse.hpp"
-
-
+#include "../events/event_manager.h"
 
 
 namespace xGame {
@@ -25,12 +25,17 @@ namespace xGame {
 
         Keyboard keyboard;
         Mouse mouse;
+        ImGuiIO imGuiIO;
+        EventManager* eventManager;
 
-        void configureOpenGL();                             // This function sets OpenGL Window Hints in GLFW.
-        WindowConfiguration getWindowConfiguration();       // Returns the WindowConfiguration current struct instance.
+        static void configureOpenGL();                             // This function sets OpenGL Window Hints in GLFW.
+        static WindowConfiguration getWindowConfiguration();       // Returns the WindowConfiguration current struct instance.
         void setupCallbacks();                              // Sets-up the window callback functions from GLFW to our (Mouse/Keyboard) classes.
 
     public:
+        explicit Application(EventManager* _eventManager){
+            eventManager = _eventManager;
+        }
         GLFWwindow* initWindow();
 
         // Class Getters.
@@ -40,12 +45,9 @@ namespace xGame {
         [[nodiscard]] const Keyboard& getKeyboard() const { return keyboard; }
         Mouse& getMouse() { return mouse; }
         [[nodiscard]] const Mouse& getMouse() const { return mouse; }
-
-        void onKeyEvent(int key, int scancode, int action, int mods){}
-        void onCursorMoveEvent(double x, double y){}
-        void onCursorEnterEvent(int entered){}
-        void onMouseButtonEvent(int button, int action, int mods){}
-        void onScrollEvent(double x_offset, double y_offset){}
+        ImGuiIO& getImGuiIO() { return imGuiIO; }
+        void setImGuiIO(ImGuiIO io) { this->imGuiIO = std::move(io); }
+        EventManager* getEventManager() { return eventManager; }
 
         // Get the size of the frame buffer of the window in pixels.
         glm::ivec2 getFrameBufferSize() {

@@ -17,12 +17,13 @@ void RenderSystem::initialize(EntityManager *entityManager) {
             meshRenderer->material->program->link();
 
             meshRenderer->material->sampler->generate();
+
             for(auto & texture : meshRenderer->material->textures){
                 texture.second->load();
             }
         }
     }
-    glClearColor(0,0,0,0);
+    glClearColor(0.4,0.8,1,1.0);
 }
 
 void RenderSystem::draw(EntityManager* entityManager) {
@@ -36,9 +37,7 @@ void RenderSystem::draw(EntityManager* entityManager) {
 
     auto * meshRenderer = new MeshRenderer();
     auto* transform = new Transform();
-    std::vector<IComponent*> reqComponents;
-    reqComponents.push_back(meshRenderer);
-    reqComponents.push_back(transform);
+    std::vector<IComponent*> reqComponents {meshRenderer, transform};
     std::vector<Entity*> entitiesToRender = entityManager->getEntitiesHaving(reqComponents);
 
     for(auto& entity : entitiesToRender){
@@ -51,7 +50,6 @@ void RenderSystem::draw(EntityManager* entityManager) {
                 }
             }
         }
-
     }
 
     //TODO--sort entities based on their depth and transparency here
@@ -66,9 +64,18 @@ void RenderSystem::draw(EntityManager* entityManager) {
             meshRenderer->material->program->useProgram();
             // instead of setting the parameters for each texture, we just set it to the sampler and each unit that uses that sampler will automatically use these parameters.
             meshRenderer->material->sampler->setParameters();
-            // we bind the sampler for every texture (i.e: number of textures in the material)
+            // we bind the sampler for every texture in this material (i.e: number of textures in the material)
             meshRenderer->material->sampler->bind(meshRenderer->material->textures.size());
 
+            //set material tints
+            std::string mprefix = "material.";
+            for(auto& [name, tint] : meshRenderer->material->properties){
+                if(name=="texture_tiling") meshRenderer->material->program->set(name , std::any_cast<float>(tint));
+                if(name=="roughness_range")
+                    meshRenderer->material->program->set(mprefix + name , std::any_cast<glm::vec2>(tint));
+                else
+                    meshRenderer->material->program->set(mprefix + name , std::any_cast<glm::vec3>(tint));
+            }
             //loop over the texture map in material and bind and set texture
             for (auto& [type, texture] : meshRenderer->material->textures)
             {
@@ -79,6 +86,7 @@ void RenderSystem::draw(EntityManager* entityManager) {
                             meshRenderer->material->textures[xGame::TextureType::ALBEDO]->setActive(GL_TEXTURE0);
                             // bind the texture with mesh before drawing
                             meshRenderer->material->textures[xGame::TextureType::ALBEDO]->bind();
+                            //TODO--change all uniforms to enum
                             meshRenderer->material->program->set("material.albedo_map", 0);
                             break;
                         case xGame::TextureType::SPECULAR:
@@ -111,7 +119,8 @@ void RenderSystem::draw(EntityManager* entityManager) {
                 for (const auto &lightEntity : lightEntities) {
                     light = dynamic_cast<Light*>(lightEntity->getComponentByType(light));
                     auto* lightTransform = dynamic_cast<Transform*>(lightEntity->getComponentByType(transform));
-                    light->setTransform(lightTransform->to_mat4());
+                    if(lightTransform!= nullptr)
+                        light->setTransform(lightTransform);
                     if(light->isSkyLight){
                         meshRenderer->material->program->set("sky_light.top_color", light->enabled ? light->skyLight.top_color : glm::vec3(0.0f));
                         meshRenderer->material->program->set("sky_light.middle_color", light->enabled ? light->skyLight.middle_color : glm::vec3(0.0f));
@@ -152,10 +161,6 @@ void RenderSystem::draw(EntityManager* entityManager) {
             // For each model, we will send the model matrix, model inverse transpose and material properties.
             meshRenderer->material->program->set("object_to_world", transform->to_mat4());
             meshRenderer->material->program->set("object_to_world_inv_transpose", glm::inverse(transform->to_mat4()), true);
-            meshRenderer->material->program->set("material.albedo_tint",meshRenderer->material->albedoTint);
-            meshRenderer->material->program->set("material.specular_tint", meshRenderer->material->specularTint);
-            meshRenderer->material->program->set("material.emissive_tint", meshRenderer->material->emissiveTint);
-            meshRenderer->material->program->set("material.roughness_range", meshRenderer->material->roughnessRange);
 
             // From the camera, we will send the camera position and view-projection matrix.
             meshRenderer->material->program->set("camera_position", cameraComponent->getEyePosition());
@@ -163,7 +168,6 @@ void RenderSystem::draw(EntityManager* entityManager) {
             // Since we already sent the view-projection matrix already, we will only send the model matrices from the drawNode function.
             // That's why we are now sending an identity matrix as the transform matrix.
             meshRenderer->material->program->set("transform", glm::mat4(1.0f));
-            meshRenderer->material->program->set("tint",meshRenderer->material->tint);
             // draw the model on the screen
             meshRenderer->model->draw();
         }

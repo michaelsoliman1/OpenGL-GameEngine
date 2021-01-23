@@ -7,21 +7,21 @@
 
 class Light : public IComponent{
 public:
-    bool enabled;
-    bool isSkyLight;
+    bool enabled = true;
+    bool isSkyLight = false;
     xGame::LightType type;
 
-    glm::vec3 color;
-    glm::vec3 position; // Used for Point and Spot Lights only
-    glm::vec3 direction; // Used for Directional and Spot Lights only
+    glm::vec3 color = {1, 1, 1};
+    glm::vec3 position = {0, 2, 0}; // Used for Point and Spot Lights only
+    glm::vec3 direction = {0, -1, 0}; // Used for Directional and Spot Lights only
     struct {
-        float constant, linear, quadratic;
+        float constant = 0.0, linear = 0.0, quadratic = 1.0;
     } attenuation; // Used for Point and Spot Lights only
     struct {
-        float inner, outer;
+        float inner = glm::quarter_pi<float>(), outer = glm::half_pi<float>();
     } spotAngle; // Used for Spot Lights only
     struct {
-        glm::vec3 top_color, middle_color, bottom_color;
+        glm::vec3 top_color = {1, 1, 1}, middle_color = {0.35, 0.35, 0.4}, bottom_color = {0.25, 0.25, 0.25};
     } skyLight;
     Light() = default;
 
@@ -35,10 +35,10 @@ public:
         this->direction = _direction;
     }
 
-    void setTransform(glm::mat4 transform){
-        setColor(transform* glm::vec4(0,0,0,1));
-        setPosition(transform* glm::vec4(0,0,-1,0) );
-        setDirection(transform* glm::vec4(0,1,0,0));
+    void setTransform(Transform* transform){
+        setPosition(transform->translation);
+        setDirection(transform->rotation);
+        setColor(transform->scale);
     }
 
     glm::vec3 getColor() const {return this->color;}

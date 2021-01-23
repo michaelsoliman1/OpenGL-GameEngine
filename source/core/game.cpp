@@ -6,14 +6,19 @@
 #include "game_states/state_manager/state_manager.hpp"
 #include "../utils/screenshot/screenshot.h"
 
+// Include the Dear ImGui implementation headers
+#define IMGUI_IMPL_OPENGL_LOADER_GLAD2
+#include <imgui_impl/imgui_impl_glfw.h>
+#include <imgui_impl/imgui_impl_opengl3.h>
+
 int main() {
-    xGame::Application app;
-    GLFWwindow* window = app.initWindow();
-    xGame::Keyboard &keyboard = app.getKeyboard();
-    xGame::Mouse &mouse = app.getMouse();
+    auto* eventManager = new EventManager();
+    auto* app = new xGame::Application(eventManager);
+    GLFWwindow* window = app->initWindow();
+    xGame::Keyboard &keyboard = app->getKeyboard();
+    xGame::Mouse &mouse = app->getMouse();
 
-
-    auto* testState = new TestState(&app);
+    auto* testState = new TestState(app);
 
     auto* stateManager = new StateManager();
     stateManager->goToState(testState);
@@ -30,7 +35,7 @@ int main() {
         // Then update the last frame start time (this frame is now the last frame)
         last_frame_time = current_frame_time;
 
-        auto frame_buffer_size = app.getFrameBufferSize();
+        auto frame_buffer_size = app->getFrameBufferSize();
         glViewport(0, 0, frame_buffer_size.x, frame_buffer_size.y);
 
         // If F12 is pressed, take a screenshot
@@ -55,6 +60,7 @@ int main() {
     }
 
     stateManager->setIsExiting(true);
+
     // Destroy the window
     glfwDestroyWindow(window);
 

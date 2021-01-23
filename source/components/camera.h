@@ -18,7 +18,7 @@ class Camera : public IComponent {
         uint8_t dirtyFlags = 0;
 
         // The camera position, camera forward direction and camera up direction
-        glm::vec3 eye = {0, 0, 0}, direction = {0, 0, -1}, up = {0, 1, 0};
+        glm::vec3 eye = {0, 5, 0}, direction = {1, 0, 0}, up = {0, 1, 0};
 
         xGame::CameraType type = xGame::CameraType::Perspective;
 
@@ -115,10 +115,10 @@ class Camera : public IComponent {
             }
         }
 
-        void setTransform(glm::mat4 transform){
-            setEyePosition(transform* glm::vec4(0,0,0,1));
-            setTarget(transform* glm::vec4(0,0,-1,0) );
-            setUp(transform* glm::vec4(0,1,0,0));
+        void setTransform(Transform* transform){
+            setEyePosition(transform->translation);
+            setDirection(transform->rotation );
+            setUp(transform->scale);
         }
 
         glm::mat4 getProjectionMatrix(){
