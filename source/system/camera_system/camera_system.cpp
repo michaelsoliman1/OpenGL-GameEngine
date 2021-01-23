@@ -28,8 +28,11 @@ void CameraSystem::initialize(EntityManager *entityManager,xGame::Application *a
     if(cameraFreeLookController!= nullptr)
        cameraFreeLookController->initialize(app, cameraComponent);
 
-    if(cameraController!= nullptr)
+    if(cameraController!= nullptr){
         cameraController->initialize(app, cameraComponent);
+        cameraController->setFieldOfViewSensitivity(0.05f );
+    }
+
 }
 
 

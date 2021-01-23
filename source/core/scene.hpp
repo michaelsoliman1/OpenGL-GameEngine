@@ -34,7 +34,6 @@ namespace xGame::Scene {
         xGame::Mesh *cube = xGame::Mesh::Cuboid(false);
         xGame::Mesh *sphere = xGame::Mesh::Sphere({32, 16}, false);
         xGame::Mesh *monkey = xGame::Mesh::loadOBJ("assets/models/Suzanne/Suzanne.obj");
-        xGame::Mesh *monster = xGame::Mesh::loadOBJ("assets/models/Monster/monster.obj");
         xGame::Mesh *plane = xGame::Mesh::Plane({1, 1}, false, {0, 0, 0}, {1, 1}, {0, 0}, {100, 100});
 
         //textures
@@ -123,13 +122,14 @@ namespace xGame::Scene {
         Entity *camera = entityManager->createEntity();
         auto *cameraComponent = new Camera();
         auto* cameraVelocity = new Velocity(0.7);
+        auto* cameraController = new CameraController();
         auto* cameraFreeLookController = new CameraFreeLookController();
-        auto *cameraTransform = new Transform({0, 3, 0}, {1, 0, 0}, {0, 1, 0});
+        auto *cameraTransform = new Transform({10, 3, 0}, {1, 0, 0}, {0, 1, 0});
         auto* cameraCollider = new Collider();
         camera->addComponent(cameraComponent);
         camera->addComponent(cameraTransform);
-
-        camera->addComponent(cameraFreeLookController);
+        camera->addComponent(cameraController);
+//        camera->addComponent(cameraFreeLookController);
         camera->addComponent(cameraCollider);
         camera->addComponent(cameraVelocity);
         camera->tag = "Player";
@@ -144,16 +144,6 @@ namespace xGame::Scene {
         ground->addComponent(groundTransform);
         ground->addComponent(groundRenderer);
 
-        //Box
-//        Entity *box = entityManager->createEntity();
-//        auto *boxTransform = new Transform({{0,  0, 0},
-//                                         {0,  0, 0},
-//                                         {20, 10, 20}});
-//        auto *cubeRenderer = new MeshRenderer(cube, woodMaterial);
-//        box->addComponent(boxTransform);
-//        box->addComponent(cubeRenderer);
-
-
         //Suzanne
         Entity *suzanne = entityManager->createEntity();
         auto *suzanneTransform = new Transform({{0, 4, 0},
@@ -163,179 +153,16 @@ namespace xGame::Scene {
         suzanne->addComponent(suzanneRenderer);
         suzanne->addComponent(suzanneTransform);
 
-        //Monster
-        Entity *T_Rex = entityManager->createEntity();
-        auto *T_RexTransform = new Transform({{17, 4, 0},
-                                                {0, 0, 0},
-                                                {5, 0, 5}});
-        auto *T_RexRenderer= new MeshRenderer(sphere, metalMaterial);
-        T_Rex->addComponent(T_RexRenderer);
-        T_Rex->addComponent(T_RexTransform);
-
-        //Room Box
-        /*Entity *room = entityManager->createEntity();
-        auto *roomTransform = new Transform({{0,  0, 0},
-                                            {0,  0, 0},
-                                            {500, 500, 500}});
-        auto *roomRenderer = new MeshRenderer(cube, woodMaterial);
-        room->addComponent(roomTransform);
-        room->addComponent(roomRenderer);*/
-
-        //Back Wall
-//        Entity *bwall = entityManager->createEntity();
-//        auto *bwallTransform = new Transform({{0, 0, 0},
-//                                             {90, 90, 90},
-//                                             {500, 500, 500}});
-//        auto *bwallRenderer = new MeshRenderer(cube, woodMaterial);
-//        bwall->addComponent(bwallRenderer);
-//        bwall->addComponent(bwallTransform);
-
-        //Left Wall
-        /*Entity *lwall = entityManager->createEntity();
-        auto *lwallTransform = new Transform({{-100, 0, 0},
-                                              {90, 90, 90},
-                                              {500, 1, 500}});
-        auto *lwallRenderer = new MeshRenderer(plane, metalMaterial);
-        lwall->addComponent(lwallRenderer);
-        lwall->addComponent(lwallTransform);
-
-        //Front Wall
-        Entity *fwall = entityManager->createEntity();
-        auto *fwallTransform = new Transform({{0, 0, 0},
-                                              {90, 90, 90},
-                                              {1, 500, 500}});
-        auto *fwallRenderer = new MeshRenderer(cube, woodMaterial);
-        fwall->addComponent(fwallRenderer);
-        fwall->addComponent(fwallTransform);*/
-
-        //pillar
-        Entity *pillar = entityManager->createEntity();
-        auto *pillarTransform = new Transform({{0,  0, 0},
-                                            {0,  0, 0},
-                                            {10, 150, 10}});
-        auto *pillarRenderer = new MeshRenderer(sphere, metalMaterial);
-        pillar->addComponent(pillarTransform);
-        pillar->addComponent(pillarRenderer);
-
-        //pillar 2
-        Entity *pillar2 = entityManager->createEntity();
-        auto *pillar2Transform = new Transform({{70,  0, 0},
-                                               {0,  0, 0},
-                                               {10, 150, 10}});
-        auto *pillar2Renderer = new MeshRenderer(sphere, metalMaterial);
-        pillar2->addComponent(pillar2Transform);
-        pillar2->addComponent(pillar2Renderer);
-
-        //pillar 3
-        Entity *pillar3 = entityManager->createEntity();
-        auto *pillar3Transform = new Transform({{-70,  0, 0},
-                                                {0,  0, 0},
-                                                {10, 150, 10}});
-        auto *pillar3Renderer = new MeshRenderer(sphere, metalMaterial);
-        pillar3->addComponent(pillar3Transform);
-        pillar3->addComponent(pillar3Renderer);
-
-        //pillar 4
-        Entity *pillar4 = entityManager->createEntity();
-        auto *pillar4Transform = new Transform({{0,  0, 70},
-                                                {0,  0, 0},
-                                                {10, 150, 10}});
-        auto *pillar4Renderer = new MeshRenderer(sphere, metalMaterial);
-        pillar4->addComponent(pillar4Transform);
-        pillar4->addComponent(pillar4Renderer);
-
-        //pillar 5
-        Entity *pillar5 = entityManager->createEntity();
-        auto *pillar5Transform = new Transform({{0,  0, -70},
-                                                {0,  0, 0},
-                                                {10, 150, 10}});
-        auto *pillar5Renderer = new MeshRenderer(sphere, metalMaterial);
-        pillar5->addComponent(pillar5Transform);
-        pillar5->addComponent(pillar5Renderer);
-
-        //ammo 2
-        Entity *ammo2 = entityManager->createEntity();
-        auto *ammo2Transform = new Transform({{35,  0, 0},
-                                             {0,  0, 0},
-                                             {10, 15, 10}});
-        auto *ammo2Renderer = new MeshRenderer(cube, woodMaterial);
-        ammo2->addComponent(ammo2Transform);
-        ammo2->addComponent(ammo2Renderer);
-
-        //ammo 3
-        Entity *ammo3 = entityManager->createEntity();
-        auto *ammo3Transform = new Transform({{-35,  0, 0},
-                                              {0,  0, 0},
-                                              {10, 15, 10}});
-        auto *ammo3Renderer = new MeshRenderer(cube, woodMaterial);
-        ammo3->addComponent(ammo3Transform);
-        ammo3->addComponent(ammo3Renderer);
-
-        //ammo 4
-        Entity *ammo4 = entityManager->createEntity();
-        auto *ammo4Transform = new Transform({{0,  0, 35},
-                                              {0,  0, 0},
-                                              {10, 15, 10}});
-        auto *ammo4Renderer = new MeshRenderer(cube, woodMaterial);
-        ammo4->addComponent(ammo4Transform);
-        ammo4->addComponent(ammo4Renderer);
-
-        //ammo 5
-        Entity *ammo5 = entityManager->createEntity();
-        auto *ammo5Transform = new Transform({{0,  0, -35},
-                                              {0,  0, 0},
-                                              {10, 15, 10}});
-        auto *ammo5Renderer = new MeshRenderer(cube, woodMaterial);
-        ammo5->addComponent(ammo5Transform);
-        ammo5->addComponent(ammo5Renderer);
-
-        //ammo 7
-        Entity *ammo7 = entityManager->createEntity();
-        auto *ammo7Transform = new Transform({{105,  0, 0},
-                                              {0,  0, 0},
-                                              {10, 15, 10}});
-        auto *ammo7Renderer = new MeshRenderer(cube, woodMaterial);
-        ammo7->addComponent(ammo7Transform);
-        ammo7->addComponent(ammo7Renderer);
-
-        //ammo 8
-        Entity *ammo8 = entityManager->createEntity();
-        auto *ammo8Transform = new Transform({{-105,  0, 0},
-                                              {0,  0, 0},
-                                              {10, 15, 10}});
-        auto *ammo8Renderer = new MeshRenderer(cube, woodMaterial);
-        ammo8->addComponent(ammo3Transform);
-        ammo8->addComponent(ammo3Renderer);
-
-        //ammo 9
-        Entity *ammo9 = entityManager->createEntity();
-        auto *ammo9Transform = new Transform({{0,  0, 105},
-                                              {0,  0, 0},
-                                              {10, 15, 10}});
-        auto *ammo9Renderer = new MeshRenderer(cube, woodMaterial);
-        ammo9->addComponent(ammo9Transform);
-        ammo9->addComponent(ammo9Renderer);
-
-        //ammo 10
-        Entity *ammo10 = entityManager->createEntity();
-        auto *ammo10Transform = new Transform({{0,  0, -105},
-                                              {0,  0, 0},
-                                              {10, 15, 10}});
-        auto *ammo10Renderer = new MeshRenderer(cube, woodMaterial);
-        ammo10->addComponent(ammo10Transform);
-        ammo10->addComponent(ammo10Renderer);
-
-      
-        Entity *reich = entityManager->createEntity();
-        auto *reichTransform = new Transform({{35, 5, 0},
-                                            {0,  0, 0},
-                                            {80,20,80}});
-        auto *reichRenderer = new MeshRenderer(cube, wallMaterial);
-        auto *reichCollider = new Collider();
-        reich->addComponent(reichTransform);
-        reich->addComponent(reichRenderer);
-        reich->addComponent(reichCollider);
-        reich->tag = "wall";
+//        Entity *reich = entityManager->createEntity();
+//        auto *reichTransform = new Transform({{35, 5, 0},
+//                                            {0,  0, 0},
+//                                            {80,20,80}});
+//        auto *reichRenderer = new MeshRenderer(cube, wallMaterial);
+//        auto *reichCollider = new Collider();
+//        reich->addComponent(reichTransform);
+//        reich->addComponent(reichRenderer);
+//        reich->addComponent(reichCollider);
+//        reich->tag = "wall";
 
         Entity* skyLightEntity = entityManager->createEntity();
         auto *skyLightComponent = new Light();
@@ -359,55 +186,3 @@ namespace xGame::Scene {
         spotLightEntity->addComponent(spotLightTransform);
     };
 }
-
-///UNUSED
-//std::unordered_map<std::string, std::any> prop;
-//        prop["albedo_tint"] = glm::vec3{1,1,1};
-//        prop["albedo_map"] = std::pair<Texture*, Sampler*> {asphaltAlbedo, sampler};
-
-
-
-//        //Box
-//        Entity *box = entityManager->createEntity();
-//        auto *boxTransform = new Transform({{20, 5, 0},
-//                                         {0,  0, 0},
-//                                         {5,5,5}});
-//        auto *boxRenderer = new MeshRenderer(cube, woodMaterial);
-//        auto *boxCollider = new Collider();
-//        box->addComponent(boxTransform);
-//        box->addComponent(boxRenderer);
-//        box->addComponent(boxCollider);
-
-
-//        //Suzanne
-//        Entity *suzanne = entityManager->createEntity();
-//        suzanne->tag = "Suzanne";
-//        auto *suzanneTransform = new Transform({{10, 2, 0},
-//                                          {0, 0, 0},
-//                                          {2, 2, 2}});
-////        suzanneTransform->addChild(cameraTransform);
-////        suzanneTransform->freeMe();
-//        auto *suzanneRenderer= new MeshRenderer(monkey, metalMaterial);
-//        suzanne->addComponent(suzanneRenderer);
-//        suzanne->addComponent(suzanneTransform);
-
-//        //lights
-//        Entity* lightEntity = entityManager->createEntity();
-//        auto *lightComponent = new Light();
-//        // for light transform -> Color, Position, Direction
-//        auto *lightTransform = new Transform({1, 1, 1}, {0, 0, 0}, {0, -1, 0});
-//        lightComponent->type = xGame::LightType::DIRECTIONAL;
-//        lightComponent->enabled = true;
-//        lightEntity->addComponent(lightComponent);
-//        lightEntity->addComponent(lightTransform);
-//
-//        Entity* spotLightEntity = entityManager->createEntity();
-//        auto *spotLightComponent = new Light();
-//        auto *spotLightTransform = new Transform({1, 1, 1}, {0, 6, 0}, {-1, -1, -1});
-//        spotLightComponent->enabled = true;
-//        spotLightComponent->type = xGame::LightType::SPOT;
-//        spotLightComponent->attenuation.constant = -6.0;
-//        spotLightComponent->spotAngle.inner = 0.78539816339;
-//        spotLightComponent->spotAngle.outer = 1.57079632679;
-//        spotLightEntity->addComponent(spotLightComponent);
-//        spotLightEntity->addComponent(spotLightTransform);

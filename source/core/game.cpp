@@ -6,13 +6,17 @@
 #include "game_states/state_manager/state_manager.hpp"
 #include "../utils/screenshot/screenshot.h"
 
+// Include the Dear ImGui implementation headers
+#define IMGUI_IMPL_OPENGL_LOADER_GLAD2
+#include <imgui_impl/imgui_impl_glfw.h>
+#include <imgui_impl/imgui_impl_opengl3.h>
+
 int main() {
     auto* eventManager = new EventManager();
-    xGame::Application* app = new xGame::Application(eventManager);
+    auto* app = new xGame::Application(eventManager);
     GLFWwindow* window = app->initWindow();
     xGame::Keyboard &keyboard = app->getKeyboard();
     xGame::Mouse &mouse = app->getMouse();
-
 
     auto* testState = new TestState(app);
 
@@ -56,6 +60,7 @@ int main() {
     }
 
     stateManager->setIsExiting(true);
+
     // Destroy the window
     glfwDestroyWindow(window);
 

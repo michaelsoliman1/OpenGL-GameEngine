@@ -11,6 +11,7 @@ void StateManager::runState(double deltaTime) {
             currentState->onEnter();
         }
         if(currentState!= nullptr){
+            currentState->onImmediateGui();
             currentState->onDraw(deltaTime);
         }
     } else {
@@ -23,3 +24,4 @@ void StateManager::runState(double deltaTime) {
 void StateManager::goToState(IGameState *nextState) {
     this->nextState = nextState;
 }
+

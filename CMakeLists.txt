@@ -51,7 +51,7 @@ set(RENDERING
         source/graphics/sampler/sampler.cpp
         source/graphics/render_state/RenderState.cpp
         source/graphics/mesh/mesh.cpp
-       )
+        source/system/gui_system/gui_system.cpp)
 
 # Define the directories in which to search for the included headers
 include_directories(

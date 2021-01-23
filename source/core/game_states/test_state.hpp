@@ -6,14 +6,17 @@
 #include "../system/camera_system/camera_system.h"
 #include "../system/movement_system/movement_system.h"
 #include "../system/collision_system/collision_system.h"
+#include "../system/gui_system/gui_system.h"
 
 
 class TestState : public IGameState {
+    MovementSystem* movementSystem = nullptr;
 public:
-    MovementSystem* movementSystem;
     explicit TestState(xGame::Application* app) : IGameState(app){};
+    ~TestState() = default;
+
     void onEnter() override;
+    void onImmediateGui() override;
     void onDraw(float deltaTime) override;
     void onExit() override;
-    ~TestState() = default;
 };

@@ -10,6 +10,13 @@ void TestState::onEnter() {
 
     RenderSystem::initialize(entityManager);
     CameraSystem::initialize(entityManager, app);
+    GUISystem::initialize(app);
+}
+
+void TestState::onImmediateGui() {
+    GUISystem::onUpdateEnter();
+    GUISystem::update(entityManager,app);
+    GUISystem::onUpdateExit(app);
 }
 
 void TestState::onDraw(float deltaTime) {
@@ -17,9 +24,12 @@ void TestState::onDraw(float deltaTime) {
     CollisionSystem::update(entityManager,app,deltaTime);
     movementSystem->update(entityManager, app, deltaTime);
     RenderSystem::draw(entityManager);
+    GUISystem::draw();
 }
 
 void TestState::onExit() {
     RenderSystem::destroy(entityManager);
     CameraSystem::destroy(entityManager);
+    GUISystem::destroy();
 }
+

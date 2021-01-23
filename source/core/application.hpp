@@ -1,6 +1,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include <utility>
 #include <glm/vec2.hpp>
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
@@ -24,6 +25,7 @@ namespace xGame {
 
         Keyboard keyboard;
         Mouse mouse;
+        ImGuiIO imGuiIO;
         EventManager* eventManager;
 
         static void configureOpenGL();                             // This function sets OpenGL Window Hints in GLFW.
@@ -31,7 +33,7 @@ namespace xGame {
         void setupCallbacks();                              // Sets-up the window callback functions from GLFW to our (Mouse/Keyboard) classes.
 
     public:
-        Application(EventManager* _eventManager){
+        explicit Application(EventManager* _eventManager){
             eventManager = _eventManager;
         }
         GLFWwindow* initWindow();
@@ -43,13 +45,9 @@ namespace xGame {
         [[nodiscard]] const Keyboard& getKeyboard() const { return keyboard; }
         Mouse& getMouse() { return mouse; }
         [[nodiscard]] const Mouse& getMouse() const { return mouse; }
+        ImGuiIO& getImGuiIO() { return imGuiIO; }
+        void setImGuiIO(ImGuiIO io) { this->imGuiIO = std::move(io); }
         EventManager* getEventManager() { return eventManager; }
-
-        void onKeyEvent(int key, int scancode, int action, int mods){}
-        void onCursorMoveEvent(double x, double y){}
-        void onCursorEnterEvent(int entered){}
-        void onMouseButtonEvent(int button, int action, int mods){}
-        void onScrollEvent(double x_offset, double y_offset){}
 
         // Get the size of the frame buffer of the window in pixels.
         glm::ivec2 getFrameBufferSize() {

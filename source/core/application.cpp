@@ -194,7 +194,6 @@ void xGame::Application::setupCallbacks() {
         if(app){
             app->eventManager->keyboardEvents.notifyListeners(key, scancode, action, mods);
             app->getKeyboard().keyEvent(key, scancode, action, mods);
-            app->onKeyEvent(key, scancode, action, mods);
         }
     });
 
@@ -204,7 +203,6 @@ void xGame::Application::setupCallbacks() {
         if(app){
             app->eventManager->mousePositionEvents.notifyListeners(x_position, y_position);
             app->getMouse().CursorMoveEvent(x_position, y_position);
-            app->onCursorMoveEvent(x_position, y_position);
         }
     });
 
@@ -212,7 +210,6 @@ void xGame::Application::setupCallbacks() {
     glfwSetCursorEnterCallback(window, [](GLFWwindow* window, int entered){
         auto* app = static_cast<Application*>(glfwGetWindowUserPointer(window));
         if(app){
-            app->onCursorEnterEvent(entered);
         }
     });
 
@@ -222,7 +219,6 @@ void xGame::Application::setupCallbacks() {
         if(app){
             app->eventManager->mouseButtonEvents.notifyListeners(button, action, mods);
             app->getMouse().MouseButtonEvent(button, action, mods);
-            app->onMouseButtonEvent(button, action, mods);
         }
     });
 
@@ -232,7 +228,6 @@ void xGame::Application::setupCallbacks() {
         if(app){
             app->eventManager->mouseScrollEvents.notifyListeners(x_offset,y_offset);
             app->getMouse().ScrollEvent(x_offset, y_offset);
-            app->onScrollEvent(x_offset, y_offset);
         }
     });
 }

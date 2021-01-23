@@ -50,7 +50,6 @@ void RenderSystem::draw(EntityManager* entityManager) {
                 }
             }
         }
-
     }
 
     //TODO--sort entities based on their depth and transparency here
