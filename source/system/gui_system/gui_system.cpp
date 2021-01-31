@@ -6,8 +6,7 @@
 void GUISystem::initialize(xGame::Application *app) {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    app->setImGuiIO(ImGui::GetIO());
-    ImGui::StyleColorsLight();
+    ImGui::StyleColorsDark();
 
     // Initialize ImGui for GLFW and OpenGL
     ImGui_ImplGlfw_InitForOpenGL(app->getWindow(), true);
@@ -22,17 +21,14 @@ void GUISystem::onUpdateEnter() {
 }
 
 void GUISystem::update(EntityManager *entityManager, xGame::Application *app) {
-    ImGui::Begin("Lights");
-    ImGui::End();
+    // If ImGui is using the mouse or keyboard, then we don't want the captured events to affect our keyboard and mouse objects.
+    // For example, if you're focusing on an input and writing "W", the keyboard object shouldn't record this event.
+    app->imGuiWantCapture();
+
+    ImGui::ShowDemoWindow();
 }
 
 void GUISystem::onUpdateExit(xGame::Application *app) {
-    // If ImGui is using the mouse or keyboard, then we don't want the captured events to affect our keyboard and mouse objects.
-    // For example, if you're focusing on an input and writing "W", the keyboard object shouldn't record this event.
-    // TODO move all that to a function in app
-    app->getKeyboard().setEnabled(!app->getImGuiIO().WantCaptureKeyboard, app->getWindow());
-    app->getMouse().setEnabled(!app->getImGuiIO().WantCaptureMouse, app->getWindow());
-
     // Render the ImGui commands we called (this doesn't actually draw to the screen yet.
     ImGui::Render();
 

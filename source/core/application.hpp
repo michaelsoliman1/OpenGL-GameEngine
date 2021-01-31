@@ -25,7 +25,6 @@ namespace xGame {
 
         Keyboard keyboard;
         Mouse mouse;
-        ImGuiIO imGuiIO;
         EventManager* eventManager;
 
         static void configureOpenGL();                             // This function sets OpenGL Window Hints in GLFW.
@@ -45,8 +44,6 @@ namespace xGame {
         [[nodiscard]] const Keyboard& getKeyboard() const { return keyboard; }
         Mouse& getMouse() { return mouse; }
         [[nodiscard]] const Mouse& getMouse() const { return mouse; }
-        ImGuiIO& getImGuiIO() { return imGuiIO; }
-        void setImGuiIO(ImGuiIO io) { this->imGuiIO = std::move(io); }
         EventManager* getEventManager() { return eventManager; }
 
         // Get the size of the frame buffer of the window in pixels.
@@ -62,6 +59,11 @@ namespace xGame {
             glm::ivec2 size;
             glfwGetWindowSize(window, &(size.x), &(size.y));
             return size;
+        }
+
+        void imGuiWantCapture(){
+            keyboard.setEnabled(!ImGui::GetIO().WantCaptureKeyboard, window);
+            mouse.setEnabled(!ImGui::GetIO().WantCaptureMouse, window);
         }
     };
 
